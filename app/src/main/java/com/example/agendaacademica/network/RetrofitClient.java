@@ -12,10 +12,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
-    // [CONFIGURACIÓN] IP para el emulador (10.0.2.2 apunta al localhost de tu PC)
-    private static final String IP_SERVIDOR = "192.168.100.189";
-    public static final String BASE_URL = "http://" + IP_SERVIDOR + ":8080/";
-    //public static final String BASE_URL = "https://proyecto-final-api-1.onrender.com/";
+    // [CONFIGURACIÓN] IP local para pruebas
+    // private static final String IP_SERVIDOR = "192.168.100.189";
+    // public static final String BASE_URL = "http://" + IP_SERVIDOR + ":8080/";
+    
+    // [CONFIGURACIÓN] URL de Producción (Render)
+    public static final String BASE_URL = "https://proyecto-final-api-1.onrender.com/";
 
     private static Retrofit retrofit = null;
 
