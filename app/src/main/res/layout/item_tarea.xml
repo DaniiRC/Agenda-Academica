@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    app:cardBackgroundColor="@color/bg_card"
+    app:cardCornerRadius="28dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp">
+
+        <!-- Línea de color lateral (Opcional, según diseño) -->
+        <View
+            android:id="@+id/viewColorIndicador"
+            android:layout_width="4dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:background="@color/color_secondary"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/viewColorIndicador"
+            android:layout_marginStart="16dp"
+            android:layout_toStartOf="@id/ivIconoTarea"
+            android:orientation="vertical">
+
+            <!-- Etiqueta superior (URGENTE/SIGUIENTE + FECHA) -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="6dp">
+
+                <TextView
+                    android:id="@+id/tvEtiquetaTipo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="URGENTE"
+                    android:textColor="#EF4444"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05" />
+
+                <View
+                    android:layout_width="3dp"
+                    android:layout_height="3dp"
+                    android:layout_marginHorizontal="8dp"
+                    android:background="@color/text_sub" />
+
+                <TextView
+                    android:id="@+id/tvItemHora"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12 Oct, 23:59"
+                    android:textColor="@color/text_sub"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <!-- Título Principal -->
+            <TextView
+                android:id="@+id/tvItemTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Entrega Proyecto Final"
+                android:textColor="@color/text_main"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Subtítulo / Asignatura -->
+            <TextView
+                android:id="@+id/tvItemDesc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="Sistemas de Gestión Empresarial"
+                android:textColor="@color/text_sub"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <!-- Icono circular a la derecha -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/ivIconoTarea"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            app:cardBackgroundColor="#22FFFFFF"
+            app:cardCornerRadius="24dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:id="@+id/ivTipoIcono"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_edit"
+                app:tint="@color/text_main" />
+        </com.google.android.material.card.MaterialCardView>
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeRefreshClases"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="110dp">
+
+            <!-- Header Area -->
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/nav_clases"
+                android:textColor="@color/text_main"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_settings"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text_main" />
+
+            <!-- Custom Search Bar -->
+            <LinearLayout
+                android:id="@+id/search_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/bg_barra_busqueda"
+                android:padding="16dp"
+                android:gravity="center_vertical"
+                app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_search"
+                    app:tint="#636366"/>
+
+                <EditText
+                    android:id="@+id/etBarraBusqueda"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/buscar_en_mis_clases"
+                    android:textColorHint="#636366"
+                    android:textColor="@color/text_main"
+                    android:textSize="16sp"
+                    android:maxLines="1"
+                    android:inputType="text"/>
+            </LinearLayout>
+
+            <!-- Section Subheader -->
+            <RelativeLayout
+                android:id="@+id/subheader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="32dp"
+                app:layout_constraintTop_toBottomOf="@id/search_bar">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tus_clases_activas"
+                    android:textColor="@color/text_gray_muted"
+                    android:textSize="11sp"
+                    android:letterSpacing="0.1"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvContadorClases"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clases_formato"
+                    android:textColor="@color/text_gray_muted"
+                    android:textSize="11sp"
+                    android:layout_alignParentEnd="true"
+                    android:letterSpacing="0.1"
+                    android:textStyle="bold"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerAsignaturas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:nestedScrollingEnabled="false"
+                android:paddingHorizontal="8dp"
+                app:layout_constraintTop_toBottomOf="@id/subheader"/>
+
+            <!-- Estado vacío cuando no hay clases -->
+            <LinearLayout
+                android:id="@+id/tvSinClases"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="60dp"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@id/subheader">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_school"
+                    android:alpha="0.2"
+                    app:tint="@color/text_main"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sin_clases_titulo"
+                    android:textColor="@color/text_gray_muted"
+                    android:textSize="16sp"
+                    android:layout_marginTop="16dp"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/sin_clases_subtitulo"
+                    android:textColor="@color/text_gray_muted"
+                    android:textSize="14sp"
+                    android:alpha="0.6"/>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

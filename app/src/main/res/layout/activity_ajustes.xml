@@ -1,0 +1,378 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_app"
+    android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_app"
+        android:paddingTop="12dp"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarAjustes"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:navigationIconTint="@color/black"
+            app:title="@string/configuracion"
+            app:titleTextAppearance="@style/TextAppearance.Material3.TitleLarge"
+            app:titleTextColor="@color/text_main" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="20dp"
+            android:paddingBottom="40dp">
+
+            <!-- SECCIÓN: CUENTA -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/mi_cuenta"
+                android:textColor="@color/text_sub"
+                android:textSize="13sp"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnEditarPerfil"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:text="@string/editar_perfil"
+                        android:textColor="@color/text_main"
+                        android:textSize="17sp"
+                        app:icon="@drawable/ic_people"
+                        app:iconTint="@color/primary_light"
+                        app:iconSize="26dp"
+                        app:iconPadding="24dp"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textStyle="normal"
+                        app:textAllCaps="false" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECCIÓN: PREFERENCIAS -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/apariencia_uso"
+                android:textColor="@color/text_sub"
+                android:textSize="13sp"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="28dp"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:paddingHorizontal="20dp">
+
+                        <ImageView
+                            android:id="@+id/ivIconTema"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_settings"
+                            app:tint="@color/accent_orange" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="50dp"
+                            android:text="@string/modo_claro"
+                            android:textColor="@color/text_main"
+                            android:textSize="17sp"
+                            android:textStyle="normal" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchTemaOscuro"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="70dp"
+                        android:background="@color/bg_app" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnIdioma"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:gravity="start|center_vertical"
+                        android:paddingHorizontal="20dp"
+                        android:text="@string/idioma_app"
+                        android:textColor="@color/text_main"
+                        android:textSize="17sp"
+                        app:icon="@drawable/ic_search"
+                        app:iconTint="@color/accent_blue"
+                        app:iconSize="26dp"
+                        app:iconPadding="24dp"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        android:textStyle="normal"
+                        app:textAllCaps="false" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECCIÓN: NOTIFICACIONES -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="12dp"
+                android:text="@string/notificaciones"
+                android:textColor="@color/text_sub"
+                android:textSize="13sp"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:paddingHorizontal="20dp">
+
+                        <ImageView
+                            android:id="@+id/ivIconNotif"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_calendar"
+                            app:tint="@color/accent_blue" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="50dp"
+                            android:text="Notificaciones"
+                            android:textColor="@color/text_main"
+                            android:textSize="17sp"
+                            android:textStyle="normal" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchRecordatorios"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- SECCIÓN: ACCESIBILIDAD -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="12dp"
+                android:text="Accesibilidad"
+                android:textColor="@color/text_sub"
+                android:textSize="13sp"
+                android:letterSpacing="0.1"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="32dp"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="3dp"
+                app:strokeWidth="0dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:paddingHorizontal="20dp">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_check"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="50dp"
+                            android:text="Modo de alto contraste"
+                            android:textColor="@color/text_main"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchHighContrast"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="70dp"
+                        android:background="@color/bg_app" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:paddingHorizontal="20dp">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_group"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="50dp"
+                            android:text="Modo para daltónicos"
+                            android:textColor="@color/text_main"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchColorBlind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="70dp"
+                        android:background="@color/bg_app" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:paddingHorizontal="20dp">
+
+                        <ImageView
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_settings"
+                            app:tint="@color/primary" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginStart="50dp"
+                            android:text="Animaciones de interfaz"
+                            android:textColor="@color/text_main"
+                            android:textSize="17sp" />
+
+                        <com.google.android.material.switchmaterial.SwitchMaterial
+                            android:id="@+id/switchAnimations"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- BOTÓN ELIMINAR CUENTA -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEliminarCuenta"
+                style="@style/Widget.Material3.Button.TonalButton"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:text="@string/eliminar_cuenta_perm"
+                android:textColor="@color/accent_pink"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_logout"
+                app:iconTint="@color/accent_pink"
+                app:iconSize="24dp"
+                android:backgroundTint="#1AFF375F"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                app:textAllCaps="false"
+                app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.MediumComponent" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

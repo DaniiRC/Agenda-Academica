@@ -1,0 +1,185 @@
+<resources>
+    <string name="app_name">Academic Agenda</string>
+    <string name="open_nav">Open navigation</string>
+    <string name="close_nav">Close navigation</string>
+    <string name="unirse_clase">Join Class</string>
+    <string name="nueva_entrega">New Assignment</string>
+    <string name="editar_evento">Edit Event</string>
+
+    <!-- Navigation -->
+    <string name="nav_agenda">Agenda</string>
+    <string name="nav_grupo">Group</string>
+    <string name="nav_clases">My Classes</string>
+    <string name="nav_perfil">Profile</string>
+
+    <!-- Settings -->
+    <string name="configuracion">Settings</string>
+    <string name="mi_cuenta">MY ACCOUNT</string>
+    <string name="editar_perfil">Edit profile information</string>
+    <string name="seguridad_pass">Security &amp; Password</string>
+    <string name="apariencia_uso">APPEARANCE &amp; USAGE</string>
+    <string name="modo_claro">Light Mode</string>
+    <string name="idioma_app">App Language</string>
+    <string name="notificaciones">NOTIFICATIONS</string>
+    <string name="recordatorios_tareas">Task reminders</string>
+    <string name="eliminar_cuenta_perm">Delete account permanently</string>
+    <string name="confirmar_eliminar_cuenta">Are you sure you want to delete your account? This action cannot be undone and you will lose all your data.</string>
+    <string name="escribe_confirmacion">Type \"%1$s\" to confirm:</string>
+    <string name="palabra_confirmacion">delete account</string>
+    <string name="cuenta_eliminada">Account deleted successfully</string>
+    <string name="error_eliminar_cuenta">Could not delete account</string>
+    <string name="eliminando_cuenta">Deleting account and associated data...</string>
+    <string name="entendido">Understood</string>
+    <string name="confirmacion_incorrecta">Confirmation is incorrect</string>
+    <string name="funcionalidad_proximamente">Feature coming soon</string>
+    <string name="recordatorios_activados">Reminders activated</string>
+    <string name="recordatorios_desactivados">Reminders deactivated</string>
+    <string name="seleccionar_idioma">Select Language</string>
+    <string name="cancelar">Cancel</string>
+
+    <!-- Login -->
+    <string name="bienvenido">Welcome back</string>
+    <string name="iniciar_sesion">Login</string>
+    <string name="email">Email Address</string>
+    <string name="password">Password</string>
+    <string name="olvidaste_pass">Forgot your password?</string>
+    <string name="no_tienes_cuenta">Don\'t have an account? Sign up</string>
+
+    <!-- Agenda -->
+    <string name="hoy">Today</string>
+    <string name="sin_eventos">No events for this day</string>
+    <string name="añadir_evento">Add Event</string>
+    <string name="hola_usuario">Hello, %1$s</string>
+    <string name="tareas_hoy">Today\'s tasks</string>
+    <string name="tareas_del_dia">Tasks for %1$s</string>
+    <string name="ver_todas">See all</string>
+    <string name="buscar">Search</string>
+    <string name="unirse_clase_titulo">Join a Class</string>
+    <string name="codigo">CODE</string>
+    <string name="ej_codigo">Ex: MATH-2024</string>
+    <string name="unirse">Join</string>
+    <string name="nombre_grupo">Group Name</string>
+    <string name="miembros_formato">Members: %1$d</string>
+    <string name="crear_clase">Create Class</string>
+    <string name="crear_clase_descripcion">Start a new learning\nspace and collaborate\nwith other students.</string>
+    <string name="nueva_clase">NEW CLASS</string>
+
+    <!-- Tasks -->
+    <string name="mis_tareas">My Tasks</string>
+    <string name="confirmar_salir_titulo">Are you sure you want to leave?</string>
+    <string name="confirmar_salir_mensaje">Unsaved changes will be lost.</string>
+    <string name="continuar_editando">Continue editing</string>
+    <string name="buscar_hint">Search task or subject...</string>
+    <string name="ya_finalizada">ALREADY COMPLETED</string>
+    <string name="error_conexion_titulo">Oops, no connection</string>
+    <string name="error_conexion_msg">We couldn\'t connect to the server.\nPlease check your internet or try again later.</string>
+    <string name="reintentar">Retry</string>
+    <string name="filtros">Filters</string>
+    <string name="borrar_todo">Delete All</string>
+    <string name="eliminar_tarea">Delete task</string>
+    <string name="confirmar_eliminar_tarea">Are you sure you want to delete this task? This action cannot be undone.</string>
+    <string name="eliminar">Delete</string>
+    <string name="tu_agenda_subtitulo">Your smart academic agenda</string>
+    <string name="tarea_completada">Task completed: %1$s</string>
+    <string name="tarea_eliminada">Task deleted</string>
+    <string name="deshacer">UNDO</string>
+    <string name="nombre_completo">Full name</string>
+
+    <!-- Formulario -->
+    <string name="nuevo_evento">New Event</string>
+    <string name="guardar">Save</string>
+    <string name="titulo_evento">Event title</string>
+    <string name="notas_descripcion">Add notes or description...</string>
+    <string name="categoria">CATEGORY</string>
+    <string name="tareas">Tasks</string>
+    <string name="proyecto">Project</string>
+    <string name="estudio">Study</string>
+    <string name="horario">Schedule</string>
+    <string name="cronograma_subtitulo">Define your academic schedule</string>
+    <string name="empieza">Start Time</string>
+    <string name="termina">End Time</string>
+    <string name="recordatorio">REMINDER</string>
+    <string name="minutos_antes">minutes before</string>
+    <string name="visibilidad_colaboracion">VISIBILITY AND COLLABORATION</string>
+    <string name="solo_para_mi">Only for me</string>
+    <string name="seleccionar_clase">Select class</string>
+    <string name="seleccionar_asignatura">Select subject</string>
+    <string name="lista_de_tareas">TASK LIST</string>
+    <string name="añadir_paso">+ Add step</string>
+    <string name="modo_enfoque">Focus Mode (Pomodoro)</string>
+    <string name="auto_iniciar_sesiones">AUTO-START SESSIONS</string>
+    <string name="no_molestar_estudio">Turn on \'Do Not Disturb\' while studying</string>
+
+    <!-- Profile -->
+    <string name="perfil">Profile</string>
+    <string name="racha_formato">%1$d Day Streak!</string>
+    <string name="streak_desc">Keep it up! You are meeting your daily goals.</string>
+    <string name="streak_increible">Incredible! You are in the top 5% of students this week.</string>
+    <string name="streak_buen_trabajo">Good job. Keep it up to complete the week!</string>
+    <string name="streak_vacio">Start completing tasks to see your streak.</string>
+    <string name="tareas_completadas">TASKS\nCOMPLETED</string>
+    <string name="tiempo_enfocado">FOCUSED\nTIME</string>
+    <string name="clases_activas">ACTIVE\nCLASSES</string>
+    <string name="sesiones_enfoque">FOCUS\nSESSIONS</string>
+    <string name="sin_racha">No streak</string>
+    <string name="cerrar_sesion">Logout</string>
+    <string name="todas_las_tareas">All tasks</string>
+
+    <!-- Calendar -->
+    <string name="lunes_sigla">M</string>
+    <string name="martes_sigla">T</string>
+    <string name="miercoles_sigla">W</string>
+    <string name="jueves_sigla">T</string>
+    <string name="viernes_sigla">F</string>
+    <string name="sabado_sigla">S</string>
+    <string name="domingo_sigla">S</string>
+    <string name="filtros_activos">Active filters: %1$s</string>
+
+    <!-- My Classes -->
+    <string name="buscar_en_mis_clases">Search in my classes...</string>
+    <string name="tus_clases_activas">YOUR ACTIVE CLASSES</string>
+    <string name="clases_formato">%1$d CLASSES</string>
+    <string name="sin_clases_titulo">You don\'t have any classes yet</string>
+    <string name="sin_clases_subtitulo">Create a new one to get started!</string>
+
+    <!-- Create Class Dialog -->
+    <string name="crear_nueva_clase">Create New Class</string>
+    <string name="configura_detalles_clase">Configure your new class details</string>
+    <string name="nombre_clase_hint">Class name (e.g., 2nd DAM B)</string>
+    <string name="descripcion_opcional">Description (Optional)</string>
+    <string name="anadir_asignaturas">Add Subjects</string>
+    <string name="ej_programacion">e.g., Programming</string>
+    <string name="color_distintivo">Distinctive color</string>
+    <string name="nombre_obligatorio">Name is required</string>
+
+    <!-- Class Profile -->
+    <string name="detalles_clase">Class Details</string>
+    <string name="eres_admin">YOU ARE ADMIN</string>
+    <string name="eres_admin_completo">YOU ARE THE ADMIN</string>
+    <string name="eres_alumno">YOU ARE A STUDENT</string>
+    <string name="tareas_activas_mayus">ACTIVE TASKS</string>
+    <string name="miembros_mayus">MEMBERS</string>
+    <string name="codigo_invitacion">INVITATION CODE</string>
+    <string name="descripcion_clase">CLASS DESCRIPTION</string>
+    <string name="sin_descripcion">No description available</string>
+    <string name="eventos">Events</string>
+    <string name="asignaturas">Subjects</string>
+    <string name="abandonar_clase">Leave class</string>
+    <string name="confirmar_abandonar_clase">Are you sure you want to leave this class? You will no longer see its events.</string>
+    <string name="salir">Leave</string>
+    <string name="codigo_copiado">Code copied to clipboard</string>
+    <string name="participantes_formato">%1$d participants</string>
+    <string name="clase_sin_asignaturas">This class has no subjects</string>
+    <string name="error_red">Network error</string>
+    <string name="error_salir_clase">Error leaving the class</string>
+    <string name="has_salido_clase">You have left the class</string>
+    <string name="filtrar_por">Filter by: %1$s</string>
+    <string name="cargando">Loading...</string>
+
+    <string-array name="opciones_notificacion">
+        <item>No notification</item>
+        <item>At exact time</item>
+        <item>1 hour before</item>
+        <item>1 day before</item>
+    </string-array>
+</resources>

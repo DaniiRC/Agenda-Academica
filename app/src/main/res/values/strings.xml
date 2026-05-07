@@ -1,0 +1,199 @@
+<resources>
+    <string name="app_name">Agenda Academica</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="open_nav">Abrir menú</string>
+    <string name="close_nav">Cerrar menú</string>
+    <string name="unirse_clase">Unirse a la Clase</string>
+    <string name="nueva_entrega">Nueva Entrega</string>
+    <string name="editar_evento">Editar Evento</string>
+
+    <!-- Ajustes -->
+    <string name="configuracion">Configuración</string>
+    <string name="mi_cuenta">MI CUENTA</string>
+    <string name="editar_perfil">Editar información del perfil</string>
+    <string name="seguridad_pass">Seguridad y Contraseña</string>
+    <string name="apariencia_uso">APARIENCIA Y USO</string>
+    <string name="modo_claro">Modo Claro</string>
+    <string name="idioma_app">Idioma de la aplicación</string>
+    <string name="notificaciones">NOTIFICACIONES</string>
+    <string name="recordatorios_tareas">Recordatorios de tareas</string>
+    <string name="eliminar_cuenta_perm">Eliminar cuenta permanentemente</string>
+    <string name="confirmar_eliminar_cuenta">¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer y perderás todos tus datos.</string>
+    <string name="escribe_confirmacion">Escribe \"%1$s\" para confirmar:</string>
+    <string name="palabra_confirmacion">eliminar cuenta</string>
+    <string name="cuenta_eliminada">Cuenta eliminada correctamente</string>
+    <string name="error_eliminar_cuenta">No se pudo eliminar la cuenta</string>
+    <string name="eliminando_cuenta">Eliminando cuenta y datos asociados...</string>
+    <string name="entendido">Entendido</string>
+    <string name="confirmacion_incorrecta">La confirmación es incorrecta</string>
+    <string name="funcionalidad_proximamente">Funcionalidad próximamente</string>
+    <string name="recordatorios_activados">Recordatorios activados</string>
+    <string name="recordatorios_desactivados">Recordatorios desactivados</string>
+    <string name="seleccionar_idioma">Seleccionar Idioma</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="eliminar">Eliminar</string>
+    <!-- Navegación -->
+    <string name="nav_agenda">Agenda</string>
+    <string name="nav_grupo">Grupo</string>
+    <string name="nav_clases">Mis Clases</string>
+    <string name="nav_perfil">Perfil</string>
+
+    <!-- Login -->
+    <string name="bienvenido">Bienvenido de nuevo</string>
+    <string name="iniciar_sesion">Iniciar Sesión</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="password_requisitos">La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula y un número</string>
+    <string name="olvidaste_pass">¿Olvidaste tu contraseña?</string>
+    <string name="no_tienes_cuenta">¿No tienes cuenta? Regístrate</string>
+
+    <!-- Agenda / Calendario -->
+    <string name="hoy">Hoy</string>
+    <string name="sin_eventos">No hay eventos para este día</string>
+    <string name="añadir_evento">Añadir Evento</string>
+    <string name="hola_usuario">Hola, %1$s</string>
+    <string name="tareas_hoy">Tareas de hoy</string>
+    <string name="tareas_del_dia">Tareas del %1$s</string>
+    <string name="ver_todas">Ver todas</string>
+    <string name="buscar">Buscar</string>
+    <string name="unirse_clase_titulo">Unirse a una Clase</string>
+    <string name="codigo">CÓDIGO</string>
+    <string name="ej_codigo">Ej: MATH-2024</string>
+    <string name="unirse">Unirse</string>
+    <string name="nombre_grupo">Nombre del Grupo</string>
+    <string name="miembros_formato">Miembros: %1$d</string>
+    <string name="crear_clase">Crear clase</string>
+    <string name="racha_formato">¡%1$d Días de Racha!</string>
+    <string name="streak_desc">¡Sigue así! Estás cumpliendo tus objetivos diarios.</string>
+    <string name="streak_increible">¡Increíble! Estás en el 5% superior de estudiantes esta semana.</string>
+    <string name="streak_buen_trabajo">Buen trabajo. ¡Sigue así para completar la semana!</string>
+    <string name="streak_vacio">Empieza a completar tareas para ver tu racha.</string>
+    <string name="crear_clase_descripcion">Inicia un nuevo espacio de\naprendizaje y colabora con\notros estudiantes.</string>
+    <string name="nueva_clase">NUEVA CLASE</string>
+
+    <!-- Tareas -->
+    <string name="mis_tareas">Mis Tareas</string>
+    <string name="filtros">Filtros</string>
+    <string name="borrar_todo">Borrar Todo</string>
+    <string name="eliminar_tarea">Eliminar tarea</string>
+    <string name="confirmar_eliminar_tarea">¿Estás seguro de que quieres eliminar esta tarea? Esta acción no se puede deshacer.</string>
+    <string name="tu_agenda_subtitulo">Tu agenda académica inteligente</string>
+    <string name="tarea_completada">Tarea completada: %1$s</string>
+    <string name="tarea_eliminada">Tarea eliminada</string>
+    <string name="deshacer">DESHACER</string>
+    <string name="nombre_completo">Nombre completo</string>
+
+    <!-- Formulario -->
+    <string name="nuevo_evento">Nuevo Evento</string>
+    <string name="nuevo_paso">Nuevo paso</string>
+    <string name="guardar">Guardar</string>
+    <string name="titulo_evento">Título del evento</string>
+    <string name="notas_descripcion">Añadir notas o descripción...</string>
+    <string name="categoria">CATEGORÍA</string>
+    <string name="tareas">Tareas</string>
+    <string name="proyecto">Proyecto</string>
+    <string name="estudio">Estudio</string>
+    <string name="horario">Horario</string>
+    <string name="cronograma_subtitulo">Define tu cronograma académico</string>
+    <string name="empieza">Hora de Inicio</string>
+    <string name="termina">Hora de Finalizar</string>
+    <string name="recordatorio">RECORDATORIO</string>
+    <string name="minutos_antes">minutos antes</string>
+    <string name="visibilidad_colaboracion">VISIBILIDAD Y COLABORACIÓN</string>
+    <string name="solo_para_mi">Solo para mí</string>
+    <string name="seleccionar_clase">Seleccionar clase</string>
+    <string name="seleccionar_asignatura">Seleccionar asignatura</string>
+    <string name="lista_de_tareas">LISTA DE TAREAS</string>
+    <string name="añadir_paso">+ Añadir paso</string>
+    <string name="modo_enfoque">Modo Enfoque (Pomodoro)</string>
+    <string name="auto_iniciar_sesiones">AUTO-INICIAR SESIONES</string>
+    <string name="no_molestar_estudio">Activar \'No molestar\' mientras estudio</string>
+
+    <!-- Perfil -->
+    <string name="perfil">Perfil</string>
+    <string name="tareas_completadas">TAREAS\nCOMPLETADAS</string>
+    <string name="tiempo_enfocado">TIEMPO\nENFOCADO</string>
+    <string name="clases_activas">CLASES\nACTIVAS</string>
+    <string name="sesiones_enfoque">SESIONES\nENFOQUE</string>
+
+    <!-- Calendario -->
+    <string name="lunes_sigla">L</string>
+    <string name="martes_sigla">M</string>
+    <string name="miercoles_sigla">X</string>
+    <string name="jueves_sigla">J</string>
+    <string name="viernes_sigla">V</string>
+    <string name="sabado_sigla">S</string>
+    <string name="domingo_sigla">D</string>
+    <string name="sin_racha">Sin racha</string>
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+    <string name="todas_las_tareas">Todas las tareas</string>
+    <string name="filtros_activos">Filtros activos: %1$s</string>
+
+    <!-- Mis Clases -->
+    <string name="buscar_en_mis_clases">Buscar en mis clases...</string>
+    <string name="tus_clases_activas">TUS CLASES ACTIVAS</string>
+    <string name="clases_formato">%1$d CLASES</string>
+    <string name="sin_clases_titulo">No tienes clases todavía</string>
+    <string name="sin_clases_subtitulo">¡Crea una nueva para empezar!</string>
+
+    <!-- Diálogo Crear Clase -->
+    <string name="crear_nueva_clase">Crear Nueva Clase</string>
+    <string name="configura_detalles_clase">Configura los detalles de tu nueva clase</string>
+    <string name="nombre_clase_hint">Nombre de la clase (Ej: 2º DAM B)</string>
+    <string name="descripcion_opcional">Descripción (Opcional)</string>
+    <string name="anadir_asignaturas">Añadir Asignaturas</string>
+    <string name="ej_programacion">Ej: Programación</string>
+    <string name="color_distintivo">Color distintivo</string>
+    <string name="nombre_obligatorio">El nombre es obligatorio</string>
+
+    <!-- Opciones FAB Perfil Clase -->
+    <string name="que_quieres_anadir">¿Qué quieres añadir?</string>
+    <string name="nuevo_evento_desc">Añade una entrega o tarea a esta clase</string>
+    <string name="nueva_asignatura">Nueva Asignatura</string>
+    <string name="nueva_asignatura_desc">Crea una materia para esta clase</string>
+    <string name="nueva_asignatura_subtitulo">Define los detalles de la nueva asignatura</string>
+    <string name="nombre_asignatura_hint">Nombre de la asignatura (Ej: Programación)</string>
+    <string name="asignatura_creada">Asignatura creada correctamente</string>
+    <string name="error_crear_asignatura">Error al crear la asignatura</string>
+
+    <!-- Perfil Clase -->
+    <string name="detalles_clase">Detalles de la Clase</string>
+    <string name="eres_admin">TÚ ERES ADMIN</string>
+    <string name="eres_admin_completo">TÚ ERES EL ADMIN</string>
+    <string name="eres_alumno">ERES ALUMNO</string>
+    <string name="tareas_activas_mayus">TAREAS ACTIVAS</string>
+    <string name="miembros_mayus">MIEMBROS</string>
+    <string name="codigo_invitacion">CÓDIGO DE INVITACIÓN</string>
+    <string name="descripcion_clase">DESCRIPCIÓN DE LA CLASE</string>
+    <string name="sin_descripcion">No hay descripción</string>
+    <string name="eventos">Eventos</string>
+    <string name="asignaturas">Asignaturas</string>
+    <string name="abandonar_clase">Abandonar clase</string>
+    <string name="confirmar_abandonar_clase">¿Estás seguro de que quieres salir de esta clase? Ya no verás sus eventos.</string>
+    <string name="salir">Salir</string>
+    <string name="codigo_copiado">Código copiado al portapapeles</string>
+    <string name="participantes_formato">%1$d participantes</string>
+    <string name="clase_sin_asignaturas">Esta clase no tiene asignaturas</string>
+    <string name="error_red">Error de red</string>
+    <string name="error_salir_clase">Error al salir de la clase</string>
+    <string name="has_salido_clase">Has salido de la clase</string>
+    <string name="filtrar_por">Filtrar por: %1$s</string>
+    <string name="cargando">Cargando...</string>
+
+    <string-array name="opciones_notificacion">
+        <item>No avisar</item>
+        <item>A la hora exacta</item>
+        <item>1 hora antes</item>
+        <item>1 día antes</item>
+    </string-array>
+    <string name="filtrar">Filtro</string>
+    <string name="confirmar_salir_titulo">¿Seguro que quieres salir?</string>
+    <string name="confirmar_salir_mensaje">Se perderán los datos que no hayas guardado.</string>
+    <string name="continuar_editando">Continuar editando</string>
+    <string name="buscar_hint">Buscar tarea o asignatura...</string>
+    <string name="ya_finalizada">Finalizada</string>
+    <string name="error_conexion_titulo">Ups, no hay conexión</string>
+    <string name="error_conexion_msg">No hemos podido conectar con el servidor.\nComprueba tu internet o inténtalo más tarde.</string>
+    <string name="reintentar">Reintentar</string>
+</resources>

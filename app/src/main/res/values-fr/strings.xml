@@ -1,0 +1,185 @@
+<resources>
+    <string name="app_name">Agenda Académique</string>
+    <string name="open_nav">Ouvrir navigation</string>
+    <string name="close_nav">Fermer navigation</string>
+    <string name="unirse_clase">Rejoindre la classe</string>
+    <string name="nueva_entrega">Nouvelle affectation</string>
+    <string name="editar_evento">Modifier l\'événement</string>
+
+    <!-- Settings -->
+    <string name="configuracion">Paramètres</string>
+    <string name="mi_cuenta">MON COMPTE</string>
+    <string name="editar_perfil">Modifier les informations du profil</string>
+    <string name="seguridad_pass">Sécurité et mot de passe</string>
+    <string name="apariencia_uso">APPARENCE ET UTILISATION</string>
+    <string name="modo_claro">Mode clair</string>
+    <string name="idioma_app">Langue de l\'application</string>
+    <string name="notificaciones">NOTIFICATIONS</string>
+    <string name="recordatorios_tareas">Rappels de tâches</string>
+    <string name="eliminar_cuenta_perm">Supprimer définitivement le compte</string>
+    <string name="confirmar_eliminar_cuenta">Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et vous perdrez toutes vos données.</string>
+    <string name="escribe_confirmacion">Tapez \"%1$s\" pour confirmer :</string>
+    <string name="palabra_confirmacion">supprimer le compte</string>
+    <string name="cuenta_eliminada">Compte supprimé avec succès</string>
+    <string name="error_eliminar_cuenta">Impossible de supprimer le compte</string>
+    <string name="eliminando_cuenta">Suppression du compte et des données associées...</string>
+    <string name="entendido">Entendu</string>
+    <string name="confirmacion_incorrecta">La confirmation est incorrecte</string>
+    <string name="funcionalidad_proximamente">Fonctionnalité bientôt disponible</string>
+    <string name="recordatorios_activados">Rappels activés</string>
+    <string name="recordatorios_desactivados">Rappels désactivés</string>
+    <string name="seleccionar_idioma">Choisir la langue</string>
+    <string name="cancelar">Annuler</string>
+    <string name="eliminar">Supprimer</string>
+
+    <!-- Navigation -->
+    <string name="nav_agenda">Agenda</string>
+    <string name="nav_grupo">Groupe</string>
+    <string name="nav_clases">Mes cours</string>
+    <string name="nav_perfil">Profil</string>
+
+    <!-- Login -->
+    <string name="bienvenido">Bon retour</string>
+    <string name="iniciar_sesion">Connexion</string>
+    <string name="email">Adresse e-mail</string>
+    <string name="password">Mot de passe</string>
+    <string name="olvidaste_pass">Mot de passe oublié ?</string>
+    <string name="no_tienes_cuenta">Pas de compte ? S\'inscrire</string>
+
+    <!-- Agenda -->
+    <string name="hoy">Aujourd\'hui</string>
+    <string name="sin_eventos">Aucun événement pour ce jour</string>
+    <string name="añadir_evento">Ajouter un événement</string>
+    <string name="hola_usuario">Bonjour, %1$s</string>
+    <string name="tareas_hoy">Tâches d\'aujourd\'hui</string>
+    <string name="tareas_del_dia">Tâches du %1$s</string>
+    <string name="ver_todas">Voir tout</string>
+    <string name="buscar">Chercher</string>
+    <string name="unirse_clase_titulo">Rejoindre une classe</string>
+    <string name="codigo">CODE</string>
+    <string name="ej_codigo">Ex : MATH-2024</string>
+    <string name="unirse">Rejoindre</string>
+    <string name="nombre_grupo">Nom du groupe</string>
+    <string name="miembros_formato">Membres : %1$d</string>
+    <string name="crear_clase">Créer une classe</string>
+    <string name="crear_clase_descripcion">Commencez un nouvel espace\nd\'apprentissage et collaborez\navec d\'autres étudiants.</string>
+    <string name="nueva_clase">NOUVELLE CLASSE</string>
+
+    <!-- Tasks -->
+    <string name="mis_tareas">Mes tâches</string>
+    <string name="confirmar_salir_titulo">Êtes-vous sûr de vouloir quitter ?</string>
+    <string name="confirmar_salir_mensaje">Les modifications non enregistrées seront perdues.</string>
+    <string name="continuar_editando">Continuer l\'édition</string>
+    <string name="buscar_hint">Rechercher une tâche ou une matière...</string>
+    <string name="ya_finalizada">DÉJÀ TERMINÉE</string>
+    <string name="error_conexion_titulo">Oups, pas de conexión</string>
+    <string name="error_conexion_msg">Nous n\'avons pas pu nous connecter au serveur.\nVeuillez vérifier votre internet ou réessayer plus tard.</string>
+    <string name="reintentar">Réessayer</string>
+    <string name="filtros">Filtres</string>
+    <string name="borrar_todo">Tout supprimer</string>
+    <string name="eliminar_tarea">Supprimer la tâche</string>
+    <string name="confirmar_eliminar_tarea">Êtes-vous sûr de vouloir supprimer cette tâche ? Cette action est irréversible.</string>
+    <string name="tu_agenda_subtitulo">Votre agenda académique intelligent</string>
+    <string name="tarea_completada">Tâche terminée : %1$s</string>
+    <string name="tarea_eliminada">Tâche supprimée</string>
+    <string name="deshacer">ANNULER</string>
+    <string name="nombre_completo">Nom complet</string>
+
+    <!-- Formulario -->
+    <string name="nuevo_evento">Nouvel événement</string>
+    <string name="guardar">Enregistrer</string>
+    <string name="titulo_evento">Titre de l\'événement</string>
+    <string name="notas_descripcion">Ajouter des notes ou une description...</string>
+    <string name="categoria">CATÉGORIE</string>
+    <string name="tareas">Tâches</string>
+    <string name="proyecto">Projet</string>
+    <string name="estudio">Étude</string>
+    <string name="horario">Horaire</string>
+    <string name="cronograma_subtitulo">Définissez votre emploi du temps académique</string>
+    <string name="empieza">Heure de début</string>
+    <string name="termina">Heure de fin</string>
+    <string name="recordatorio">RAPPEL</string>
+    <string name="minutos_antes">minutes avant</string>
+    <string name="visibilidad_colaboracion">VISIBILITÉ ET COLLABORATION</string>
+    <string name="solo_para_mi">Seulement pour moi</string>
+    <string name="seleccionar_clase">Sélectionner une classe</string>
+    <string name="seleccionar_asignatura">Sélectionner une matière</string>
+    <string name="lista_de_tareas">LISTE DE TÂCHES</string>
+    <string name="añadir_paso">+ Ajouter une étape</string>
+    <string name="modo_enfoque">Mode concentration (Pomodoro)</string>
+    <string name="auto_iniciar_sesiones">DÉMARRAGE AUTO DES SESSIONS</string>
+    <string name="no_molestar_estudio">Activer \'Ne pas déranger\' pendant l\'étude</string>
+
+    <!-- Profil -->
+    <string name="perfil">Profil</string>
+    <string name="racha_formato">%1$d jours de série !</string>
+    <string name="streak_desc">Continuez comme ça ! Vous atteignez vos objectifs quotidiens.</string>
+    <string name="streak_increible">Incroyable ! Vous êtes dans le top 5 % des étudiants cette semaine.</string>
+    <string name="streak_buen_trabajo">Bon travail. Continuez comme ça pour terminer la semaine !</string>
+    <string name="streak_vacio">Commencez à terminer des tâches pour voir votre série.</string>
+    <string name="tareas_completadas">TÂCHES\nTERMINÉES</string>
+    <string name="tiempo_enfocado">TEMPS\nCONCENTRÉ</string>
+    <string name="clases_activas">COURS\nACTIFS</string>
+    <string name="sesiones_enfoque">SESSIONS DE\nCONCENTRATION</string>
+    <string name="sin_racha">Aucune série</string>
+    <string name="cerrar_sesion">Déconnexion</string>
+    <string name="todas_las_tareas">Toutes les tâches</string>
+    <string name="filtros_activos">Filtres actifs : %1$s</string>
+
+    <!-- Mes cours -->
+    <string name="buscar_en_mis_clases">Rechercher dans mes cours...</string>
+    <string name="tus_clases_activas">VOS COURS ACTIFS</string>
+    <string name="clases_formato">%1$d COURS</string>
+    <string name="sin_clases_titulo">Vous n\'avez pas encore de cours</string>
+    <string name="sin_clases_subtitulo">Créez-en un nouveau pour commencer !</string>
+
+    <!-- Dialogue Créer Classe -->
+    <string name="crear_nueva_clase">Créer une nouvelle classe</string>
+    <string name="configura_detalles_clase">Configurez les détails de votre nouvelle classe</string>
+    <string name="nombre_clase_hint">Nom de la classe (Ex : 2nd DAM B)</string>
+    <string name="descripcion_opcional">Description (Facultatif)</string>
+    <string name="anadir_asignaturas">Ajouter des matières</string>
+    <string name="ej_programacion">Ex : Programmation</string>
+    <string name="color_distintivo">Couleur distinctive</string>
+    <string name="nombre_obligatorio">Le nom est obligatoire</string>
+
+    <!-- Détails de la classe -->
+    <string name="detalles_clase">Détails du cours</string>
+    <string name="eres_admin">VOUS ÊTES ADMIN</string>
+    <string name="eres_admin_completo">VOUS ÊTES L\'ADMIN</string>
+    <string name="eres_alumno">VOUS ÊTES ÉTUDIANT</string>
+    <string name="tareas_activas_mayus">TÂCHES ACTIVES</string>
+    <string name="miembros_mayus">MEMBRES</string>
+    <string name="codigo_invitacion">CODE D\'INVITATION</string>
+    <string name="descripcion_clase">DESCRIPTION DU COURS</string>
+    <string name="sin_descripcion">Aucune description disponible</string>
+    <string name="eventos">Événements</string>
+    <string name="asignaturas">Matières</string>
+    <string name="abandonar_clase">Quitter le cours</string>
+    <string name="confirmar_abandonar_clase">Êtes-vous sûr de vouloir quitter ce cours ? Vous ne verrez plus ses événements.</string>
+    <string name="salir">Quitter</string>
+    <string name="codigo_copiado">Code copié dans le presse-papiers</string>
+    <string name="participantes_formato">%1$d participants</string>
+    <string name="clase_sin_asignaturas">Ce cours n\'a pas de matières</string>
+    <string name="error_red">Erreur de réseau</string>
+    <string name="error_salir_clase">Erreur lors de la sortie du cours</string>
+    <string name="has_salido_clase">Vous avez quitté le cours</string>
+    <string name="filtrar_por">Filtrer par : %1$s</string>
+    <string name="cargando">Chargement...</string>
+
+    <!-- Calendrier -->
+    <string name="lunes_sigla">L</string>
+    <string name="martes_sigla">M</string>
+    <string name="miercoles_sigla">M</string>
+    <string name="jueves_sigla">J</string>
+    <string name="viernes_sigla">V</string>
+    <string name="sabado_sigla">S</string>
+    <string name="domingo_sigla">D</string>
+
+    <string-array name="opciones_notificacion">
+        <item>Aucune notification</item>
+        <item>À l\'heure exacte</item>
+        <item>1 heure avant</item>
+        <item>1 jour avant</item>
+    </string-array>
+</resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/bg_card"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/border_color"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Barra lateral luminosa -->
+        <View
+            android:id="@+id/viewBarraLateral"
+            android:layout_width="4dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="4dp"
+            android:background="@drawable/gradient_blue_line"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Etiqueta (Ej: TAREA o PROYECTO) -->
+        <TextView
+            android:id="@+id/tvTipoEntrega"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/bg_etiqueta_admin"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="3dp"
+            android:text="PROYECTO"
+            android:textColor="#8899FF"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/viewBarraLateral"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Fecha / Hora -->
+        <TextView
+            android:id="@+id/tvFechaEntrega"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vie 23:59"
+            android:textColor="@color/accent_pink"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/tvTipoEntrega"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvTipoEntrega" />
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTituloEntrega"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="Práctica 1: API REST"
+            android:textColor="@color/text_main"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ivFlecha"
+            app:layout_constraintStart_toEndOf="@id/viewBarraLateral"
+            app:layout_constraintTop_toBottomOf="@id/tvTipoEntrega" />
+
+        <!-- Subtítulo -->
+        <TextView
+            android:id="@+id/tvDescEntrega"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:text="Implementación de endpoints con Spring Boot"
+            android:textColor="@color/text_gray_muted"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toStartOf="@id/ivFlecha"
+            app:layout_constraintStart_toStartOf="@id/tvTituloEntrega"
+            app:layout_constraintTop_toBottomOf="@id/tvTituloEntrega" />
+
+        <!-- Flecha lateral -->
+        <ImageView
+            android:id="@+id/ivFlecha"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_chevron_right"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/text_hint" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefreshPerfil"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_app">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_app"
+            android:paddingBottom="110dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/perfil"
+                android:textColor="@color/text_main"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_settings"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/text_main" />
+
+            <!-- Profile Image Section -->
+            <FrameLayout
+                android:id="@+id/container_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/img_perfil"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:padding="4dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/ic_launcher"
+                    app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.MediumComponent"
+                    app:strokeColor="@color/bg_card_secondary"
+                    app:strokeWidth="2dp" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btn_editar_perfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|end"
+                    android:layout_margin="4dp"
+                    app:backgroundTint="@color/accent_blue"
+                    app:fabCustomSize="32dp"
+                    app:srcCompat="@android:drawable/ic_menu_edit"
+                    app:tint="@color/white" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Álex Desarrollador"
+                android:textColor="@color/text_main"
+                android:textSize="26sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/container_img" />
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="alex@estudiante.com"
+                android:textColor="@color/text_sub"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_nombre" />
+
+            <!-- Streak Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_streak"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="32dp"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_email">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <ImageView
+                        android:id="@+id/iv_flame"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_myplaces"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/accent_orange" />
+
+                    <TextView
+                        android:id="@+id/tv_streak_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:text="@string/racha_formato"
+                        android:textColor="@color/text_main"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_flame"
+                        app:layout_constraintStart_toEndOf="@id/iv_flame"
+                        app:layout_constraintTop_toTopOf="@id/iv_flame" />
+
+                    <TextView
+                        android:id="@+id/tv_streak_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="@string/streak_desc"
+                        android:textColor="@color/text_sub"
+                        android:textSize="14sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_streak_title" />
+
+                    <LinearLayout
+                        android:id="@+id/layout_days"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        app:layout_constraintTop_toBottomOf="@id/tv_streak_desc">
+                        <include layout="@layout/item_day_streak" />
+                        <include layout="@layout/item_day_streak" />
+                        <include layout="@layout/item_day_streak" />
+                        <include layout="@layout/item_day_streak" />
+                        <include layout="@layout/item_day_streak" />
+                        <include layout="@layout/item_day_streak" />
+                        <include layout="@layout/item_day_streak" />
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Grid of stats -->
+            <androidx.constraintlayout.helper.widget.Flow
+                android:id="@+id/flow_stats"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="16dp"
+                app:constraint_referenced_ids="card_tasks,card_time,card_classes,card_projects"
+                app:flow_horizontalGap="12dp"
+                app:flow_maxElementsWrap="2"
+                app:flow_verticalGap="12dp"
+                app:flow_wrapMode="aligned"
+                app:layout_constraintTop_toBottomOf="@id/card_streak" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_tasks"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_check"
+                        app:tint="@color/accent_blue" />
+                    <TextView
+                        android:id="@+id/tv_tasks_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="45"
+                        android:textColor="@color/text_main"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tareas_completadas"
+                        android:textColor="@color/text_sub"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_recent_history"
+                        app:tint="@color/accent_blue" />
+                    <TextView
+                        android:id="@+id/tv_time_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="14h"
+                        android:textColor="@color/text_main"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/tiempo_enfocado"
+                        android:textColor="@color/text_sub"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_classes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_school"
+                        app:tint="@color/accent_yellow" />
+                    <TextView
+                        android:id="@+id/tv_classes_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="3"
+                        android:textColor="@color/text_main"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/clases_activas"
+                        android:textColor="@color/text_sub"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_projects"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/bg_card"
+                app:cardCornerRadius="28dp"
+                app:cardElevation="0dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+                    <ImageView
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@android:drawable/ic_menu_today"
+                        app:tint="@color/accent_pink" />
+                    <TextView
+                        android:id="@+id/tv_projects_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:text="10"
+                        android:textColor="@color/text_main"
+                        android:textSize="22sp"
+                        android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/sesiones_enfoque"
+                        android:textColor="@color/text_sub"
+                        android:textSize="11sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_cerrar_sesion"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="32dp"
+                android:text="@string/cerrar_sesion"
+                android:textAllCaps="false"
+                android:textColor="@color/accent_pink"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:backgroundTint="@color/bg_card"
+                app:cornerRadius="32dp"
+                app:icon="@android:drawable/ic_lock_power_off"
+                app:iconGravity="textStart"
+                app:iconPadding="12dp"
+                app:iconTint="@color/accent_pink"
+                app:layout_constraintTop_toBottomOf="@id/flow_stats"
+                app:strokeColor="@color/bg_card_secondary"
+                app:strokeWidth="1dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

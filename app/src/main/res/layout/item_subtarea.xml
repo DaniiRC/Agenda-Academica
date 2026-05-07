@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardSubtarea"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/bg_card"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="#33FFFFFF"
+    app:strokeWidth="1dp">
+
+    <LinearLayout
+        android:id="@+id/llTaskContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <CheckBox
+            android:id="@+id/cbCheckbox"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:button="@drawable/selector_checkbox"
+            android:visibility="gone"/>
+
+        <!-- Usaremos un EditText para que en FormularioActivity no dé ClassCastException -->
+        <EditText
+            android:id="@+id/etSubtitulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:hint="Añadir paso..."
+            android:textColorHint="@color/text_sub"
+            android:textColor="@color/text_main"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/btnEditSubtarea"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            app:tint="@color/text_sub"
+            android:visibility="gone" />
+            
+        <ImageView
+            android:id="@+id/ivCheck"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_check"
+            app:tint="@color/primary"
+            android:visibility="gone" />
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

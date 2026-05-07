@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_agenda"
+        android:icon="@android:drawable/ic_menu_month"
+        android:title="@string/nav_agenda" />
+
+    <item
+        android:id="@+id/nav_grupo"
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/nav_grupo" />
+
+    <item
+        android:id="@+id/nav_mis_clases"
+        android:icon="@android:drawable/ic_menu_recent_history"
+        android:title="@string/nav_clases" />
+
+    <item
+        android:id="@+id/nav_perfil"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="@string/nav_perfil" />
+
+</menu>
