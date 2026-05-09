@@ -64,4 +64,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    
+    // Testing Dependencies
+    testImplementation("org.mockito:mockito-core:5.11.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    
+    // Instrumented Testing
+    androidTestImplementation("org.mockito:mockito-android:5.11.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
 }

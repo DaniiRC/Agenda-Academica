@@ -21,6 +21,11 @@
     <string name="modo_claro">Light Mode</string>
     <string name="idioma_app">App Language</string>
     <string name="notificaciones">NOTIFICATIONS</string>
+    <string name="notificaciones_item">Notifications</string>
+    <string name="accesibilidad">Accessibility</string>
+    <string name="modo_alto_contraste">High contrast mode</string>
+    <string name="modo_daltonico">Color blind mode</string>
+    <string name="animaciones_interfaz">Interface animations</string>
     <string name="recordatorios_tareas">Task reminders</string>
     <string name="eliminar_cuenta_perm">Delete account permanently</string>
     <string name="confirmar_eliminar_cuenta">Are you sure you want to delete your account? This action cannot be undone and you will lose all your data.</string>

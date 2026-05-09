@@ -112,7 +112,7 @@ public class AjustesActivity extends BaseActivity {
         switchRecordatorios.setOnCheckedChangeListener((view, isChecked) -> {
             if (!ClickGuard.canClick()) return;
             session.guardarRecordatoriosActivos(isChecked);
-            String msg = isChecked ? "Recordatorios activados" : "Recordatorios desactivados";
+            int msg = isChecked ? R.string.recordatorios_activados : R.string.recordatorios_desactivados;
             Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         });
 

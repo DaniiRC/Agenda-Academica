@@ -17,6 +17,11 @@
     <string name="modo_claro">Modo Claro</string>
     <string name="idioma_app">Idioma de la aplicación</string>
     <string name="notificaciones">NOTIFICACIONES</string>
+    <string name="notificaciones_item">Notificaciones</string>
+    <string name="accesibilidad">Accesibilidad</string>
+    <string name="modo_alto_contraste">Modo de alto contraste</string>
+    <string name="modo_daltonico">Modo para daltónicos</string>
+    <string name="animaciones_interfaz">Animaciones de interfaz</string>
     <string name="recordatorios_tareas">Recordatorios de tareas</string>
     <string name="eliminar_cuenta_perm">Eliminar cuenta permanentemente</string>
     <string name="confirmar_eliminar_cuenta">¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer y perderás todos tus datos.</string>

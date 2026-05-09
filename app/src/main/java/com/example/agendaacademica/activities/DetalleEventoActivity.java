@@ -52,6 +52,18 @@ public class DetalleEventoActivity extends BaseActivity {
     private SwipeRefreshLayout swipeRefresh;
     private boolean isAdmin;
 
+    // Pomodoro Timer Views
+    private com.google.android.material.card.MaterialCardView cardPomodoro;
+    private TextView tvPomodoroSeconds;
+    private android.widget.EditText etPomodoroMinutes;
+    private ProgressBar pbPomodoro;
+    private MaterialButton btnStartPomodoro;
+    private ImageView btnResetPomodoro;
+    private android.os.CountDownTimer countDownTimer;
+    private boolean isTimerRunning = false;
+    private long totalTimeInMillis = 25 * 60 * 1000;
+    private long originalTimeInMillis = 25 * 60 * 1000;
+
     /**
      * Inicializa la actividad, recupera los parámetros de navegación y configura los observadores de datos.
      * 
@@ -118,6 +130,14 @@ public class DetalleEventoActivity extends BaseActivity {
         llNotaSection = findViewById(R.id.llNotaSection);
         swipeRefresh = findViewById(R.id.swipeRefreshDetalle);
         
+        // Pomodoro Views
+        cardPomodoro = findViewById(R.id.cardPomodoro);
+        etPomodoroMinutes = findViewById(R.id.etPomodoroMinutes);
+        tvPomodoroSeconds = findViewById(R.id.tvPomodoroSeconds);
+        pbPomodoro = findViewById(R.id.pbPomodoro);
+        btnStartPomodoro = findViewById(R.id.btnStartPomodoro);
+        btnResetPomodoro = findViewById(R.id.btnResetPomodoro);
+        
         if (swipeRefresh != null) {
             swipeRefresh.setOnRefreshListener(this::cargarDatos);
         }
@@ -155,6 +175,20 @@ public class DetalleEventoActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         if (eventoId != -1) cargarDatos();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (isTimerRunning) {
+            pararTimer();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (countDownTimer != null) countDownTimer.cancel();
+        super.onDestroy();
     }
 
     @Override
@@ -236,6 +270,36 @@ public class DetalleEventoActivity extends BaseActivity {
             llNotaSection.setVisibility(View.GONE);
         }
 
+        // Configurar Pomodoro si el modo concentración está activo
+        if (evento.isFocusMode()) {
+            cardPomodoro.setVisibility(View.VISIBLE);
+            btnStartPomodoro.setOnClickListener(v -> toggleTimer());
+            btnResetPomodoro.setOnClickListener(v -> reiniciarTimer());
+            
+            etPomodoroMinutes.setOnFocusChangeListener((v, hasFocus) -> {
+                if (!hasFocus && !isTimerRunning) {
+                    try {
+                        int mins = Integer.parseInt(etPomodoroMinutes.getText().toString());
+                        totalTimeInMillis = (long) mins * 60 * 1000;
+                        originalTimeInMillis = totalTimeInMillis;
+                        actualizarUIPomodoro();
+                    } catch (Exception e) {
+                        etPomodoroMinutes.setText("25");
+                    }
+                }
+            });
+        } else {
+            cardPomodoro.setVisibility(View.GONE);
+        }
+
+        // Botón de completar: visible por defecto si no hay subtareas, 
+        // de lo contrario actualizarProgreso lo gestionará.
+        if (evento.isCompletado()) {
+            btnCompletarEvento.setVisibility(View.GONE);
+        } else if (evento.getSubtareas() == null || evento.getSubtareas().isEmpty()) {
+            btnCompletarEvento.setVisibility(View.VISIBLE);
+        }
+
         construirSubtareas(evento.getSubtareas());
 
         boolean esPasada = getIntent().getBooleanExtra("ES_PASADA", false);
@@ -315,6 +379,18 @@ public class DetalleEventoActivity extends BaseActivity {
             ImageView ivCheck = taskView.findViewById(R.id.ivCheck);
 
             tv.setText(sub.getTitulo());
+            
+            // Deshabilitar edición directa pero permitir que el clic pase al contenedor
+            tv.setFocusable(false);
+            tv.setClickable(false);
+            tv.setCursorVisible(false);
+            
+            // Asegurar que cualquier parte de la tarjeta sea clicable
+            View.OnClickListener taskClickListener = v -> container.performClick();
+            tv.setOnClickListener(taskClickListener);
+            card.setOnClickListener(taskClickListener);
+            ivCheck.setOnClickListener(taskClickListener);
+            
             actualizarVisualSubtarea(sub, tv, card, ivCheck);
 
             container.setOnClickListener(v -> {
@@ -513,5 +589,90 @@ public class DetalleEventoActivity extends BaseActivity {
             return time.substring(0, 5);
         }
         return time;
+    }
+
+    private void toggleTimer() {
+        if (isTimerRunning) {
+            pararTimer();
+        } else {
+            iniciarTimer();
+        }
+    }
+
+    private void iniciarTimer() {
+        if (!isTimerRunning) {
+            try {
+                int mins = Integer.parseInt(etPomodoroMinutes.getText().toString());
+                long targetTime = (long) mins * 60 * 1000;
+                if (originalTimeInMillis != targetTime) {
+                    originalTimeInMillis = targetTime;
+                    totalTimeInMillis = targetTime;
+                }
+            } catch (Exception ignored) {}
+        }
+
+        etPomodoroMinutes.setEnabled(false);
+        countDownTimer = new android.os.CountDownTimer(totalTimeInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                totalTimeInMillis = millisUntilFinished;
+                actualizarUIPomodoro();
+                
+                // Guardar tiempo cada 10 segundos para no perder mucho si se cierra la app
+                if ((millisUntilFinished / 1000) % 10 == 0) {
+                    enviarTiempoInvertidoAlServidor();
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                isTimerRunning = false;
+                etPomodoroMinutes.setEnabled(true);
+                btnStartPomodoro.setText("REINICIAR");
+                enviarTiempoInvertidoAlServidor();
+                Toast.makeText(DetalleEventoActivity.this, "¡Tiempo agotado!", Toast.LENGTH_LONG).show();
+            }
+        }.start();
+
+        isTimerRunning = true;
+        btnStartPomodoro.setText("PAUSAR");
+    }
+
+    private void pararTimer() {
+        if (countDownTimer != null) countDownTimer.cancel();
+        isTimerRunning = false;
+        btnStartPomodoro.setText("REANUDAR");
+        etPomodoroMinutes.setEnabled(true);
+        enviarTiempoInvertidoAlServidor();
+    }
+
+    private void reiniciarTimer() {
+        pararTimer();
+        totalTimeInMillis = originalTimeInMillis;
+        actualizarUIPomodoro();
+        btnStartPomodoro.setText("INICIAR");
+        etPomodoroMinutes.setEnabled(true);
+    }
+
+    private void enviarTiempoInvertidoAlServidor() {
+        if (eventoActual == null) return;
+        
+        long tiempoInvertidoSegundos = (originalTimeInMillis - totalTimeInMillis) / 1000;
+        if (tiempoInvertidoSegundos <= 0) return;
+
+        RetrofitClient.getApiService().guardarTiempoInvertido(eventoActual.getId(), tiempoInvertidoSegundos).enqueue(new Callback<Void>() {
+            @Override public void onResponse(Call<Void> call, Response<Void> response) {}
+            @Override public void onFailure(Call<Void> call, Throwable t) {}
+        });
+    }
+
+    private void actualizarUIPomodoro() {
+        int minutes = (int) (totalTimeInMillis / 1000) / 60;
+        int seconds = (int) (totalTimeInMillis / 1000) % 60;
+        etPomodoroMinutes.setText(String.valueOf(minutes));
+        tvPomodoroSeconds.setText(String.format(Locale.getDefault(), "%02d", seconds));
+        
+        int progress = (int) (100 - (totalTimeInMillis * 100 / originalTimeInMillis));
+        pbPomodoro.setProgress(progress);
     }
 }

@@ -15,6 +15,11 @@
     <string name="modo_claro">Mode clair</string>
     <string name="idioma_app">Langue de l\'application</string>
     <string name="notificaciones">NOTIFICATIONS</string>
+    <string name="notificaciones_item">Notifications</string>
+    <string name="accesibilidad">Accessibilité</string>
+    <string name="modo_alto_contraste">Mode contraste élevé</string>
+    <string name="modo_daltonico">Mode daltonien</string>
+    <string name="animaciones_interfaz">Animations d\'interface</string>
     <string name="recordatorios_tareas">Rappels de tâches</string>
     <string name="eliminar_cuenta_perm">Supprimer définitivement le compte</string>
     <string name="confirmar_eliminar_cuenta">Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible et vous perdrez toutes vos données.</string>
