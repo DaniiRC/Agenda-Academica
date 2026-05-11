@@ -175,7 +175,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="DEBERES"
+                                android:text="@string/deberes_mayus"
                                 android:textColor="@color/primary"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
@@ -216,7 +216,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="PROYECTO"
+                                android:text="@string/proyecto_mayus"
                                 android:textColor="@color/text_main"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
@@ -256,7 +256,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="EXAMEN"
+                                android:text="@string/examen_mayus"
                                 android:textColor="@color/text_main"
                                 android:textSize="12sp"
                                 android:textStyle="bold"
@@ -496,7 +496,7 @@
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?attr/selectableItemBackground"
-                app:cardBackgroundColor="#E8EAF6"
+                app:cardBackgroundColor="@color/tag_admin_bg"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
                 app:strokeColor="@color/primary"

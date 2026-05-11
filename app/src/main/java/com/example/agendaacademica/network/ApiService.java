@@ -21,6 +21,10 @@ import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+/**
+ * Interfaz Retrofit que define todos los endpoints de la API REST del servidor.
+ * Agrupa las operaciones por dominio: Usuarios, Grupos, Asignaturas y Eventos.
+ */
 public interface ApiService {
 
     // ==========================================
@@ -76,11 +80,11 @@ public interface ApiService {
     @POST("/api/grupos/{id}/foto")
     Call<Grupo> subirFotoGrupo(@Path("id") Long id, @Part MultipartBody.Part foto);
 
-    // [ACTUALIZADO] Ahora el código va en la URL y el ID del usuario como parámetro
+    // El código del grupo se incluye en la URL y el ID del usuario se pasa como parámetro de consulta.
     @POST("/api/grupos/{codigo}/unirse")
     Call<Grupo> unirseAGrupo(@Path("codigo") String codigo, @Query("usuarioId") Long usuarioId);
 
-    // [ACTUALIZADO] Ahora es un POST y el usuarioId va como parámetro
+    // El usuario se identifica mediante un parámetro de consulta, no en el cuerpo de la petición.
     @POST("/api/grupos/{grupoId}/salir")
     Call<Void> salirDeGrupo(@Path("grupoId") Long grupoId, @Query("usuarioId") Long usuarioId);
 
@@ -99,11 +103,11 @@ public interface ApiService {
     @GET("/api/asignaturas/usuario/{usuarioId}")
     Call<List<Asignatura>> obtenerAsignaturasDeUsuario(@Path("usuarioId") Long usuarioId);
 
-    // [NUEVO] Para cargar los "chips" de filtro en el perfil de la clase
+    // Recupera las asignaturas de un grupo concreto; usado para poblar los filtros y selectores de la UI.
     @GET("/api/asignaturas/grupo/{grupoId}")
     Call<List<Asignatura>> obtenerAsignaturasDeGrupo(@Path("grupoId") Long grupoId);
 
-    // [CORREGIDO] Debe coincidir con el backend: @PostMapping("/grupo/{grupoId}")
+    // El grupoId se pasa en la URL y la asignatura como cuerpo JSON, mapeado a @PostMapping("/grupo/{grupoId}") en el backend.
     @POST("/api/asignaturas/grupo/{grupoId}")
     Call<Asignatura> crearAsignatura(@Path("grupoId") Long grupoId, @Body Asignatura asignatura);
 
@@ -114,11 +118,11 @@ public interface ApiService {
     // 4. EVENTOS Y TAREAS (Agenda)
     // ==========================================
 
-    // Trae eventos personales + eventos de todos los grupos del usuario
+    // Devuelve los eventos personales del usuario más los eventos de todos los grupos a los que pertenece.
     @GET("/api/eventos/usuario/{usuarioId}")
     Call<List<Evento>> obtenerEventosUsuario(@Path("usuarioId") Long usuarioId);
 
-    // Trae eventos específicos de una clase
+    // Devuelve únicamente los eventos asociados a una clase concreta.
     @GET("/api/eventos/grupo/{grupoId}")
     Call<List<Evento>> obtenerEventosDeGrupo(@Path("grupoId") Long grupoId);
 

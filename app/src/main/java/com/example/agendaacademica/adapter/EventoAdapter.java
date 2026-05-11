@@ -13,6 +13,11 @@ import com.example.agendaacademica.R;
 import com.example.agendaacademica.model.Evento;
 import java.util.List;
 
+/**
+ * Adaptador para mostrar eventos académicos dentro del contexto de una clase (GrupoFragment).
+ * Diferencia visualmente entre eventos propios (modo alumno) y editables (modo administrador).
+ * Resuelve el color de la barra lateral usando el color definido en la asignatura correspondiente.
+ */
 public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoViewHolder> {
 
     public interface OnEventoClickListener {
@@ -32,7 +37,6 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
     @NonNull
     @Override
     public EventoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // IMPORTANTE: Asegúrate de apuntar al nuevo diseño de tarea
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_tarea, parent, false);
         return new EventoViewHolder(view);
@@ -44,15 +48,20 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
 
         holder.tvItemTitulo.setText(evento.getTitulo());
 
-        // Si tu evento tiene hora, ponla. Si no, usa la fecha.
-        // Aquí podrías formatear la fecha a "15 Abr - 10:30" si quieres.
-        holder.tvItemHora.setText(evento.getFecha());
+        // Formatea la fecha del evento de "yyyy-MM-dd" a "dd MMM" según el idioma del dispositivo.
+        try {
+            java.text.SimpleDateFormat sdfIn = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US);
+            java.text.SimpleDateFormat sdfOut = new java.text.SimpleDateFormat("dd MMM", java.util.Locale.getDefault());
+            holder.tvItemHora.setText(sdfOut.format(sdfIn.parse(evento.getFecha())));
+        } catch (Exception e) {
+            holder.tvItemHora.setText(evento.getFecha());
+        }
 
-        // APROVECHAMOS LA ASIGNATURA QUE VIENE DEL BACKEND
+        // Muestra el nombre de la asignatura en el subtexto y colorea la barra lateral con su color de marca.
         if (evento.getAsignatura() != null) {
             holder.tvItemDesc.setText(evento.getAsignatura().getNombre());
 
-            // Magia: Pintamos la barra lateral con el color que elegiste al crear la asignatura
+            // El color de la barra proviene del campo color de la asignatura (formato HEX, ej: "#3B82F6").
             try {
                 if (evento.getAsignatura().getColor() != null) {
                     holder.viewColorIndicador.setBackgroundColor(
@@ -64,42 +73,42 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
                     );
                 }
             } catch (Exception e) {
-                // Por si el color en la BD no es un HEX válido (ej. "rojo" en vez de "#FF0000")
+                // Si el valor almacenado no es un color HEX válido, se usa el color primario de la aplicación.
                 holder.viewColorIndicador.setBackgroundColor(
                         holder.itemView.getContext().getResources().getColor(R.color.primary)
                 );
             }
         } else {
-            holder.tvItemDesc.setText("Para mí");
+            holder.tvItemDesc.setText(holder.itemView.getContext().getString(R.string.solo_para_mi));
             holder.viewColorIndicador.setBackgroundColor(
                     holder.itemView.getContext().getResources().getColor(R.color.primary)
             );
         }
 
-        // Lógica para Tipo de Evento
+        // Determina los colores e icono según el tipo de evento.
         String tipo = evento.getTipo();
         if (tipo == null) tipo = "Deberes";
 
-        int colorPrimario = Color.parseColor("#3B82F6"); // Azul por defecto
+        int colorPrimario = Color.parseColor("#3B82F6"); // Azul (valor por defecto para tipo Deberes)
         int colorFondoIcono = Color.parseColor("#223B82F6");
         int resIcono = android.R.drawable.ic_menu_recent_history;
-        String textoEtiqueta = "DEBERES";
+        String textoEtiqueta = holder.itemView.getContext().getString(R.string.deberes_mayus);
 
         if ("Examen".equalsIgnoreCase(tipo)) {
             colorPrimario = Color.parseColor("#EF4444");
             colorFondoIcono = Color.parseColor("#22EF4444");
             resIcono = android.R.drawable.ic_dialog_alert;
-            textoEtiqueta = "EXAMEN";
+            textoEtiqueta = holder.itemView.getContext().getString(R.string.examen_mayus);
         } else if ("Deberes".equalsIgnoreCase(tipo)) {
             colorPrimario = Color.parseColor("#3B82F6");
             colorFondoIcono = Color.parseColor("#223B82F6");
             resIcono = android.R.drawable.ic_menu_recent_history;
-            textoEtiqueta = "DEBERES";
+            textoEtiqueta = holder.itemView.getContext().getString(R.string.deberes_mayus);
         } else if ("Proyecto".equalsIgnoreCase(tipo)) {
             colorPrimario = Color.parseColor("#F59E0B");
             colorFondoIcono = Color.parseColor("#22F59E0B");
             resIcono = android.R.drawable.ic_menu_agenda;
-            textoEtiqueta = "PROYECTO";
+            textoEtiqueta = holder.itemView.getContext().getString(R.string.proyecto_mayus);
         }
 
         holder.tvEtiquetaTipo.setText(textoEtiqueta);
@@ -117,7 +126,7 @@ public class EventoAdapter extends RecyclerView.Adapter<EventoAdapter.EventoView
             holder.ivIconoTarea.setCardBackgroundColor(colorFondoIcono);
             holder.ivTipoIcono.setImageResource(resIcono);
             holder.ivTipoIcono.setColorFilter(colorPrimario);
-            holder.ivIconoTarea.setOnClickListener(null); // Quitar listener
+            holder.ivIconoTarea.setOnClickListener(null); // Sin acción de edición para alumnos.
         }
         
         holder.itemView.setOnClickListener(v -> {

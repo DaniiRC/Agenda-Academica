@@ -137,7 +137,7 @@ public class AgendaFragment extends Fragment implements CalendarioAdapter.OnItem
         recyclerViewCalendario.setLayoutManager(new GridLayoutManager(getContext(), 7));
         rvTareas.setLayoutManager(new LinearLayoutManager(getContext()));
         
-        tareaAdapter = new TareaAdapter(listaFiltradaTareas, this);
+        tareaAdapter = new TareaAdapter(getContext(), listaFiltradaTareas, this);
         tareaAdapter.setMostrarHeaders(false); 
         rvTareas.setAdapter(tareaAdapter);
         configurarGestosRapidos();
@@ -188,7 +188,7 @@ public class AgendaFragment extends Fragment implements CalendarioAdapter.OnItem
             GlideUtils.cargarFotoPerfil(requireContext(), session.obtenerFotoUsuario(), ivPerfilAgenda);
         }
         
-        // Mostrar panel de admin si el usuario tiene rol ADMIN
+        // El panel de administración solo es visible para usuarios con rol ADMIN.
         if (cardAdminPanel != null) {
             cardAdminPanel.setVisibility(session.esAdmin() ? View.VISIBLE : View.GONE);
         }
@@ -270,7 +270,7 @@ public class AgendaFragment extends Fragment implements CalendarioAdapter.OnItem
                 EventoLocal el = new EventoLocal(e.getId(), fecha, e.getTitulo(), e.getHora(), e.getDescripcion(), e.getTipo());
                 el.completado = e.isCompletado();
                 el.setSubtareas(e.getSubtareas());
-                el.setNombreGrupo(e.getGrupo() != null ? e.getGrupo().getNombre() : "General");
+                el.setNombreGrupo(e.getGrupo() != null ? e.getGrupo().getNombre() : "SOLO_PARA_MI");
                 
                 listaEventos.add(el);
             } catch (Exception ignored) {}
@@ -410,11 +410,11 @@ public class AgendaFragment extends Fragment implements CalendarioAdapter.OnItem
         float cornerRadius = 28 * density; 
         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
 
-        if (dX > 0) { // Derecha: Completar
+        if (dX > 0) { // Swipe derecha: marcar como completada
             p.setColor(Color.parseColor("#22C55E"));
             c.drawRoundRect(background, cornerRadius, cornerRadius, p);
             dibujarIcono(c, itemView, dX, R.drawable.ic_check, true);
-        } else if (dX < 0) { // Izquierda: Borrar
+        } else if (dX < 0) { // Swipe izquierda: eliminar tarea
             p.setColor(Color.parseColor("#EF4444"));
             c.drawRoundRect(background, cornerRadius, cornerRadius, p);
             dibujarIcono(c, itemView, dX, android.R.drawable.ic_menu_delete, false);
@@ -498,10 +498,10 @@ public class AgendaFragment extends Fragment implements CalendarioAdapter.OnItem
     @Override
     public void onTareaDeleteClick(EventoLocal evento) {
         new android.app.AlertDialog.Builder(getContext())
-            .setTitle("Borrar Evento")
-            .setMessage("¿Estás seguro?")
-            .setPositiveButton("Eliminar", (d, w) -> borrarEventoDefinitivo(evento.id))
-            .setNegativeButton("Cancelar", null)
+            .setTitle(R.string.eliminar_evento_titulo)
+            .setMessage(R.string.eliminar_evento_msg)
+            .setPositiveButton(R.string.eliminar, (d, w) -> borrarEventoDefinitivo(evento.id))
+            .setNegativeButton(R.string.cancelar, null)
             .show();
     }
 

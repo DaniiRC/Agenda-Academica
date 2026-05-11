@@ -52,7 +52,7 @@ public class DetalleEventoActivity extends BaseActivity {
     private SwipeRefreshLayout swipeRefresh;
     private boolean isAdmin;
 
-    // Pomodoro Timer Views
+    // Vistas del temporizador Pomodoro
     private com.google.android.material.card.MaterialCardView cardPomodoro;
     private TextView tvPomodoroSeconds;
     private android.widget.EditText etPomodoroMinutes;
@@ -130,7 +130,7 @@ public class DetalleEventoActivity extends BaseActivity {
         llNotaSection = findViewById(R.id.llNotaSection);
         swipeRefresh = findViewById(R.id.swipeRefreshDetalle);
         
-        // Pomodoro Views
+        // Vistas del temporizador Pomodoro
         cardPomodoro = findViewById(R.id.cardPomodoro);
         etPomodoroMinutes = findViewById(R.id.etPomodoroMinutes);
         tvPomodoroSeconds = findViewById(R.id.tvPomodoroSeconds);
@@ -227,20 +227,31 @@ public class DetalleEventoActivity extends BaseActivity {
     private void poblarInterfaz(Evento evento) {
         tvEventTitle.setText(evento.getTitulo());
         
-        String badgeText = "PARA MÍ";
+        String badgeText = "";
         if (evento.getTipo() != null && !evento.getTipo().isEmpty()) {
-            badgeText = evento.getTipo().toUpperCase();
-        } else if (evento.getGrupo() != null) {
-            badgeText = evento.getGrupo().getNombre();
+            if ("Deberes".equalsIgnoreCase(evento.getTipo())) badgeText = getString(R.string.deberes_mayus);
+            else if ("Proyecto".equalsIgnoreCase(evento.getTipo())) badgeText = getString(R.string.proyecto_mayus);
+            else if ("Examen".equalsIgnoreCase(evento.getTipo())) badgeText = getString(R.string.examen_mayus);
+            else badgeText = evento.getTipo().toUpperCase();
+        }
+
+        if (evento.getGrupo() != null) {
+            String groupName = evento.getGrupo().getNombre();
+            badgeText = badgeText.isEmpty() ? groupName : badgeText + " • " + groupName;
         } else if (evento.getAsignatura() != null) {
-            badgeText = evento.getAsignatura().getNombre();
+            String asigName = evento.getAsignatura().getNombre();
+            badgeText = badgeText.isEmpty() ? asigName : badgeText + " • " + asigName;
+        } else {
+            // La tarea es privada (sin grupo ni asignatura), se indica explícitamente.
+            String soloParaMi = getString(R.string.solo_para_mi).toUpperCase();
+            badgeText = badgeText.isEmpty() ? soloParaMi : badgeText + " • " + soloParaMi;
         }
         tvEventBadge.setText(badgeText);
         
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             Date date = sdf.parse(evento.getFecha());
-            tvEventDate.setText(new SimpleDateFormat("dd 'de' MMMM", new Locale("es", "ES")).format(date));
+            tvEventDate.setText(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(date));
         } catch (Exception e) {
             tvEventDate.setText(evento.getFecha());
         }
@@ -248,17 +259,17 @@ public class DetalleEventoActivity extends BaseActivity {
         configurarHorario(evento.getHora());
             
         String desc = evento.getDescripcion();
-        tvNotesContent.setText(desc != null && !desc.trim().isEmpty() ? desc : "Sin información adicional");
+        tvNotesContent.setText(desc != null && !desc.trim().isEmpty() ? desc : getString(R.string.sin_info_adicional));
         tvNotesContent.setTypeface(null, desc != null && !desc.trim().isEmpty() ? android.graphics.Typeface.NORMAL : android.graphics.Typeface.ITALIC);
 
         if (evento.getAsignatura() != null) {
             llNotaSection.setVisibility(View.VISIBLE);
             if (evento.getNotaObtenida() != null) {
                 tvNotaValor.setText(String.format(Locale.getDefault(), "%.2f", evento.getNotaObtenida()));
-                btnEditarNota.setText("Cambiar nota");
+                btnEditarNota.setText(R.string.cambiar_nota);
             } else {
-                tvNotaValor.setText("Sin calificar");
-                btnEditarNota.setText("Poner nota");
+                tvNotaValor.setText(R.string.sin_calificar);
+                btnEditarNota.setText(R.string.poner_nota);
             }
             if (this.isAdmin) {
                 btnEditarNota.setVisibility(View.VISIBLE);
@@ -292,8 +303,8 @@ public class DetalleEventoActivity extends BaseActivity {
             cardPomodoro.setVisibility(View.GONE);
         }
 
-        // Botón de completar: visible por defecto si no hay subtareas, 
-        // de lo contrario actualizarProgreso lo gestionará.
+        // El botón de completar se muestra siempre que el evento no esté completado.
+        // Si hay subtareas, actualizarProgreso() se encarga de mostrarlo/ocultarlo según el avance.
         if (evento.isCompletado()) {
             btnCompletarEvento.setVisibility(View.GONE);
         } else if (evento.getSubtareas() == null || evento.getSubtareas().isEmpty()) {
@@ -314,18 +325,18 @@ public class DetalleEventoActivity extends BaseActivity {
      */
     private void poblarInterfaz(com.example.agendaacademica.database.EventoEntity entity) {
         tvEventTitle.setText(entity.getTitulo());
-        tvEventBadge.setText("LOCAL");
+        tvEventBadge.setText(R.string.local_mayus);
         
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
             Date date = sdf.parse(entity.getFecha());
-            tvEventDate.setText(new SimpleDateFormat("dd 'de' MMMM", new Locale("es", "ES")).format(date));
+            tvEventDate.setText(new SimpleDateFormat("dd MMM", Locale.getDefault()).format(date));
         } catch (Exception e) {
             tvEventDate.setText(entity.getFecha());
         }
 
         configurarHorario(entity.getHora());
-        tvNotesContent.setText(entity.getDescripcion() != null && !entity.getDescripcion().isEmpty() ? entity.getDescripcion() : "Sin información adicional");
+        tvNotesContent.setText(entity.getDescripcion() != null && !entity.getDescripcion().isEmpty() ? entity.getDescripcion() : getString(R.string.sin_info_adicional));
         tvNotesContent.setTypeface(null, entity.getDescripcion() != null && !entity.getDescripcion().isEmpty() ? android.graphics.Typeface.NORMAL : android.graphics.Typeface.ITALIC);
         btnCompletarEvento.setVisibility(View.GONE);
     }
@@ -380,12 +391,12 @@ public class DetalleEventoActivity extends BaseActivity {
 
             tv.setText(sub.getTitulo());
             
-            // Deshabilitar edición directa pero permitir que el clic pase al contenedor
+            // El campo de texto de la subtarea es de solo lectura; el clic se delega al contenedor.
             tv.setFocusable(false);
             tv.setClickable(false);
             tv.setCursorVisible(false);
             
-            // Asegurar que cualquier parte de la tarjeta sea clicable
+            // Cualquier zona de la tarjeta (icono, texto o fondo) activa el mismo listener de clic.
             View.OnClickListener taskClickListener = v -> container.performClick();
             tv.setOnClickListener(taskClickListener);
             card.setOnClickListener(taskClickListener);
@@ -443,7 +454,7 @@ public class DetalleEventoActivity extends BaseActivity {
         
         int pct = (completadas * 100) / subtareas.size();
         pbStudyPlan.setProgress(pct);
-        tvProgressPercent.setText(pct + "% COMPLETADO");
+        tvProgressPercent.setText(getString(R.string.completado_pct, pct));
 
         if (pct == 100 && eventoActual != null && !eventoActual.isCompletado()) {
             if (btnCompletarEvento.getVisibility() != View.VISIBLE) {
@@ -481,7 +492,7 @@ public class DetalleEventoActivity extends BaseActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(DetalleEventoActivity.this, "¡Tarea Completada!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetalleEventoActivity.this, R.string.tarea_completada_toast, Toast.LENGTH_SHORT).show();
                     setResult(RESULT_OK);
                     finish();
                 } else {
@@ -509,9 +520,9 @@ public class DetalleEventoActivity extends BaseActivity {
      */
     private void confirmarEliminacion() {
         new MaterialAlertDialogBuilder(this)
-            .setTitle("Eliminar Evento")
-            .setMessage("¿Estás seguro de que quieres borrar este evento?")
-            .setPositiveButton("Eliminar", (dialog, which) -> {
+            .setTitle(R.string.eliminar_evento_titulo)
+            .setMessage(R.string.eliminar_evento_msg)
+            .setPositiveButton(R.string.eliminar, (dialog, which) -> {
                 RetrofitClient.getApiService().eliminarEvento(eventoId).enqueue(new Callback<Void>() {
                     @Override public void onResponse(Call<Void> call, Response<Void> response) { 
                         setResult(RESULT_OK);
@@ -520,7 +531,7 @@ public class DetalleEventoActivity extends BaseActivity {
                     @Override public void onFailure(Call<Void> call, Throwable t) {}
                 });
             })
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(R.string.cancelar, null)
             .show();
     }
 
@@ -534,36 +545,41 @@ public class DetalleEventoActivity extends BaseActivity {
         }
 
         new MaterialAlertDialogBuilder(this)
-            .setTitle("Calificar Actividad")
-            .setMessage("Introduce la nota obtenida:")
+            .setTitle(R.string.calificar_actividad)
+            .setMessage(R.string.introduce_nota)
             .setView(etNota)
-            .setPositiveButton("Guardar", (dialog, which) -> {
+            .setPositiveButton(R.string.guardar, (dialog, which) -> {
                 String val = etNota.getText().toString().replace(",", ".");
                 if (!val.isEmpty()) {
                     try {
                         double nota = Double.parseDouble(val);
                         if (nota < 0 || nota > 10) {
-                            Toast.makeText(this, "La nota debe estar entre 0 y 10", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(this, R.string.nota_rango_error, Toast.LENGTH_SHORT).show();
                             return;
                         }
                         guardarNota(nota);
                     } catch (NumberFormatException e) {
-                        Toast.makeText(this, "Formato de nota inválido", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, R.string.nota_formato_error, Toast.LENGTH_SHORT).show();
                     }
                 }
             })
-            .setNegativeButton("Cancelar", null)
+            .setNegativeButton(R.string.cancelar, null)
             .show();
     }
 
+    /**
+     * Persiste la nota obtenida en el servidor y actualiza la vista local.
+     *
+     * @param nota Calificación a guardar (valor entre 0.0 y 10.0).
+     */
     private void guardarNota(double nota) {
         RetrofitClient.getApiService().actualizarNota(eventoId, nota).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(DetalleEventoActivity.this, "Nota guardada con éxito", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DetalleEventoActivity.this, R.string.nota_guardada_ok, Toast.LENGTH_SHORT).show();
                     tvNotaValor.setText(String.format(Locale.getDefault(), "%.2f", nota));
-                    btnEditarNota.setText("Cambiar nota");
+                    btnEditarNota.setText(R.string.cambiar_nota);
                     cargarDatos();
                 } else {
                     String errorMsg = "Error al guardar nota (Código: " + response.code() + ")";
@@ -618,7 +634,8 @@ public class DetalleEventoActivity extends BaseActivity {
                 totalTimeInMillis = millisUntilFinished;
                 actualizarUIPomodoro();
                 
-                // Guardar tiempo cada 10 segundos para no perder mucho si se cierra la app
+                // El tiempo transcurrido se sincroniza con el servidor cada 10 segundos
+                // para minimizar pérdidas de datos si la aplicación se cierra.
                 if ((millisUntilFinished / 1000) % 10 == 0) {
                     enviarTiempoInvertidoAlServidor();
                 }
@@ -628,20 +645,20 @@ public class DetalleEventoActivity extends BaseActivity {
             public void onFinish() {
                 isTimerRunning = false;
                 etPomodoroMinutes.setEnabled(true);
-                btnStartPomodoro.setText("REINICIAR");
+                btnStartPomodoro.setText(R.string.reiniciar);
                 enviarTiempoInvertidoAlServidor();
-                Toast.makeText(DetalleEventoActivity.this, "¡Tiempo agotado!", Toast.LENGTH_LONG).show();
+                Toast.makeText(DetalleEventoActivity.this, R.string.tiempo_agotado, Toast.LENGTH_LONG).show();
             }
         }.start();
 
         isTimerRunning = true;
-        btnStartPomodoro.setText("PAUSAR");
+        btnStartPomodoro.setText(R.string.pausar);
     }
 
     private void pararTimer() {
         if (countDownTimer != null) countDownTimer.cancel();
         isTimerRunning = false;
-        btnStartPomodoro.setText("REANUDAR");
+        btnStartPomodoro.setText(R.string.reanudar);
         etPomodoroMinutes.setEnabled(true);
         enviarTiempoInvertidoAlServidor();
     }
@@ -650,7 +667,7 @@ public class DetalleEventoActivity extends BaseActivity {
         pararTimer();
         totalTimeInMillis = originalTimeInMillis;
         actualizarUIPomodoro();
-        btnStartPomodoro.setText("INICIAR");
+        btnStartPomodoro.setText(R.string.iniciar);
         etPomodoroMinutes.setEnabled(true);
     }
 

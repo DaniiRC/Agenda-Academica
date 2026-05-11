@@ -23,6 +23,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * Adaptador para la lista de tareas de la pantalla de Agenda.
+ * Soporta dos tipos de elementos: cabeceras de sección (tareas actuales / pasadas) y
+ * tarjetas de tarea individuales. Las cabeceras se insertan automáticamente al procesar la lista.
+ */
 public class TareaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
@@ -30,6 +35,7 @@ public class TareaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     private final List<Object> items = new java.util.ArrayList<>();
     private final OnTareaLongClickListener longClickListener;
+    private final Context context;
     private boolean mostrarHeaders = true;
 
     public interface OnTareaLongClickListener {
@@ -37,7 +43,8 @@ public class TareaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         void onTareaDeleteClick(EventoLocal evento);
     }
 
-    public TareaAdapter(List<EventoLocal> eventos, OnTareaLongClickListener longClickListener) {
+    public TareaAdapter(Context context, List<EventoLocal> eventos, OnTareaLongClickListener longClickListener) {
+        this.context = context;
         this.longClickListener = longClickListener;
         procesarLista(eventos);
     }
@@ -62,10 +69,10 @@ public class TareaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             
             if (mostrarHeaders) {
                 if (!esPasada && !headerActualesMostrado) {
-                    items.add("Tareas Actuales");
+                    items.add(context.getString(R.string.tareas_actuales));
                     headerActualesMostrado = true;
                 } else if (esPasada && !headerPasadasMostrado) {
-                    items.add("Tareas Pasadas");
+                    items.add(context.getString(R.string.tareas_pasadas));
                     headerPasadasMostrado = true;
                 }
             }
@@ -140,13 +147,12 @@ public class TareaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             viewColor = itemView.findViewById(R.id.viewColorIndicador);
             ivIcono = itemView.findViewById(R.id.ivTipoIcono);
             cardIcono = itemView.findViewById(R.id.ivIconoTarea);
-            // Reutilizaremos el icono circular o añadiremos lógica para el borrado
         }
 
         public void bind(EventoLocal evento, OnTareaLongClickListener longClickListener) {
             tvTitulo.setText(evento.titulo);
             
-            // Efecto visual de tachado si está completada
+            // Si la tarea está completada, se aplica efecto visual de tachado y reducción de opacidad.
             if (evento.completado) {
                 tvTitulo.setPaintFlags(tvTitulo.getPaintFlags() | android.graphics.Paint.STRIKE_THRU_TEXT_FLAG);
                 tvTitulo.setAlpha(0.5f);
@@ -159,11 +165,17 @@ public class TareaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             
             String desc = evento.descripcion;
             if (desc == null || desc.trim().isEmpty()) {
-                desc = (evento.nombreGrupo != null) ? evento.nombreGrupo : "";
+                if ("General".equals(evento.nombreGrupo)) {
+                    desc = tvDesc.getContext().getString(R.string.general_clase);
+                } else if ("SOLO_PARA_MI".equals(evento.nombreGrupo)) {
+                    desc = tvDesc.getContext().getString(R.string.solo_para_mi);
+                } else {
+                    desc = (evento.nombreGrupo != null) ? evento.nombreGrupo : "";
+                }
             }
             tvDesc.setText(desc);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d 'de' MMM", new Locale("es", "ES"));
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM", Locale.getDefault());
             tvHora.setText(evento.fecha.format(formatter));
 
             String tipo = (evento.tipo != null) ? evento.tipo : "Evento";
@@ -173,35 +185,34 @@ public class TareaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
             String textoEtiqueta = tipo.toUpperCase();
             LocalDate hoy = LocalDate.now();
-            boolean esHoy = hoy.equals(evento.fecha);
             boolean esPasada = evento.fecha.isBefore(hoy);
 
             if ("Examen".equalsIgnoreCase(tipo)) {
                 colorPrimario = Color.parseColor("#EF4444");
                 colorFondoIcono = Color.parseColor("#22EF4444");
                 resIcono = android.R.drawable.ic_dialog_alert;
-                textoEtiqueta = "EXAMEN";
+                textoEtiqueta = tvEtiqueta.getContext().getString(R.string.examen_mayus);
             } else if ("Deberes".equalsIgnoreCase(tipo)) {
                 colorPrimario = Color.parseColor("#3B82F6");
                 colorFondoIcono = Color.parseColor("#223B82F6");
                 resIcono = android.R.drawable.ic_menu_recent_history;
-                textoEtiqueta = "DEBERES";
+                textoEtiqueta = tvEtiqueta.getContext().getString(R.string.deberes_mayus);
             } else if ("Proyecto".equalsIgnoreCase(tipo)) {
                 colorPrimario = Color.parseColor("#F59E0B");
                 colorFondoIcono = Color.parseColor("#22F59E0B");
                 resIcono = android.R.drawable.ic_menu_agenda;
-                textoEtiqueta = "PROYECTO";
+                textoEtiqueta = tvEtiqueta.getContext().getString(R.string.proyecto_mayus);
             }
 
             if (esPasada) {
                 colorPrimario = Color.GRAY;
                 colorFondoIcono = Color.parseColor("#11888888");
-                textoEtiqueta = "PASADA";
+                textoEtiqueta = tvEtiqueta.getContext().getString(R.string.pasada_mayus);
                 tvTitulo.setAlpha(0.6f);
                 tvDesc.setAlpha(0.6f);
-                cardIcono.setVisibility(View.GONE); // No permitir borrar si es pasada
+                cardIcono.setVisibility(View.GONE); // Las tareas pasadas no son eliminables
             } else if (evento.completado) {
-                cardIcono.setVisibility(View.GONE); // No permitir borrar si ya está completada
+                cardIcono.setVisibility(View.GONE); // Las tareas completadas tampoco son eliminables
             } else {
                 tvTitulo.setAlpha(1.0f);
                 tvDesc.setAlpha(1.0f);
@@ -215,15 +226,15 @@ public class TareaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             ivIcono.setImageResource(resIcono);
             ivIcono.setImageTintList(ColorStateList.valueOf(colorPrimario));
 
-            // Abrir detalle (en DetalleEventoActivity ya gestionaremos la edición)
+            // Al hacer clic en la tarjeta se navega a la pantalla de detalle del evento.
             itemView.setOnClickListener(v -> {
                 Intent intent = new Intent(itemView.getContext(), DetalleEventoActivity.class);
                 intent.putExtra("EVENTO_ID", evento.id);
-                intent.putExtra("ES_PASADA", esPasada); // Pasar si es pasada
+                intent.putExtra("ES_PASADA", esPasada);
                 itemView.getContext().startActivity(intent);
             });
 
-            // El botón de la derecha ahora no es clicable por petición del usuario
+            // El ícono de acción derecho está deshabilitado en esta vista; el borrado se realiza mediante swipe.
             cardIcono.setOnClickListener(null);
             cardIcono.setClickable(false);
             cardIcono.setFocusable(false);

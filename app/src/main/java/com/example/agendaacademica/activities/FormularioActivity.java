@@ -103,7 +103,7 @@ public class FormularioActivity extends BaseActivity {
         calendarInicio = Calendar.getInstance();
         calendarFin = Calendar.getInstance();
         
-        // Manejo de fecha preseleccionada desde la Agenda
+        // Si se navegó desde la agenda con una fecha preseleccionada, se prerrellena el calendario.
         String fechaIntent = getIntent().getStringExtra("FECHA_SELECCIONADA");
         if (fechaIntent != null) {
             try {
@@ -301,7 +301,7 @@ public class FormularioActivity extends BaseActivity {
 
         View itemGeneral = LayoutInflater.from(this).inflate(R.layout.item_selector_opcion, container, false);
         TextView tvNombreGen = itemGeneral.findViewById(R.id.tvOpcionNombre);
-        if (tvNombreGen != null) tvNombreGen.setText("General (Toda la clase)");
+        if (tvNombreGen != null) tvNombreGen.setText(getString(R.string.general_clase));
         itemGeneral.setOnClickListener(v -> {
             asignaturaSeleccionada = null;
             actualizarUIFiltros();
@@ -359,9 +359,9 @@ public class FormularioActivity extends BaseActivity {
 
         if (btnPrivate == null || cardClass == null || cardAsignatura == null) return;
 
-        resetVisibilityCard(btnPrivate, tvPrivate, "Solo para mí");
-        resetVisibilityCard(cardClass, tvClass, "Seleccionar clase");
-        resetVisibilityCard(cardAsignatura, tvAsignatura, "Seleccionar asignatura");
+        resetVisibilityCard(btnPrivate, tvPrivate, getString(R.string.solo_para_mi));
+        resetVisibilityCard(cardClass, tvClass, getString(R.string.seleccionar_clase));
+        resetVisibilityCard(cardAsignatura, tvAsignatura, getString(R.string.seleccionar_asignatura));
 
         if (grupoSeleccionado == null) {
             highlightVisibilityCard(btnPrivate, tvPrivate);
@@ -377,7 +377,7 @@ public class FormularioActivity extends BaseActivity {
                 highlightVisibilityCard(cardAsignatura, tvAsignatura);
                 tvAsignatura.setText(asignaturaSeleccionada.getNombre());
             } else {
-                tvAsignatura.setText("General (Toda la clase)");
+                tvAsignatura.setText(getString(R.string.general_clase));
             }
         }
     }
@@ -442,9 +442,9 @@ public class FormularioActivity extends BaseActivity {
     }
 
     private void resetChips() {
-        int bgNormal = Color.WHITE;
-        int textGray = Color.parseColor("#757575");
-        int borderColor = Color.parseColor("#E0E0E0");
+        int bgNormal = ContextCompat.getColor(this, R.color.bg_card);
+        int textGray = ContextCompat.getColor(this, R.color.text_sub);
+        int borderColor = ContextCompat.getColor(this, R.color.border_color);
 
         MaterialCardView[] chips = {chipDeberes, chipProyecto, chipExamen};
         int[] puntosColores = {
@@ -615,15 +615,16 @@ public class FormularioActivity extends BaseActivity {
      */
     private void poblarListaRecordatorios(LinearLayout container, ImageView arrow) {
         container.removeAllViews();
+        String[] options = getResources().getStringArray(R.array.reminder_options);
         List<String> opciones = new ArrayList<>();
-        opciones.add("Desactivado");
-        opciones.add("En el momento");
+        opciones.add(options[0]); // Sin recordatorio
+        opciones.add(options[1]); // En el momento exacto
         
         long diffMs = calendarFin.getTimeInMillis() - calendarInicio.getTimeInMillis();
         long duracionMinutos = diffMs / 60000;
 
-        if (duracionMinutos >= 15) opciones.add("15 minutos antes");
-        if (duracionMinutos >= 60) opciones.add("1 hora antes");
+        if (duracionMinutos >= 15) opciones.add(options[2]); // Solo disponible si hay al menos 15 min de margen
+        if (duracionMinutos >= 60) opciones.add(options[3]); // Solo disponible si hay al menos 1 hora de margen
         
         for (String opcion : opciones) {
             View itemView = LayoutInflater.from(this).inflate(R.layout.item_selector_opcion, container, false);
@@ -677,12 +678,13 @@ public class FormularioActivity extends BaseActivity {
         long diffMs = calendarFin.getTimeInMillis() - calendarInicio.getTimeInMillis();
         long duracionMinutos = diffMs / 60000;
 
-        if (valorActual.equals("1 hora antes") && duracionMinutos < 60) tvReminderValue.setText("En el momento");
-        else if (valorActual.equals("15 minutos antes") && duracionMinutos < 15) tvReminderValue.setText("En el momento");
+        String[] options = getResources().getStringArray(R.array.reminder_options);
+        if (valorActual.equals(options[3]) && duracionMinutos < 60) tvReminderValue.setText(options[1]);
+        else if (valorActual.equals(options[2]) && duracionMinutos < 15) tvReminderValue.setText(options[1]);
     }
 
     private void actualizarTextosFechaHora() {
-        SimpleDateFormat sdfD = new SimpleDateFormat("dd MMM, yyyy", new Locale("es", "ES"));
+        SimpleDateFormat sdfD = new SimpleDateFormat("dd MMM, yyyy", Locale.getDefault());
         SimpleDateFormat sdfT = new SimpleDateFormat("HH:mm", Locale.getDefault());
         tvStartDate.setText(sdfD.format(calendarInicio.getTime()));
         tvStartTime.setText(sdfT.format(calendarInicio.getTime()));
@@ -759,12 +761,13 @@ public class FormularioActivity extends BaseActivity {
         if (!session.recordatoriosActivos()) return;
         
         String recordatorioStr = tvReminderValue.getText().toString();
-        if ("Desactivado".equals(recordatorioStr)) return;
+        String[] options = getResources().getStringArray(R.array.reminder_options);
+        if (options[0].equals(recordatorioStr)) return;
 
-        int minutosAntes = 0;
-        if (recordatorioStr.equals("En el momento")) minutosAntes = 0;
-        else if (recordatorioStr.contains("15 minutos")) minutosAntes = 15;
-        else if (recordatorioStr.contains("1 hora")) minutosAntes = 60;
+        int minutosAntes = -1;
+        if (options[1].equals(recordatorioStr)) minutosAntes = 0;
+        else if (options[2].equals(recordatorioStr)) minutosAntes = 15;
+        else if (options[3].equals(recordatorioStr)) minutosAntes = 60;
         else return;
 
         if (minutosAntes >= 0) {
@@ -772,12 +775,12 @@ public class FormularioActivity extends BaseActivity {
             String contenidoNotif;
 
             if (minutosAntes == 0) {
-                tituloNotif = "Tarea finalizada";
-                contenidoNotif = "La tarea \"" + evento.getTitulo() + "\" ha llegado a su hora de finalización";
+                tituloNotif = getString(R.string.notif_tarea_finalizada);
+                contenidoNotif = getString(R.string.notif_tarea_finalizada_msg, evento.getTitulo());
             } else {
-                tituloNotif = "Recordatorio de finalización";
-                String tiempoLabel = recordatorioStr.toLowerCase().replace("antes", "").trim();
-                contenidoNotif = "Quedan " + tiempoLabel + " para que acabe \"" + evento.getTitulo() + "\"";
+                tituloNotif = getString(R.string.notif_recordatorio_titulo);
+                String tiempoLabel = recordatorioStr.toLowerCase().replace(getString(R.string.antes).toLowerCase(), "").trim();
+                contenidoNotif = getString(R.string.notif_recordatorio_msg, tiempoLabel, evento.getTitulo());
             }
 
             android.app.AlarmManager alarmManager = (android.app.AlarmManager) getSystemService(android.content.Context.ALARM_SERVICE);
@@ -843,14 +846,14 @@ public class FormularioActivity extends BaseActivity {
     }
 
     /**
-     * Muestra un diálogo de confirmación si el usuario intenta salir con cambios sin guardar.
+     * Muestra un diálogo de confirmación si el usuario intenta cerrar el formulario con cambios sin guardar.
      */
     private void mostrarDialogoSalida() {
         new androidx.appcompat.app.AlertDialog.Builder(this)
-                .setTitle("Cambios sin guardar")
-                .setMessage("¿Estás seguro de que quieres salir? Se perderán los cambios.")
-                .setPositiveButton("Salir", (dialog, which) -> finish())
-                .setNegativeButton("Cancelar", null)
+                .setTitle(R.string.confirmar_salir_titulo)
+                .setMessage(R.string.confirmar_salir_mensaje)
+                .setPositiveButton(R.string.salir, (dialog, which) -> finish())
+                .setNegativeButton(R.string.cancelar, null)
                 .show();
     }
 }

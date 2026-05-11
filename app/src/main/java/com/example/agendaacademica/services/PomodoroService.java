@@ -11,12 +11,20 @@ import android.os.IBinder;
 import androidx.core.app.NotificationCompat;
 import com.example.agendaacademica.R;
 
+/**
+ * Servicio en primer plano que gestiona el temporizador Pomodoro.
+ * Permite mantener el contador activo aunque la aplicación esté en segundo plano,
+ * mostrando una notificación persistente mientras el temporizador está en ejecución.
+ */
 public class PomodoroService extends Service {
     private final IBinder binder = new PomodoroBinder();
     private CountDownTimer timer;
-    private long timeLeftInMillis = 25 * 60 * 1000; // 25 minutos
+    private long timeLeftInMillis = 25 * 60 * 1000; // Tiempo inicial: 25 minutos por defecto
     private boolean isRunning = false;
 
+    /**
+     * Binder que expone la instancia del servicio a la actividad vinculada.
+     */
     public class PomodoroBinder extends Binder {
         public PomodoroService getService() { return PomodoroService.this; }
     }
@@ -33,6 +41,12 @@ public class PomodoroService extends Service {
         return START_NOT_STICKY;
     }
 
+    /**
+     * Inicia el temporizador con la duración indicada.
+     * Si ya existe un temporizador activo, se cancela antes de iniciar el nuevo.
+     *
+     * @param durationInMillis Duración del temporizador en milisegundos.
+     */
     public void startTimer(long durationInMillis) {
         if (timer != null) timer.cancel();
         timer = new CountDownTimer(durationInMillis, 1000) {

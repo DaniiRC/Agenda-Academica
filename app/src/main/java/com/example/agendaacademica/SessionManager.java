@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 /**
  * Gestor de persistencia local para la sesión del usuario y preferencias de la aplicación.
- * Utiliza {@link SharedPreferences} para almacenar información persistente como tokens de autenticación,
+ * Utiliza {@link android.content.SharedPreferences} para almacenar información persistente como tokens de autenticación,
  * datos del perfil del usuario, configuración del tema, idioma y estado de notificaciones.
  */
 public class SessionManager {
@@ -41,12 +41,13 @@ public class SessionManager {
     }
 
     /**
-     * Persiste la información básica del usuario.
-     * 
-     * @param id      ID único del usuario.
-     * @param nombre  Nombre completo.
-     * @param email   Correo electrónico.
-     * @param fotoUrl URL de la foto de perfil.
+     * Persiste los datos básicos del usuario autenticado.
+     *
+     * @param id      Identificador único del usuario en el servidor.
+     * @param nombre  Nombre completo del usuario.
+     * @param email   Correo electrónico del usuario.
+     * @param fotoUrl URL relativa o absoluta de la foto de perfil.
+     * @param rol     Rol del usuario ({@code "USER"} o {@code "ADMIN"}).
      */
     public void guardarUsuario(Long id, String nombre, String email, String fotoUrl, String rol) {
         editor.putLong(KEY_USER_ID, id);
@@ -58,28 +59,28 @@ public class SessionManager {
     }
 
     /**
-     * Almacena el token JWT para autenticar las peticiones a la API.
-     * 
-     * @param token Token de seguridad.
+     * Almacena el token JWT utilizado para autenticar las peticiones a la API.
+     *
+     * @param token Token JWT devuelto por el servidor tras el inicio de sesión.
      */
     public void guardarToken(String token) {
         editor.putString(KEY_JWT_TOKEN, token).apply();
     }
 
     /**
-     * Recupera el token JWT almacenado.
-     * 
-     * @return El token o null si no existe.
+     * Recupera el token JWT de la sesión activa.
+     *
+     * @return El token JWT como {@link String}, o {@code null} si no hay sesión iniciada.
      */
     public String getToken() {
         return prefs.getString(KEY_JWT_TOKEN, null);
     }
 
     /**
-     * Almacena los datos del grupo académico al que pertenece el usuario.
-     * 
-     * @param id     ID del grupo.
-     * @param nombre Nombre del grupo.
+     * Almacena el identificador y nombre del grupo académico activo del usuario.
+     *
+     * @param id     Identificador del grupo en el servidor.
+     * @param nombre Nombre legible del grupo (p. ej. {@code "2º DAM B"}).
      */
     public void guardarGrupo(Long id, String nombre) {
         editor.putLong(KEY_GRUPO_ID, id);
@@ -87,158 +88,223 @@ public class SessionManager {
         editor.apply();
     }
 
+    /**
+     * @return ID del usuario en sesión, o {@code -1} si no hay sesión activa.
+     */
     public Long getUserId() {
         return prefs.getLong(KEY_USER_ID, -1);
     }
 
+    /**
+     * @return ID del grupo académico activo, o {@code -1} si el usuario no pertenece a ninguno.
+     */
     public Long obtenerGrupoId() {
         return prefs.getLong(KEY_GRUPO_ID, -1);
     }
 
+    /**
+     * @return Nombre del grupo académico activo, o {@code "Sin Grupo"} si no hay ninguno asignado.
+     */
     public String obtenerNombreGrupo() {
         return prefs.getString(KEY_GRUPO_NOMBRE, "Sin Grupo");
     }
 
+    /**
+     * @return Nombre completo del usuario en sesión, o {@code "Usuario"} si no hay sesión.
+     */
     public String obtenerNombreUsuario() {
         return prefs.getString(KEY_USER_NOMBRE, "Usuario");
     }
 
+    /**
+     * @return Correo electrónico del usuario en sesión, o {@code "Sin email"} si no hay sesión.
+     */
     public String obtenerEmailUsuario() {
         return prefs.getString(KEY_USER_EMAIL, "Sin email");
     }
 
+    /**
+     * @return URL de la foto de perfil del usuario, o {@code null} si no tiene foto asignada.
+     */
     public String obtenerFotoUsuario() {
         return prefs.getString(KEY_USER_FOTO, null);
     }
 
+    /**
+     * @return Rol del usuario ({@code "USER"} o {@code "ADMIN"}). Por defecto {@code "USER"}.
+     */
     public String obtenerRol() {
         return prefs.getString(KEY_USER_ROL, "USER");
     }
 
+    /**
+     * @return {@code true} si el usuario en sesión tiene el rol {@code ADMIN}.
+     */
     public boolean esAdmin() {
         return "ADMIN".equals(obtenerRol());
     }
 
+    /**
+     * Actualiza la URL de la foto de perfil sin modificar el resto de datos de sesión.
+     *
+     * @param fotoUrl Nueva URL de la foto de perfil.
+     */
     public void actualizarFotoUsuario(String fotoUrl) {
         editor.putString(KEY_USER_FOTO, fotoUrl).apply();
     }
 
     /**
-     * Verifica si existe una sesión de usuario activa.
-     * 
-     * @return Verdadero si el usuario está logueado.
+     * Indica si existe una sesión de usuario activa comprobando la presencia del ID de usuario.
+     *
+     * @return {@code true} si hay una sesión activa, {@code false} en caso contrario.
      */
     public boolean estaLogueado() {
         return getUserId() != -1;
     }
 
     /**
-     * Elimina todos los datos de sesión almacenados.
+     * Elimina todos los datos de sesión del usuario y restaura las preferencias de la aplicación
+     * (tema, idioma, accesibilidad) que deben persistir entre cuentas.
      */
     public void cerrarSesion() {
         boolean modoClaro = esModoClaro();
-        String idioma = obtenerIdioma();
-        boolean haptic = hapticFeedbackActivo();
-        boolean anims = animacionesActivas();
-        
+        String idioma    = obtenerIdioma();
+        boolean haptic   = hapticFeedbackActivo();
+        boolean anims    = animacionesActivas();
+
         editor.clear();
-        
-        // Restauramos configuraciones que no son de la sesión sino de la App
         guardarModoClaro(modoClaro);
         guardarIdioma(idioma);
         guardarHapticFeedback(haptic);
         guardarAnimacionesActivas(anims);
-        
         editor.apply();
     }
 
     /**
-     * Guarda la preferencia del tema visual.
-     * 
-     * @param activado Verdadero para modo claro, falso para modo oscuro.
+     * Persiste la preferencia del tema visual.
+     *
+     * @param activado {@code true} para modo claro, {@code false} para modo oscuro.
      */
     public void guardarModoClaro(boolean activado) {
         editor.putBoolean(KEY_MODO_OSCURO, activado).apply();
     }
 
+    /**
+     * @return {@code true} si el modo claro está activo; {@code false} si el modo oscuro está activo.
+     */
     public boolean esModoClaro() {
         return prefs.getBoolean(KEY_MODO_OSCURO, false);
     }
 
     /**
-     * Habilita o deshabilita los recordatorios de notificaciones.
-     * 
-     * @param activos Estado deseado de las notificaciones.
+     * Habilita o deshabilita los recordatorios de notificaciones push.
+     *
+     * @param activos {@code true} para habilitar los recordatorios, {@code false} para desactivarlos.
      */
     public void guardarRecordatoriosActivos(boolean activos) {
         editor.putBoolean(KEY_RECORDATORIOS, activos).apply();
     }
 
+    /**
+     * @return {@code true} si los recordatorios de notificaciones están habilitados (valor por defecto).
+     */
     public boolean recordatoriosActivos() {
         return prefs.getBoolean(KEY_RECORDATORIOS, true);
     }
 
     /**
-     * Almacena el código de idioma seleccionado.
-     * 
-     * @param codigo Código ISO del idioma (ej: "es", "en").
+     * Almacena el código de idioma seleccionado por el usuario.
+     *
+     * @param codigo Código ISO 639-1 del idioma (p. ej. {@code "es"}, {@code "en"}, {@code "fr"}).
      */
     public void guardarIdioma(String codigo) {
         editor.putString(KEY_IDIOMA, codigo).apply();
     }
 
+    /**
+     * @return Código ISO 639-1 del idioma guardado, o {@code null} si el usuario no ha elegido ninguno.
+     */
     public String obtenerIdioma() {
         return prefs.getString(KEY_IDIOMA, null);
     }
 
     /**
-     * Cachea los eventos en formato JSON para permitir el acceso offline.
-     * 
-     * @param json Cadena JSON con la lista de eventos.
+     * Serializa y almacena la lista de eventos en formato JSON para su uso en modo sin conexión.
+     *
+     * @param json Representación JSON de la lista de {@link com.example.agendaacademica.model.Evento}.
      */
     public void guardarEventosCache(String json) {
         editor.putString(KEY_EVENTOS_CACHE, json).apply();
     }
 
+    /**
+     * @return JSON con la última lista de eventos descargada, o {@code null} si no hay caché.
+     */
     public String obtenerEventosCache() {
         return prefs.getString(KEY_EVENTOS_CACHE, null);
     }
 
+    /**
+     * @param activo {@code true} para habilitar la vibración táctil en interacciones.
+     */
     public void guardarHapticFeedback(boolean activo) {
         editor.putBoolean(KEY_HAPTIC, activo).apply();
     }
 
+    /**
+     * @return {@code true} si el feedback háptico está habilitado (valor por defecto).
+     */
     public boolean hapticFeedbackActivo() {
         return prefs.getBoolean(KEY_HAPTIC, true);
     }
 
+    /**
+     * @param activo {@code true} para habilitar las animaciones de transición entre pantallas.
+     */
     public void guardarAnimacionesActivas(boolean activo) {
         editor.putBoolean(KEY_ANIMATIONS, activo).apply();
     }
 
+    /**
+     * @return {@code true} si las animaciones de interfaz están habilitadas (valor por defecto).
+     */
     public boolean animacionesActivas() {
         return prefs.getBoolean(KEY_ANIMATIONS, true);
     }
 
+    /**
+     * @param activo {@code true} para activar el filtro de alto contraste en toda la aplicación.
+     */
     public void guardarAltoContraste(boolean activo) {
         editor.putBoolean(KEY_HIGH_CONTRAST, activo).apply();
     }
 
+    /**
+     * @return {@code true} si el modo de alto contraste está activo.
+     */
     public boolean altoContrasteActivo() {
         return prefs.getBoolean(KEY_HIGH_CONTRAST, false);
     }
 
+    /**
+     * @param activo {@code true} para activar la corrección de color para daltonismo (deuteranopia).
+     */
     public void guardarModoDaltonico(boolean activo) {
         editor.putBoolean(KEY_COLOR_BLIND, activo).apply();
     }
 
+    /**
+     * @return {@code true} si el modo de corrección para daltonismo está activo.
+     */
     public boolean modoDaltonicoActivo() {
         return prefs.getBoolean(KEY_COLOR_BLIND, false);
     }
 
     /**
-     * Aplica el modo noche (claro/oscuro) de forma global en la aplicación.
-     * @param context Contexto necesario para acceder a las preferencias.
+     * Aplica el modo noche o claro de forma global antes de que se infle ninguna actividad.
+     * Debe invocarse desde {@link BaseActivity#onCreate} antes de {@code super.onCreate()}.
+     *
+     * @param context Contexto de la aplicación necesario para acceder a las preferencias.
      */
     public static void aplicarTemaGlobal(Context context) {
         SessionManager sm = new SessionManager(context);

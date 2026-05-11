@@ -7,13 +7,27 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.agendaacademica.R;
 import com.example.agendaacademica.network.RetrofitClient;
 
+/**
+ * Utilidad centralizada para la carga de imágenes con Glide.
+ * Diferencia entre URLs externas (Google, etc.) y URLs del servidor propio,
+ * aplicando estrategias de caché distintas según el origen.
+ */
 public class GlideUtils {
+
+    /**
+     * Carga la foto de perfil de un usuario en un ImageView circular.
+     * Para URLs del servidor propio, fuerza la invalidación de caché mediante timestamp.
+     *
+     * @param context   Contexto necesario para Glide.
+     * @param fotoUrl   URL de la imagen (puede ser relativa o absoluta).
+     * @param imageView Vista de destino.
+     */
 
     public static void cargarFotoPerfil(Context context, String fotoUrl, ImageView imageView) {
         if (fotoUrl != null && !fotoUrl.isEmpty() && !fotoUrl.equalsIgnoreCase("null")) {
             fotoUrl = fotoUrl.replace("\\", "/").replace(" ", "%20");
             if (fotoUrl.startsWith("http")) {
-                // URL externa (Google, etc.) — usar caché normal de Glide
+                // URL externa (p. ej. de Google OAuth): se usa la caché normal de Glide.
                 Glide.with(context)
                         .load(fotoUrl)
                         .placeholder(R.drawable.ic_launcher_background)
@@ -21,7 +35,7 @@ public class GlideUtils {
                         .circleCrop()
                         .into(imageView);
             } else {
-                // URL del servidor propio — añadir timestamp para forzar refresco
+                // URL del servidor propio: se añade un timestamp para forzar la recarga y evitar imágenes obsoletas.
                 String fullUrl = RetrofitClient.BASE_URL + (fotoUrl.startsWith("/") ? fotoUrl.substring(1) : fotoUrl);
                 String finalUrl = fullUrl + "?t=" + System.currentTimeMillis();
                 Glide.with(context)
@@ -51,7 +65,7 @@ public class GlideUtils {
             Glide.with(context)
                     .load(finalUrl)
                     .placeholder(R.drawable.ic_launcher_background)
-                    .error(R.mipmap.ic_launcher) // Debería ser una imagen por defecto de grupo
+                    .error(R.mipmap.ic_launcher)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .centerCrop()

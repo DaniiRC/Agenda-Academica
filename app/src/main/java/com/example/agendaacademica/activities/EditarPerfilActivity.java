@@ -60,9 +60,9 @@ public class EditarPerfilActivity extends AppCompatActivity {
     private Uri photoUri;
 
     /**
-     * Inicializa la actividad y los servicios de red y sesión.
-     * 
-     * @param savedInstanceState Estado previo de la actividad.
+     * Inicializa la actividad, instancia el {@link SessionManager} y el servicio de red.
+     *
+     * @param savedInstanceState Estado previo de la actividad, o {@code null} si es la primera vez.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +77,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Configura las vistas y asigna los listeners a los botones.
+     * Infla y enlaza los componentes de la interfaz y registra los listeners de acción.
      */
     private void initViews() {
         Toolbar toolbar = findViewById(R.id.toolbarEditarPerfil);
@@ -98,7 +98,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Carga la información actual del usuario desde la sesión.
+     * Rellena los campos de la interfaz con los datos del usuario almacenados en {@link SessionManager}.
      */
     private void cargarDatos() {
         etNombre.setText(session.obtenerNombreUsuario());
@@ -112,7 +112,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Muestra un diálogo para que el usuario elija entre capturar una foto o seleccionarla de la galería.
+     * Muestra un diálogo de selección de fuente de imagen (cámara o galería).
      */
     private void mostrarOpcionesImagen() {
         String[] opciones = {"Cámara", "Galería"};
@@ -140,7 +140,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     );
 
     /**
-     * Verifica los permisos de cámara y solicita acceso si no han sido concedidos.
+     * Comprueba si el permiso de cámara ha sido concedido y abre la cámara o solicita el permiso.
      */
     private void comprobarPermisosYAbrirCamara() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -171,7 +171,8 @@ public class EditarPerfilActivity extends AppCompatActivity {
     );
 
     /**
-     * Lanza la intención de la cámara para capturar una nueva foto de perfil.
+     * Lanza la cámara del dispositivo para capturar una nueva foto de perfil.
+     * La imagen se guarda en un archivo temporal gestionado por {@link FileProvider}.
      */
     private void abrirCamara() {
         try {
@@ -190,10 +191,11 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Crea un archivo temporal para almacenar la imagen capturada por la cámara.
-     * 
-     * @return El archivo creado.
-     * @throws Exception Si ocurre un error en la creación del archivo.
+     * Crea un archivo temporal con nombre único basado en la marca de tiempo actual
+     * para almacenar la imagen capturada por la cámara.
+     *
+     * @return El {@link File} creado en el directorio externo de la aplicación.
+     * @throws Exception Si ocurre un error de I/O durante la creación del archivo.
      */
     private File createImageFile() throws Exception {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
@@ -204,7 +206,7 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Abre la galería del dispositivo para seleccionar una imagen.
+     * Abre la galería multimedia del dispositivo mediante un {@code Intent.ACTION_PICK}.
      */
     private void abrirGaleria() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -212,7 +214,9 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Valida y persiste los cambios realizados en el perfil.
+     * Valida el nombre introducido y persiste los cambios del perfil.
+     * Si el usuario ha seleccionado una nueva foto, delega en {@link #subirFoto(String)};
+     * de lo contrario, actualiza directamente el nombre en la sesión local.
      */
     private void guardarCambios() {
         String nuevoNombre = etNombre.getText().toString().trim();
@@ -231,9 +235,10 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Sube la nueva foto de perfil al servidor mediante una petición multipart.
-     * 
-     * @param nombre Nombre del usuario para actualizar simultáneamente.
+     * Sube la nueva foto de perfil al servidor mediante una petición multipart/form-data
+     * y actualiza los datos de sesión con la URL devuelta por el servidor.
+     *
+     * @param nombre Nombre del usuario que se actualizará junto a la foto.
      */
     private void subirFoto(String nombre) {
         java.util.concurrent.Executors.newSingleThreadExecutor().execute(() -> {
@@ -273,14 +278,14 @@ public class EditarPerfilActivity extends AppCompatActivity {
     }
 
     /**
-     * Convierte una URI de contenido en un archivo físico, redimensionándolo y comprimiéndolo.
-     * 
-     * @param uri URI de la imagen seleccionada.
-     * @return El archivo resultante listo para subir.
-     * @throws Exception Si ocurre un error en el procesamiento.
+     * Convierte una URI de contenido en un archivo JPEG comprimido y redimensionado (máx. 800×800 px)
+     * listo para ser enviado al servidor.
+     *
+     * @param uri URI de la imagen seleccionada desde la galería o la cámara.
+     * @return El {@link File} resultante con la imagen procesada.
+     * @throws Exception Si ocurre un error de I/O o al decodificar la imagen con Glide.
      */
     private File uriToFile(Uri uri) throws Exception {
-        InputStream inputStream = getContentResolver().openInputStream(uri);
         android.graphics.Bitmap bitmap = Glide.with(this)
                 .asBitmap()
                 .load(uri)
@@ -293,13 +298,13 @@ public class EditarPerfilActivity extends AppCompatActivity {
             bitmap.compress(android.graphics.Bitmap.CompressFormat.JPEG, 75, outputStream);
             outputStream.flush();
         }
-        inputStream.close();
         return tempFile;
     }
 
     /**
-     * Muestra un diálogo especializado para el cambio de contraseña.
-     * Reutiliza la lógica de recuperación por código para garantizar la identidad del usuario.
+     * Muestra el diálogo de cambio de contraseña en dos pasos:
+     * 1. Envía un código de verificación al correo del usuario en sesión.
+     * 2. Verifica el código recibido y actualiza la contraseña en el servidor.
      */
     private void mostrarDialogoCambioPassword() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -321,11 +326,6 @@ public class EditarPerfilActivity extends AppCompatActivity {
         android.widget.LinearLayout layoutCodigo = dialogView.findViewById(R.id.layoutCodigoVerificacion);
 
         String userEmail = session.obtenerEmailUsuario();
-        // Caso especial solicitado por el usuario para pruebas/ajustes específicos
-        if ("druicoc0204@g.educaand.es".equalsIgnoreCase(userEmail)) {
-             // Podríamos añadir lógica extra aquí si fuera necesario, 
-             // pero el sistema ya usa el email de la sesión.
-        }
         
         etEmailRecuperar.setText(userEmail);
         etEmailRecuperar.setEnabled(false);
@@ -422,7 +422,11 @@ public class EditarPerfilActivity extends AppCompatActivity {
         dialog.show();
     }
     /**
-     * Verifica si una contraseña cumple con los requisitos mínimos de seguridad.
+     * Verifica si una contraseña cumple los requisitos mínimos de seguridad:
+     * al menos 8 caracteres, una letra mayúscula, una minúscula y un dígito.
+     *
+     * @param password Cadena a validar.
+     * @return {@code true} si la contraseña es válida, {@code false} en caso contrario.
      */
     private boolean esPasswordSegura(String password) {
         String pattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$";

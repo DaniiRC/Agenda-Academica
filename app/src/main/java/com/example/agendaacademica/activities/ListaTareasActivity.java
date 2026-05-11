@@ -54,7 +54,7 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
     
     private Grupo grupoFiltro;
     private Asignatura asignaturaFiltro;
-    private String tipoFiltro = "Todo";
+    private String tipoFiltro = "Todo"; // Mantenemos "Todo" como valor interno de lógica
     private MaterialCardView cardFilterSummary;
     private TextView tvFilterText;
     private ImageView btnDeleteAll;
@@ -96,7 +96,7 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
         btnDeleteAll = findViewById(R.id.btnDeleteAll);
 
         rvTodasTareas.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new TareaAdapter(new ArrayList<>(), this);
+        adapter = new TareaAdapter(this, new ArrayList<>(), this);
         rvTodasTareas.setAdapter(adapter);
 
         swipeRefresh.setOnRefreshListener(this::cargarTareas);
@@ -241,16 +241,16 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
                 if (response.isSuccessful() && response.body() != null) {
                     List<Grupo> grupos = response.body();
                     String[] nombres = new String[grupos.size() + 1];
-                    nombres[0] = "Todas las clases";
+                    nombres[0] = getString(R.string.todas_las_clases);
                     for (int i = 0; i < grupos.size(); i++) nombres[i+1] = grupos.get(i).getNombre();
                     
                     new AlertDialog.Builder(ListaTareasActivity.this)
                         .setItems(nombres, (d, which) -> {
                             if (which == 0) grupoFiltro = null;
                             else grupoFiltro = grupos.get(which-1);
-                            tvClass.setText(which == 0 ? "Todas las clases" : grupoFiltro.getNombre());
+                            tvClass.setText(which == 0 ? getString(R.string.todas_las_clases) : grupoFiltro.getNombre());
                             asignaturaFiltro = null;
-                            tvSubject.setText("Todas las asignaturas");
+                            tvSubject.setText(getString(R.string.todas_las_asignaturas));
                         }).show();
                 }
             }
@@ -266,14 +266,14 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
                 if (response.isSuccessful() && response.body() != null) {
                     List<Asignatura> asigs = response.body();
                     String[] nombres = new String[asigs.size() + 1];
-                    nombres[0] = "Todas las asignaturas";
+                    nombres[0] = getString(R.string.todas_las_asignaturas);
                     for (int i = 0; i < asigs.size(); i++) nombres[i+1] = asigs.get(i).getNombre();
 
                     new AlertDialog.Builder(ListaTareasActivity.this)
                         .setItems(nombres, (d, which) -> {
                             if (which == 0) asignaturaFiltro = null;
                             else asignaturaFiltro = asigs.get(which-1);
-                            tvSubject.setText(which == 0 ? "Todas las asignaturas" : asignaturaFiltro.getNombre());
+                            tvSubject.setText(which == 0 ? getString(R.string.todas_las_asignaturas) : asignaturaFiltro.getNombre());
                         }).show();
                 }
             }
@@ -360,14 +360,14 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
             public void onResponse(Call<Void> call, Response<Void> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful()) {
-                    Toast.makeText(ListaTareasActivity.this, "Tarea eliminada", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ListaTareasActivity.this, R.string.tarea_eliminada, Toast.LENGTH_SHORT).show();
                     cargarTareas();
                 }
             }
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 progressBar.setVisibility(View.GONE);
-                Toast.makeText(ListaTareasActivity.this, "Error al eliminar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ListaTareasActivity.this, R.string.error_eliminar, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -379,10 +379,10 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
         if (listaFiltrada.isEmpty()) return;
         
         new AlertDialog.Builder(this)
-            .setTitle("Borrado masivo")
-            .setMessage("¿Quieres eliminar TODAS las tareas que coinciden con los filtros actuales (" + listaFiltrada.size() + " tareas)?")
-            .setPositiveButton("Eliminar todas", (dialog, which) -> borrarTareasMasivo())
-            .setNegativeButton("Cancelar", null)
+            .setTitle(R.string.borrado_masivo)
+            .setMessage(getString(R.string.borrar_todas_filtros, listaFiltrada.size()))
+            .setPositiveButton(R.string.eliminar_todas, (dialog, which) -> borrarTareasMasivo())
+            .setNegativeButton(R.string.cancelar, null)
             .show();
     }
 
@@ -410,7 +410,7 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
         } else {
             cardFilterSummary.setVisibility(View.VISIBLE);
             btnDeleteAll.setVisibility(View.VISIBLE);
-            StringBuilder sb = new StringBuilder("Filtros: ");
+            StringBuilder sb = new StringBuilder(getString(R.string.filtros_con_dos_puntos));
             if (grupoFiltro != null) sb.append(grupoFiltro.getNombre()).append(" ");
             if (asignaturaFiltro != null) sb.append("| ").append(asignaturaFiltro.getNombre()).append(" ");
             if (!"Todo".equals(tipoFiltro)) sb.append("| ").append(tipoFiltro);

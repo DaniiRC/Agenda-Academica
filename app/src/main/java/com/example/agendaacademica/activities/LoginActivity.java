@@ -412,10 +412,11 @@ public class LoginActivity extends BaseActivity {
     }
 
     /**
-     * Redirige al usuario según su rol (ADMIN o USER).
+     * Redirige al usuario a la actividad principal tras un inicio de sesión o registro exitoso.
+     * Tanto los usuarios con rol USER como con rol ADMIN acceden a la misma pantalla principal;
+     * el panel de administración está integrado dentro de la propia aplicación.
      */
     private void redirigirSegunRol() {
-        // Ahora siempre vamos al Main, los admins verán su panel integrado
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }

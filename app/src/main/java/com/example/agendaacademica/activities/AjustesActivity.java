@@ -36,8 +36,8 @@ public class AjustesActivity extends BaseActivity {
 
     /**
      * Inicializa la actividad, configura la barra de herramientas y carga las preferencias del usuario.
-     * 
-     * @param savedInstanceState Estado previo de la actividad.
+     *
+     * @param savedInstanceState Estado previo de la actividad, o {@code null} si es la primera vez.
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,8 @@ public class AjustesActivity extends BaseActivity {
     }
 
     /**
-     * Configura la barra de herramientas superior y el botón de navegación hacia atrás.
+     * Configura la barra de herramientas superior ({@link Toolbar}) y establece
+     * el botón de navegación hacia atrás con el color definido en {@code R.color.text_main}.
      */
     private void configurarToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbarAjustes);
@@ -71,7 +72,7 @@ public class AjustesActivity extends BaseActivity {
     }
 
     /**
-     * Inicializa las referencias a los componentes de la interfaz.
+     * Vincula las referencias de los componentes de la interfaz con sus respectivos IDs de layout.
      */
     private void initViews() {
         switchTemaOscuro = findViewById(R.id.switchTemaOscuro);
@@ -85,7 +86,8 @@ public class AjustesActivity extends BaseActivity {
     }
 
     /**
-     * Sincroniza los controles de la interfaz con los valores guardados en la sesión.
+     * Lee los valores almacenados en {@link SessionManager} y los refleja en cada control
+     * de la interfaz, sincronizando la vista con el estado real de las preferencias.
      */
     private void cargarPreferencias() {
         switchTemaOscuro.setChecked(session.esModoClaro());
@@ -96,7 +98,8 @@ public class AjustesActivity extends BaseActivity {
     }
 
     /**
-     * Configura los eventos de clic y cambio de estado para todos los controles.
+     * Registra los listeners de clic y cambio de estado para los interruptores y botones.
+     * Cada control persiste su preferencia en {@link SessionManager} de forma inmediata.
      */
     private void configurarListeners() {
         switchTemaOscuro.setOnClickListener(v -> {
@@ -150,8 +153,9 @@ public class AjustesActivity extends BaseActivity {
     }
 
     /**
-     * Muestra un diálogo de seguridad para confirmar la eliminación de la cuenta.
-     * Requiere que el usuario escriba una palabra clave de confirmación.
+     * Muestra un diálogo que requiere que el usuario escriba la palabra clave
+     * {@code R.string.palabra_confirmacion} antes de proceder con el borrado de la cuenta.
+     * Si la confirmación es correcta, delega la operación a {@link #eliminarCuentaServidor()}.
      */
     private void mostrarDialogoEliminarCuenta() {
         final String palabraConfirmacion = getString(R.string.palabra_confirmacion);
@@ -182,8 +186,12 @@ public class AjustesActivity extends BaseActivity {
     }
 
     /**
-     * Ejecuta la petición de borrado de cuenta en el servidor.
-     * Si el borrado es exitoso, cierra la sesión y redirige al Login.
+     * Ejecuta la petición de borrado permanente de la cuenta en el servidor.
+     *
+     * Muestra un {@link android.app.ProgressDialog} bloqueante durante la operación.
+     * Si el servidor responde con {@code 200} o {@code 204}, cierra la sesión y redirige
+     * a {@link LoginActivity} limpiando la pila de actividades. En caso de error, muestra
+     * un diálogo con el mensaje devuelto por el servidor.
      */
     private void eliminarCuentaServidor() {
         Long userId = session.getUserId();
@@ -228,28 +236,28 @@ public class AjustesActivity extends BaseActivity {
     }
 
     /**
-     * Muestra un selector para cambiar el idioma de la aplicación.
-     * Utiliza AppCompatDelegate para aplicar los cambios de localización de forma inmediata y global.
+     * Muestra un selector de idioma con opción única (Español, English, Français).
+     *
+     * Aplica el idioma seleccionado mediante
+     * {@link AppCompatDelegate#setApplicationLocales(LocaleListCompat)}, lo que provoca
+     * una recreación automática de la actividad. El código ISO 639-1 del idioma elegido
+     * se persiste en {@link SessionManager} para restaurarlo al iniciar la aplicación.
      */
     private void mostrarDialogoIdioma() {
         String[] idiomas = {"Español", "English", "Français"};
         String[] codigos = {"es", "en", "fr"};
 
-        int seleccionado = 0;
-        String idiomaActual = session.obtenerIdioma();
-        
-        // Si no hay idioma guardado, usamos el del sistema o el activo en la App
-        if (idiomaActual == null) {
-            LocaleListCompat current = AppCompatDelegate.getApplicationLocales();
-            if (!current.isEmpty()) {
-                idiomaActual = current.get(0).getLanguage();
-            } else {
-                idiomaActual = java.util.Locale.getDefault().getLanguage();
-            }
+        LocaleListCompat current = AppCompatDelegate.getApplicationLocales();
+        String idiomaActual;
+        if (!current.isEmpty()) {
+            idiomaActual = current.get(0).getLanguage();
+        } else {
+            idiomaActual = java.util.Locale.getDefault().getLanguage();
         }
 
+        int seleccionado = 0;
         for (int i = 0; i < codigos.length; i++) {
-            if (codigos[i].equals(idiomaActual)) {
+            if (idiomaActual != null && idiomaActual.startsWith(codigos[i])) {
                 seleccionado = i;
                 break;
             }

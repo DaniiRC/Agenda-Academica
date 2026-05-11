@@ -34,6 +34,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragmento que muestra la lista de clases académicas a las que pertenece el usuario.
+ * Incluye búsqueda en tiempo real por nombre y un contador de clases activas.
+ */
 public class MisClasesFragment extends Fragment {
 
     private GrupoAdapter adapter;

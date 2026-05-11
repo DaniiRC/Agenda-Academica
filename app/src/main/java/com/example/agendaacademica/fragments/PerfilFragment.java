@@ -38,6 +38,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragmento que muestra el perfil del usuario en sesión.
+ * Presenta estadísticas de rendimiento (tareas completadas, sesiones de enfoque, tiempo invertido)
+ * y calcula la racha de días con actividad académica de la semana actual.
+ */
 public class PerfilFragment extends Fragment {
 
     private SessionManager session;
@@ -56,7 +61,6 @@ public class PerfilFragment extends Fragment {
 
         session = new SessionManager(requireContext());
 
-        // Initialize Views
         ImageButton btnSettings = view.findViewById(R.id.btn_settings);
         imgPerfil = view.findViewById(R.id.img_perfil);
         FloatingActionButton btnEditarPerfil = view.findViewById(R.id.btn_editar_perfil);
@@ -77,7 +81,6 @@ public class PerfilFragment extends Fragment {
         swipeRefresh = view.findViewById(R.id.swipeRefreshPerfil);
         swipeRefresh.setOnRefreshListener(this::cargarEstadisticas);
 
-        // Listeners
         btnSettings.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), AjustesActivity.class);
             startActivity(intent);
@@ -116,7 +119,7 @@ public class PerfilFragment extends Fragment {
         Long usuarioId = session.getUserId();
         ApiService apiService = RetrofitClient.getApiService();
 
-        // 1. Obtener Grupos (Clases Activas)
+        // Petición 1: grupos activos del usuario (para el contador de "Clases activas").
         apiService.obtenerGruposDeUsuario(usuarioId).enqueue(new Callback<List<com.example.agendaacademica.model.Grupo>>() {
             @Override
             public void onResponse(Call<List<com.example.agendaacademica.model.Grupo>> call, Response<List<com.example.agendaacademica.model.Grupo>> response) {
@@ -137,12 +140,12 @@ public class PerfilFragment extends Fragment {
             }
         });
 
-        // 2. Obtener Eventos (Tareas, Proyectos y Tiempo)
+        // Petición 2: eventos del usuario (para calcular tareas completadas, tiempo y sesiones de enfoque).
         apiService.obtenerEventosUsuario(usuarioId).enqueue(new Callback<List<Evento>>() {
             @Override
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
                 if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
-                if (!isAdded()) return; // SEGURIDAD
+                if (!isAdded()) return; // Seguridad: evitar actualizar vistas si el fragmento fue destruido.
 
                 if (response.isSuccessful() && response.body() != null) {
                     List<Evento> eventos = response.body();
@@ -152,16 +155,16 @@ public class PerfilFragment extends Fragment {
                     long tiempoTotalMilis = 0;
 
                     for (Evento e : eventos) {
-                        // El tiempo se suma SIEMPRE, esté trabajado o no
+                        // El tiempo invertido se acumula independientemente de si la tarea está completada.
                         if (e.getTiempoInvertidoFocus() != null) {
                             tiempoTotalMilis += e.getTiempoInvertidoFocus();
-                            // Si ha invertido tiempo, contamos como sesión de enfoque (aunque no termine la tarea)
+                            // Cualquier evento con tiempo invertido mayor a cero cuenta como sesión de enfoque.
                             if (e.getTiempoInvertidoFocus() > 0) {
                                 sesionesEnfoque++;
                             }
                         }
 
-                        // Solo contamos como "Tarea" si está completado
+                        // Solo se contabiliza como tarea completada si su estado es "completado".
                         if (e.isCompletado()) {
                             String tipo = e.getTipo();
                             if (tipo != null) {
@@ -176,7 +179,7 @@ public class PerfilFragment extends Fragment {
                     tvTasksCount.setText(String.valueOf(tareasCompletadas));
                     tvProjectsCount.setText(String.valueOf(sesionesEnfoque));
                     
-                    // Formatear tiempo dinámicamente: s -> m -> h
+                    // Formato dinámico del tiempo: segundos → minutos → horas según la magnitud.
                     String tiempoFormateado;
                     long segundosTotales = tiempoTotalMilis / 1000;
                     long minutosTotales = segundosTotales / 60;
@@ -237,13 +240,10 @@ public class PerfilFragment extends Fragment {
             }
         }
 
-        // --- Lógica: Racha continua hacia atrás ---
+        // Calcula la racha retrocediendo desde hoy (o ayer si hoy aún no hay actividad).
         int rachaContinua = 0;
         Calendar cal = Calendar.getInstance();
         java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.US);
-
-        // Check from yesterday backwards (or today if activity exists)
-        // If today has no activity, we start from yesterday. If today has activity, we check today and then backwards.
         String hoyStr = sdf.format(cal.getTime());
 
         Calendar tempCal = Calendar.getInstance();
@@ -255,10 +255,10 @@ public class PerfilFragment extends Fragment {
             rachaContinua++;
             tempCal.add(Calendar.DAY_OF_YEAR, -1);
         }
-        // -------------------------------------
+
 
         Calendar calSemana = Calendar.getInstance();
-        // Ajustar al lunes de la semana actual
+        // Calcula el lunes de la semana actual para iterar los 7 días.
         int dayOfWeek = calSemana.get(Calendar.DAY_OF_WEEK);
         int daysToSubtract = (dayOfWeek == Calendar.SUNDAY) ? 6 : (dayOfWeek - Calendar.MONDAY);
         calSemana.add(Calendar.DAY_OF_YEAR, -daysToSubtract);
@@ -267,10 +267,9 @@ public class PerfilFragment extends Fragment {
             String fechaStr = sdf.format(calSemana.getTime());
             boolean huboActividad = diasConActividad.contains(fechaStr);
 
-            // Check if this specific past day was the FIRST day of a "missed" streak
+            // Marca el día como "perdido" si no hubo actividad pero el día anterior sí la tuvo.
             boolean esDiaPerdido = false;
             if (!huboActividad && calSemana.before(Calendar.getInstance())) {
-                // Check if there was activity before this day
                 Calendar prevDay = (Calendar) calSemana.clone();
                 prevDay.add(Calendar.DAY_OF_YEAR, -1);
                 if (diasConActividad.contains(sdf.format(prevDay.getTime()))) {
@@ -289,7 +288,7 @@ public class PerfilFragment extends Fragment {
             } else if (esDiaPerdido) {
                 dayViews[i].setVisibility(View.VISIBLE);
                 dayIcons[i].setVisibility(View.VISIBLE);
-                dayIcons[i].setImageResource(android.R.drawable.ic_menu_close_clear_cancel); // Icono de X
+                dayIcons[i].setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
                 dayIcons[i].setColorFilter(ContextCompat.getColor(requireContext(), R.color.white));
             }
             calSemana.add(Calendar.DAY_OF_YEAR, 1);
@@ -297,7 +296,7 @@ public class PerfilFragment extends Fragment {
 
         tvStreakTitle.setText(getString(R.string.racha_formato, rachaContinua));
         
-        // Determinar mensaje: ¿Se rompió la racha ayer?
+        // El mensaje de descripción varía según si la racha es alta, baja o se ha rompido.
         Calendar ayer = Calendar.getInstance();
         ayer.add(Calendar.DAY_OF_YEAR, -1);
         if (rachaContinua == 0 && !diasConActividad.contains(sdf.format(ayer.getTime())) && !diasConActividad.contains(hoyStr)) {
@@ -322,6 +321,6 @@ public class PerfilFragment extends Fragment {
     public void onResume() {
         super.onResume();
         actualizarUI();
-        cargarEstadisticas(); // Forzar recarga de datos al volver al fragmento
+        cargarEstadisticas();
     }
 }

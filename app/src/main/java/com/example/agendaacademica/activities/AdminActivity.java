@@ -36,6 +36,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Actividad de administración del sistema.
+ * Permite a los usuarios con rol ADMIN gestionar la lista completa de usuarios registrados:
+ * visualizar su información, editar datos (nombre, email, rol, contraseña) y eliminarlos.
+ */
 public class AdminActivity extends BaseActivity {
 
     private RecyclerView rvUsuarios;
@@ -43,6 +48,11 @@ public class AdminActivity extends BaseActivity {
     private UsuariosAdapter adapter;
     private List<Usuario> listaUsuarios = new ArrayList<>();
 
+    /**
+     * Inicializa la actividad, configura la barra de herramientas y lanza la carga inicial de usuarios.
+     *
+     * @param savedInstanceState Estado previo de la actividad, o {@code null} si es la primera vez.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,10 +66,7 @@ public class AdminActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(v -> finish());
 
         rvUsuarios = findViewById(R.id.rvUsuarios);
-        pbAdmin = findViewById(R.id.pbAdmin);
-
-        // Listener de logout removido por petición del usuario
-
+        pbAdmin    = findViewById(R.id.pbAdmin);
 
         rvUsuarios.setLayoutManager(new LinearLayoutManager(this));
         adapter = new UsuariosAdapter(listaUsuarios);
@@ -68,6 +75,10 @@ public class AdminActivity extends BaseActivity {
         cargarUsuarios();
     }
 
+    /**
+     * Solicita al servidor la lista completa de usuarios registrados y actualiza el adaptador.
+     * Muestra el indicador de carga durante la petición y lo oculta al finalizar.
+     */
     private void cargarUsuarios() {
         pbAdmin.setVisibility(View.VISIBLE);
         RetrofitClient.getApiService().obtenerTodosLosUsuarios().enqueue(new Callback<List<Usuario>>() {
@@ -91,8 +102,14 @@ public class AdminActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Muestra un diálogo de confirmación y, si se acepta, elimina el usuario del servidor.
+     * Un administrador no puede eliminarse a sí mismo.
+     *
+     * @param u El objeto {@link Usuario} que se desea eliminar.
+     */
     private void eliminarUsuario(Usuario u) {
-        if (u.getEmail().equals(new SessionManager(this).obtenerEmailUsuario())) {
+        if (u.getEmail().equals(session.obtenerEmailUsuario())) {
             Toast.makeText(this, "No puedes eliminarte a ti mismo", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -124,6 +141,12 @@ public class AdminActivity extends BaseActivity {
                 .show();
     }
 
+    /**
+     * Muestra un diálogo para editar los datos del usuario (nombre, email, rol y contraseña).
+     * Si el campo de contraseña se deja vacío, el backend conserva la contraseña actual.
+     *
+     * @param u El objeto {@link Usuario} cuyos datos se van a modificar.
+     */
     private void editarUsuario(Usuario u) {
         View v = getLayoutInflater().inflate(R.layout.dialog_edit_user_admin, null);
         EditText etNombre = v.findViewById(R.id.etEditNombre);
@@ -148,7 +171,7 @@ public class AdminActivity extends BaseActivity {
                     u.setEmail(etEmail.getText().toString().trim());
                     u.setRol(spRol.getSelectedItem().toString());
                     if (!pass.isEmpty()) u.setPassword(pass);
-                    else u.setPassword(null); // El backend ignorará si es null
+                    else u.setPassword(null);
 
                     pbAdmin.setVisibility(View.VISIBLE);
                     RetrofitClient.getApiService().actualizarUsuarioAdmin(u.getId(), u).enqueue(new Callback<Usuario>() {
@@ -172,9 +195,15 @@ public class AdminActivity extends BaseActivity {
                 .show();
     }
 
+    /**
+     * Adaptador interno que enlaza la lista de {@link Usuario} con las tarjetas del RecyclerView.
+     */
     class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.ViewHolder> {
-        private List<Usuario> usuarios;
+        private final List<Usuario> usuarios;
 
+        /**
+         * @param usuarios Lista de usuarios que se mostrará en el panel de administración.
+         */
         UsuariosAdapter(List<Usuario> usuarios) {
             this.usuarios = usuarios;
         }

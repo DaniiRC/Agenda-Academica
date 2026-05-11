@@ -10,17 +10,24 @@ import okhttp3.Request;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Singleton que inicializa y proporciona acceso al cliente Retrofit para las llamadas a la API REST.
+ * Configura un interceptor JWT que adjunta automáticamente el token de sesión a todas las peticiones.
+ */
 public class RetrofitClient {
 
-    // [CONFIGURACIÓN] IP local para pruebas
+    // URL de producción desplegada en Render. Comentar y usar IP local para pruebas en red local.
     // private static final String IP_SERVIDOR = "192.168.100.189";
     // public static final String BASE_URL = "http://" + IP_SERVIDOR + ":8080/";
-    
-    // [CONFIGURACIÓN] URL de Producción (Render)
     public static final String BASE_URL = "https://proyecto-final-api-1.onrender.com/";
 
     private static Retrofit retrofit = null;
 
+    /**
+     * Inicializa el cliente Retrofit. Debe llamarse una única vez desde {@link com.example.agendaacademica.AgendaApplication}.
+     *
+     * @param context Contexto de la aplicación.
+     */
     public static void init(Context context) {
         if (retrofit == null) {
 
@@ -31,11 +38,8 @@ public class RetrofitClient {
                     .connectTimeout(15, TimeUnit.SECONDS)
                     .readTimeout(15, TimeUnit.SECONDS)
                     .writeTimeout(15, TimeUnit.SECONDS)
-                    // Interceptor de errores ya existente
+                    // Interceptor JWT: añade el token de sesión a todas las peticiones salientes.
                     .addInterceptor(new ErrorInterceptor(context))
-                    // ── Interceptor JWT ──────────────────────────────────────
-                    // Lee el token guardado en SharedPreferences y lo añade
-                    // como "Authorization: Bearer <token>" a TODAS las peticiones.
                     .addInterceptor(chain -> {
                         Request originalRequest = chain.request();
                         String token = sessionManager.getToken();
@@ -59,6 +63,11 @@ public class RetrofitClient {
         }
     }
 
+    /**
+     * Devuelve la instancia única del servicio de API.
+     *
+     * @throws IllegalStateException Si {@link #init(Context)} no fue llamado previamente.
+     */
     public static ApiService getApiService() {
         if (retrofit == null) {
             throw new IllegalStateException("RetrofitClient must be initialized with init(context) before use.");

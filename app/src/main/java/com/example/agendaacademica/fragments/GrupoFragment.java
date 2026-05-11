@@ -50,6 +50,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Fragmento que permite buscar un grupo por código y unirse a él, o crear uno nuevo.
+ * Gestiona la carga de imagen de la clase desde cámara o galería y el alta de asignaturas iniciales.
+ */
 public class GrupoFragment extends Fragment {
 
     private EditText etClassCode;
@@ -61,7 +65,7 @@ public class GrupoFragment extends Fragment {
     private Grupo grupoEncontrado;
     private SessionManager session;
     private ApiService apiService;
-    private String colorSeleccionado = "#4F46E5"; // Color primario por defecto
+    private String colorSeleccionado = "#4F46E5"; // Color por defecto (índigo) asignado a nuevas asignaturas
     private List<String> asignaturasNuevas = new ArrayList<>();
 
     private Uri imageUri;
@@ -128,7 +132,6 @@ public class GrupoFragment extends Fragment {
 
         view.findViewById(R.id.btnCrearClase).setOnClickListener(v -> mostrarDialogoCrearClase());
         
-        // Abrir Ajustes
         view.findViewById(R.id.btn_settings).setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), AjustesActivity.class));
         });
@@ -206,8 +209,6 @@ public class GrupoFragment extends Fragment {
             }
         });
 
-        // configurarSelectorColores removido por petición del usuario
-
         btnGuardar.setOnClickListener(v -> {
             String nombre = etNombre.getText().toString().trim();
             if (nombre.isEmpty()) {
@@ -220,8 +221,6 @@ public class GrupoFragment extends Fragment {
 
         dialog.show();
     }
-
-    // configurarSelectorColores removido por petición del usuario
 
     private void mostrarOpcionesImagen() {
         String[] options = {"Cámara", "Galería"};
@@ -329,7 +328,7 @@ public class GrupoFragment extends Fragment {
             public void onResponse(@NonNull Call<Grupo> call, @NonNull Response<Grupo> response) {
                 if (isAdded()) {
                     if (response.isSuccessful()) {
-                        // Si el diálogo es null, significa que venimos de "Unirse" (no de crear)
+                        // Si el diálogo es null, el usuario se unió desde búsqueda (no desde crear clase)
                         boolean esUnion = (dialog == null);
                         crearAsignaturasParaGrupo(grupoId, dialog, esUnion);
                     } else {
@@ -352,7 +351,7 @@ public class GrupoFragment extends Fragment {
             return;
         }
 
-        // Usamos un contador atómico para saber cuándo han terminado todas las peticiones
+        // Contador compartido por los callbacks asíncronos: finaliza la operación cuando todas las peticiones concluyen.
         final int totalAsignaturas = asignaturasNuevas.size();
         final int[] completadas = {0};
 
@@ -395,6 +394,9 @@ public class GrupoFragment extends Fragment {
         }
     }
 
+    /**
+     * Muestra u oculta el indicador de carga mientras se realiza una operación de red.
+     */
     private void setLoading(boolean isLoading) {
         if (progressBar != null) progressBar.setVisibility(isLoading ? View.VISIBLE : View.GONE);
     }

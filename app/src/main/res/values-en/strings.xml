@@ -187,6 +187,12 @@
         <item>1 hour before</item>
         <item>1 day before</item>
     </string-array>
+    <string-array name="reminder_options">
+        <item>Disabled</item>
+        <item>At the moment</item>
+        <item>15 minutes before</item>
+        <item>1 hour before</item>
+    </string-array>
     <string name="que_quieres_anadir">What do you want to add?</string>
     <string name="nuevo_evento_desc">Add an assignment or task to this class</string>
     <string name="nueva_asignatura">New Subject</string>
@@ -207,4 +213,43 @@
     <string name="guardar_cambios">Save Changes</string>
     <string name="codigo_formato">Code: %1$s</string>
     <string name="admin_mayus">ADMIN</string>
+    <string name="deberes_mayus">HOMEWORK</string>
+    <string name="proyecto_mayus">PROJECT</string>
+    <string name="examen_mayus">EXAM</string>
+    <string name="general_clase">General (All class)</string>
+    <string name="notif_tarea_finalizada">Task finished</string>
+    <string name="notif_tarea_finalizada_msg">The task \"%1$s\" has reached its end time</string>
+    <string name="notif_recordatorio_titulo">End reminder</string>
+    <string name="notif_recordatorio_msg">%1$s left until \"%2$s\" ends</string>
+    <string name="sin_info_adicional">No additional information</string>
+    <string name="cambiar_nota">Change grade</string>
+    <string name="sin_calificar">Not graded</string>
+    <string name="poner_nota">Add grade</string>
+    <string name="completado_pct">%1$d%% COMPLETED</string>
+    <string name="tarea_completada_toast">Task Completed!</string>
+    <string name="eliminar_evento_titulo">Delete Event</string>
+    <string name="eliminar_evento_msg">Are you sure you want to delete this event?</string>
+    <string name="calificar_actividad">Grade Activity</string>
+    <string name="introduce_nota">Enter the grade obtained:</string>
+    <string name="nota_rango_error">Grade must be between 0 and 10</string>
+    <string name="nota_formato_error">Invalid grade format</string>
+    <string name="nota_guardada_ok">Grade saved successfully</string>
+    <string name="tiempo_agotado">Time out!</string>
+    <string name="pausar">PAUSE</string>
+    <string name="reanudar">RESUME</string>
+    <string name="iniciar">START</string>
+    <string name="reiniciar">RESTART</string>
+    <string name="local_mayus">LOCAL</string>
+    <string name="antes">before</string>
+    <string name="tareas_actuales">Current Tasks</string>
+    <string name="tareas_pasadas">Past Tasks</string>
+    <string name="pasada_mayus">PAST</string>
+    <string name="todo">All</string>
+    <string name="todas_las_clases">All classes</string>
+    <string name="todas_las_asignaturas">All subjects</string>
+    <string name="borrado_masivo">Bulk delete</string>
+    <string name="borrar_todas_filtros">Do you want to delete ALL tasks matching current filters (%1$d tasks)?</string>
+    <string name="eliminar_todas">Delete all</string>
+    <string name="filtros_con_dos_puntos">Filters: </string>
+    <string name="error_eliminar">Error deleting</string>
 </resources>

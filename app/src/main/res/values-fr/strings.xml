@@ -187,4 +187,50 @@
         <item>1 heure avant</item>
         <item>1 jour avant</item>
     </string-array>
+    <string-array name="reminder_options">
+        <item>Désactivé</item>
+        <item>Au moment même</item>
+        <item>15 minutes avant</item>
+        <item>1 heure avant</item>
+    </string-array>
+
+    <string name="deberes_mayus">DEVOIRS</string>
+    <string name="proyecto_mayus">PROJET</string>
+    <string name="examen_mayus">EXAMEN</string>
+    <string name="general_clase">Général (Toute la classe)</string>
+    <string name="notif_tarea_finalizada">Tâche terminée</string>
+    <string name="notif_tarea_finalizada_msg">La tâche \"%1$s\" a atteint son heure de fin</string>
+    <string name="notif_recordatorio_titulo">Rappel de fin</string>
+    <string name="notif_recordatorio_msg">Il reste %1$s avant la fin de \"%2$s\"</string>
+    <string name="sin_info_adicional">Aucune information supplémentaire</string>
+    <string name="cambiar_nota">Modifier la note</string>
+    <string name="sin_calificar">Non noté</string>
+    <string name="poner_nota">Noter</string>
+    <string name="completado_pct">%1$d%% TERMINÉ</string>
+    <string name="tarea_completada_toast">Tâche terminée !</string>
+    <string name="eliminar_evento_titulo">Supprimer l\'événement</string>
+    <string name="eliminar_evento_msg">Êtes-vous sûr de vouloir supprimer cet événement ?</string>
+    <string name="calificar_actividad">Noter l\'activité</string>
+    <string name="introduce_nota">Saisissez la note obtenue :</string>
+    <string name="nota_rango_error">La note doit être comprise entre 0 et 10</string>
+    <string name="nota_formato_error">Format de note invalide</string>
+    <string name="nota_guardada_ok">Note enregistrée avec succès</string>
+    <string name="tiempo_agotado">Temps écoulé !</string>
+    <string name="pausar">PAUSE</string>
+    <string name="reanudar">REPRENDRE</string>
+    <string name="iniciar">DÉMARRER</string>
+    <string name="reiniciar">REDÉMARRER</string>
+    <string name="local_mayus">LOCAL</string>
+    <string name="antes">avant</string>
+    <string name="tareas_actuales">Tâches Actuelles</string>
+    <string name="tareas_pasadas">Tâches Passées</string>
+    <string name="pasada_mayus">PASSÉE</string>
+    <string name="todo">Tout</string>
+    <string name="todas_las_clases">Toutes les classes</string>
+    <string name="todas_las_asignaturas">Toutes les matières</string>
+    <string name="borrado_masivo">Suppression massive</string>
+    <string name="borrar_todas_filtros">Voulez-vous supprimer TOUTES les tâches correspondant aux filtres actuels (%1$d tâches) ?</string>
+    <string name="eliminar_todas">Supprimer tout</string>
+    <string name="filtros_con_dos_puntos">Filtres : </string>
+    <string name="error_eliminar">Erreur lors de la suppression</string>
 </resources>

@@ -192,6 +192,12 @@
         <item>1 hora antes</item>
         <item>1 día antes</item>
     </string-array>
+    <string-array name="reminder_options">
+        <item>Desactivado</item>
+        <item>En el momento</item>
+        <item>15 minutos antes</item>
+        <item>1 hora antes</item>
+    </string-array>
     <string name="filtrar">Filtro</string>
     <string name="confirmar_salir_titulo">¿Seguro que quieres salir?</string>
     <string name="confirmar_salir_mensaje">Se perderán los datos que no hayas guardado.</string>
@@ -212,4 +218,43 @@
     <string name="guardar_cambios">Guardar Cambios</string>
     <string name="codigo_formato">Código: %1$s</string>
     <string name="admin_mayus">ADMIN</string>
+    <string name="deberes_mayus">DEBERES</string>
+    <string name="proyecto_mayus">PROYECTO</string>
+    <string name="examen_mayus">EXAMEN</string>
+    <string name="general_clase">General (Toda la clase)</string>
+    <string name="notif_tarea_finalizada">Tarea finalizada</string>
+    <string name="notif_tarea_finalizada_msg">La tarea \"%1$s\" ha llegado a su hora de finalización</string>
+    <string name="notif_recordatorio_titulo">Recordatorio de finalización</string>
+    <string name="notif_recordatorio_msg">Quedan %1$s para que acabe \"%2$s\"</string>
+    <string name="sin_info_adicional">Sin información adicional</string>
+    <string name="cambiar_nota">Cambiar nota</string>
+    <string name="sin_calificar">Sin calificar</string>
+    <string name="poner_nota">Poner nota</string>
+    <string name="completado_pct">%1$d%% COMPLETADO</string>
+    <string name="tarea_completada_toast">¡Tarea Completada!</string>
+    <string name="eliminar_evento_titulo">Eliminar Evento</string>
+    <string name="eliminar_evento_msg">¿Estás seguro de que quieres borrar este evento?</string>
+    <string name="calificar_actividad">Calificar Actividad</string>
+    <string name="introduce_nota">Introduce la nota obtenida:</string>
+    <string name="nota_rango_error">La nota debe estar entre 0 y 10</string>
+    <string name="nota_formato_error">Formato de nota inválido</string>
+    <string name="nota_guardada_ok">Nota guardada con éxito</string>
+    <string name="tiempo_agotado">¡Tiempo agotado!</string>
+    <string name="pausar">PAUSAR</string>
+    <string name="reanudar">REANUDAR</string>
+    <string name="iniciar">INICIAR</string>
+    <string name="reiniciar">REINICIAR</string>
+    <string name="local_mayus">LOCAL</string>
+    <string name="antes">antes</string>
+    <string name="tareas_actuales">Tareas Actuales</string>
+    <string name="tareas_pasadas">Tareas Pasadas</string>
+    <string name="pasada_mayus">PASADA</string>
+    <string name="todo">Todo</string>
+    <string name="todas_las_clases">Todas las clases</string>
+    <string name="todas_las_asignaturas">Todas las asignaturas</string>
+    <string name="borrado_masivo">Borrado masivo</string>
+    <string name="borrar_todas_filtros">¿Quieres eliminar TODAS las tareas que coinciden con los filtros actuales (%1$d tareas)?</string>
+    <string name="eliminar_todas">Eliminar todas</string>
+    <string name="filtros_con_dos_puntos">Filtros: </string>
+    <string name="error_eliminar">Error al eliminar</string>
 </resources>
