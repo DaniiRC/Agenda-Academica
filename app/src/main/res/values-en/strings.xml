@@ -187,4 +187,24 @@
         <item>1 hour before</item>
         <item>1 day before</item>
     </string-array>
+    <string name="que_quieres_anadir">What do you want to add?</string>
+    <string name="nuevo_evento_desc">Add an assignment or task to this class</string>
+    <string name="nueva_asignatura">New Subject</string>
+    <string name="nueva_asignatura_desc">Create a subject for this class</string>
+    <string name="nueva_asignatura_subtitulo">Define the details of the new subject</string>
+    <string name="nombre_asignatura_hint">Subject name (e.g., Programming)</string>
+    <string name="asignatura_creada">Subject created successfully</string>
+    <string name="error_crear_asignatura">Error creating subject</string>
+    <string name="filtrar">Filter</string>
+    <string name="panel_administracion">Admin Panel</string>
+    <string name="panel_administracion_desc">Manage system users and permissions.</string>
+    <string name="impartida_por">TAUGHT BY</string>
+    <string name="gestion_clase_mayus">CLASS MANAGEMENT</string>
+    <string name="editar_clase_campos">Edit name, photo or description</string>
+    <string name="anadir_nuevo_evento_tarea">Add new event / task</string>
+    <string name="configuracion_clase">Class Settings</string>
+    <string name="gestion_miembros_mayus">MEMBERS MANAGEMENT</string>
+    <string name="guardar_cambios">Save Changes</string>
+    <string name="codigo_formato">Code: %1$s</string>
+    <string name="admin_mayus">ADMIN</string>
 </resources>

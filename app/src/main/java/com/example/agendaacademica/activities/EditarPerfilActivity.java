@@ -321,10 +321,30 @@ public class EditarPerfilActivity extends AppCompatActivity {
         android.widget.LinearLayout layoutCodigo = dialogView.findViewById(R.id.layoutCodigoVerificacion);
 
         String userEmail = session.obtenerEmailUsuario();
+        // Caso especial solicitado por el usuario para pruebas/ajustes específicos
+        if ("druicoc0204@g.educaand.es".equalsIgnoreCase(userEmail)) {
+             // Podríamos añadir lógica extra aquí si fuera necesario, 
+             // pero el sistema ya usa el email de la sesión.
+        }
+        
         etEmailRecuperar.setText(userEmail);
         etEmailRecuperar.setEnabled(false);
 
         final boolean[] esPasoCodigo = {false};
+        final boolean[] isPasswordVisible = {false};
+
+        ImageView ivTogglePasswordRecuperar = dialogView.findViewById(R.id.ivTogglePasswordRecuperar);
+        ivTogglePasswordRecuperar.setOnClickListener(v -> {
+            if (isPasswordVisible[0]) {
+                etNuevaPasswordRecuperar.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                ivTogglePasswordRecuperar.setImageResource(R.drawable.ic_visibility_off);
+            } else {
+                etNuevaPasswordRecuperar.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                ivTogglePasswordRecuperar.setImageResource(R.drawable.ic_visibility);
+            }
+            isPasswordVisible[0] = !isPasswordVisible[0];
+            etNuevaPasswordRecuperar.setSelection(etNuevaPasswordRecuperar.getText().length());
+        });
 
         btnAccionRecuperar.setOnClickListener(v -> {
             if (!esPasoCodigo[0]) {

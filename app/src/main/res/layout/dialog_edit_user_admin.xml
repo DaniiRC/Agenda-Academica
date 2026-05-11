@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -46,6 +47,7 @@
         android:layout_height="wrap_content"
         android:hint="Nueva Contraseña (dejar vacío para no cambiar)"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        app:passwordToggleEnabled="true"
         android:layout_marginBottom="12dp">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etEditPassword"

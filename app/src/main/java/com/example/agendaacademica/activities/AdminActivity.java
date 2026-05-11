@@ -17,6 +17,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.imageview.ShapeableImageView;
+import com.example.agendaacademica.network.ApiService;
+
 import com.bumptech.glide.Glide;
 import com.example.agendaacademica.R;
 import com.example.agendaacademica.SessionManager;
@@ -52,11 +58,8 @@ public class AdminActivity extends BaseActivity {
         rvUsuarios = findViewById(R.id.rvUsuarios);
         pbAdmin = findViewById(R.id.pbAdmin);
 
-        findViewById(R.id.btnLogoutAdmin).setOnClickListener(v -> {
-            new SessionManager(this).cerrarSesion();
-            startActivity(new Intent(this, LoginActivity.class));
-            finish();
-        });
+        // Listener de logout removido por petición del usuario
+
 
         rvUsuarios.setLayoutManager(new LinearLayoutManager(this));
         adapter = new UsuariosAdapter(listaUsuarios);
@@ -126,16 +129,16 @@ public class AdminActivity extends BaseActivity {
         EditText etNombre = v.findViewById(R.id.etEditNombre);
         EditText etEmail = v.findViewById(R.id.etEditEmail);
         EditText etPass = v.findViewById(R.id.etEditPassword);
-        android.widget.Spinner spRol = v.findViewById(R.id.spEditRol);
+        Spinner spRol = v.findViewById(R.id.spEditRol);
 
         etNombre.setText(u.getNombre());
         etEmail.setText(u.getEmail());
         
         String[] roles = {"USER", "ADMIN"};
-        android.widget.ArrayAdapter<String> adapterRol = new android.widget.ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roles);
+        ArrayAdapter<String> adapterRol = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roles);
         adapterRol.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spRol.setAdapter(adapterRol);
-        spRol.setSelection(u.getRol().equals("ADMIN") ? 1 : 0);
+        spRol.setSelection("ADMIN".equals(u.getRol()) ? 1 : 0);
 
         new AlertDialog.Builder(this)
                 .setView(v)
@@ -190,12 +193,7 @@ public class AdminActivity extends BaseActivity {
             holder.tvEmail.setText(u.getEmail());
             holder.tvRol.setText(u.getRol());
 
-            if (u.getFotoUrl() != null) {
-                Glide.with(holder.itemView.getContext())
-                        .load(RetrofitClient.BASE_URL.substring(0, RetrofitClient.BASE_URL.length()-1) + u.getFotoUrl())
-                        .placeholder(R.drawable.ic_people)
-                        .into(holder.ivAvatar);
-            }
+            com.example.agendaacademica.utils.GlideUtils.cargarFotoPerfil(holder.itemView.getContext(), u.getFotoUrl(), holder.ivAvatar);
 
             holder.btnDelete.setOnClickListener(v -> eliminarUsuario(u));
             holder.btnEdit.setOnClickListener(v -> editarUsuario(u));
@@ -208,8 +206,8 @@ public class AdminActivity extends BaseActivity {
 
         class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvName, tvEmail, tvRol;
-            ImageView ivAvatar;
-            View btnEdit, btnDelete;
+            ShapeableImageView ivAvatar;
+            MaterialButton btnEdit, btnDelete;
 
             ViewHolder(@NonNull View itemView) {
                 super(itemView);

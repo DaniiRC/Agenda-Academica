@@ -237,6 +237,17 @@ public class AjustesActivity extends BaseActivity {
 
         int seleccionado = 0;
         String idiomaActual = session.obtenerIdioma();
+        
+        // Si no hay idioma guardado, usamos el del sistema o el activo en la App
+        if (idiomaActual == null) {
+            LocaleListCompat current = AppCompatDelegate.getApplicationLocales();
+            if (!current.isEmpty()) {
+                idiomaActual = current.get(0).getLanguage();
+            } else {
+                idiomaActual = java.util.Locale.getDefault().getLanguage();
+            }
+        }
+
         for (int i = 0; i < codigos.length; i++) {
             if (codigos[i].equals(idiomaActual)) {
                 seleccionado = i;

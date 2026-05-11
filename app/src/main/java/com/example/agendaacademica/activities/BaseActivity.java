@@ -20,6 +20,7 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        SessionManager.aplicarTemaGlobal(this);
         super.onCreate(savedInstanceState);
         session = new SessionManager(this);
     }

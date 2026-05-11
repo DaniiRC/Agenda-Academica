@@ -65,10 +65,10 @@ public class CalendarioAdapter extends RecyclerView.Adapter<CalendarioAdapter.Ca
 
                 // 2. Color especial para "Hoy" si no está seleccionado
                 if (esHoy) {
-                    holder.tvDiaCalendario.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.color_secondary));
+                    holder.tvDiaCalendario.setTextColor(androidx.core.content.ContextCompat.getColor(holder.itemView.getContext(), R.color.color_secondary));
                     holder.tvDiaCalendario.setTypeface(null, android.graphics.Typeface.BOLD);
                 } else {
-                    holder.tvDiaCalendario.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_main));
+                    holder.tvDiaCalendario.setTextColor(androidx.core.content.ContextCompat.getColor(holder.itemView.getContext(), R.color.text_main));
                     holder.tvDiaCalendario.setTypeface(null, android.graphics.Typeface.NORMAL);
                 }
             }

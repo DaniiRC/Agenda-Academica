@@ -353,12 +353,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="IMPARTIDA POR"
+                        android:text="@string/impartida_por"
                         android:textColor="@color/on_surface_variant"
                         android:textSize="10sp"
                         android:textStyle="bold"
-                        android:letterSpacing="0.08"
-                        tools:ignore="HardcodedText" />
+                        android:letterSpacing="0.08" />
 
                     <TextView
                         android:id="@+id/tvNombreProfesor"
@@ -417,12 +416,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="GESTIÓN DE LA CLASE"
+                    android:text="@string/gestion_clase_mayus"
                     android:textColor="@color/on_surface_variant"
                     android:textSize="10sp"
                     android:textStyle="bold"
-                    android:letterSpacing="0.08"
-                    tools:ignore="HardcodedText" />
+                    android:letterSpacing="0.08" />
 
                 <!-- Edit Fields Row -->
                 <LinearLayout
@@ -446,10 +444,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="Editar nombre, foto o descripción"
+                        android:text="@string/editar_clase_campos"
                         android:textColor="@color/text_main"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText" />
+                        android:textSize="14sp" />
                 </LinearLayout>
 
                 <!-- New Event Row -->
@@ -474,10 +471,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="12dp"
-                        android:text="Añadir nuevo evento / tarea"
+                        android:text="@string/anadir_nuevo_evento_tarea"
                         android:textColor="@color/text_main"
-                        android:textSize="14sp"
-                        tools:ignore="HardcodedText" />
+                        android:textSize="14sp" />
                 </LinearLayout>
             </LinearLayout>
 

@@ -201,4 +201,15 @@
     <string name="error_conexion_titulo">Ups, no hay conexión</string>
     <string name="error_conexion_msg">No hemos podido conectar con el servidor.\nComprueba tu internet o inténtalo más tarde.</string>
     <string name="reintentar">Reintentar</string>
+    <string name="panel_administracion">Panel de Administración</string>
+    <string name="panel_administracion_desc">Gestiona usuarios y permisos del sistema.</string>
+    <string name="impartida_por">IMPARTIDA POR</string>
+    <string name="gestion_clase_mayus">GESTIÓN DE LA CLASE</string>
+    <string name="editar_clase_campos">Editar nombre, foto o descripción</string>
+    <string name="anadir_nuevo_evento_tarea">Añadir nuevo evento / tarea</string>
+    <string name="configuracion_clase">Configuración de Clase</string>
+    <string name="gestion_miembros_mayus">GESTIÓN DE MIEMBROS</string>
+    <string name="guardar_cambios">Guardar Cambios</string>
+    <string name="codigo_formato">Código: %1$s</string>
+    <string name="admin_mayus">ADMIN</string>
 </resources>

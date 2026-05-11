@@ -68,14 +68,11 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/bg_logo_bubble"
                     android:layout_marginBottom="24dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
-                        android:text="A"
-                        android:textColor="@color/login_primary"
-                        android:textSize="28sp"
-                        android:textStyle="normal" />
+                        android:src="@mipmap/ic_launcher" />
                 </FrameLayout>
 
                 <TextView
@@ -177,7 +174,7 @@
                             android:layout_height="match_parent"
                             android:background="@null"
                             android:hint="estudiante@gmail.com"
-                            android:textColorHint="#80FFFFFF"
+                            android:textColorHint="@color/login_outline"
                             android:textColor="@color/login_on_surface"
                             android:textSize="14sp"
                             android:paddingStart="48dp"
@@ -224,7 +221,7 @@
                             android:paddingStart="48dp"
                             android:paddingEnd="52dp"
                             android:textColor="@color/login_on_surface"
-                            android:textColorHint="#80FFFFFF"
+                            android:textColorHint="@color/login_outline"
                             android:textSize="14sp" />
 
                         <ImageView

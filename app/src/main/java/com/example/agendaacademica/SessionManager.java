@@ -136,7 +136,20 @@ public class SessionManager {
      * Elimina todos los datos de sesión almacenados.
      */
     public void cerrarSesion() {
-        editor.clear().apply();
+        boolean modoClaro = esModoClaro();
+        String idioma = obtenerIdioma();
+        boolean haptic = hapticFeedbackActivo();
+        boolean anims = animacionesActivas();
+        
+        editor.clear();
+        
+        // Restauramos configuraciones que no son de la sesión sino de la App
+        guardarModoClaro(modoClaro);
+        guardarIdioma(idioma);
+        guardarHapticFeedback(haptic);
+        guardarAnimacionesActivas(anims);
+        
+        editor.apply();
     }
 
     /**
@@ -175,7 +188,7 @@ public class SessionManager {
     }
 
     public String obtenerIdioma() {
-        return prefs.getString(KEY_IDIOMA, "es");
+        return prefs.getString(KEY_IDIOMA, null);
     }
 
     /**
@@ -221,5 +234,18 @@ public class SessionManager {
 
     public boolean modoDaltonicoActivo() {
         return prefs.getBoolean(KEY_COLOR_BLIND, false);
+    }
+
+    /**
+     * Aplica el modo noche (claro/oscuro) de forma global en la aplicación.
+     * @param context Contexto necesario para acceder a las preferencias.
+     */
+    public static void aplicarTemaGlobal(Context context) {
+        SessionManager sm = new SessionManager(context);
+        boolean esClaro = sm.esModoClaro();
+        androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode(
+                esClaro ? androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO 
+                        : androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
+        );
     }
 }

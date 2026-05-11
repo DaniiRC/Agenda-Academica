@@ -415,11 +415,8 @@ public class LoginActivity extends BaseActivity {
      * Redirige al usuario según su rol (ADMIN o USER).
      */
     private void redirigirSegunRol() {
-        if (session.esAdmin()) {
-            startActivity(new Intent(this, AdminActivity.class));
-        } else {
-            startActivity(new Intent(this, MainActivity.class));
-        }
+        // Ahora siempre vamos al Main, los admins verán su panel integrado
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 

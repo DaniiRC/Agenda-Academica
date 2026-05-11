@@ -24,4 +24,14 @@
     <color name="tag_admin_text">#818CF8</color>
     <color name="tag_proyecto_bg">#20FFD60A</color>
     <color name="tag_proyecto_text">#FFD60A</color>
+
+    <!-- COLORES LOGIN (MODO OSCURO) -->
+    <color name="login_bg">#0A0A0A</color>
+    <color name="login_surface">#161618</color>
+    <color name="login_surface_high">#2a2a2a</color>
+    <color name="login_primary">#6366F1</color>
+    <color name="login_on_surface">#E5E2E1</color>
+    <color name="login_on_surface_variant">#ffffff</color>
+    <color name="login_outline_variant">#353534</color>
+    <color name="login_outline">#ffffff</color>
 </resources>

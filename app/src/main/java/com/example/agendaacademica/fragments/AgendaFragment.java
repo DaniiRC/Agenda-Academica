@@ -70,7 +70,7 @@ public class AgendaFragment extends Fragment implements CalendarioAdapter.OnItem
     private SessionManager session;
     private SwipeRefreshLayout swipeRefresh;
     private DataSyncViewModel dataSyncViewModel;
-    private View cardErrorBanner;
+    private View cardErrorBanner, cardAdminPanel;
     private EventoViewModel eventoViewModel;
     private final Gson gson = new Gson();
 
@@ -106,7 +106,15 @@ public class AgendaFragment extends Fragment implements CalendarioAdapter.OnItem
             if (refresh != null && refresh) cargarDatos();
         });
 
-        cardErrorBanner = view.findViewById(R.id.cardErrorBanner);
+        cardAdminPanel = view.findViewById(R.id.cardAdminPanel);
+        if (cardAdminPanel != null) {
+            cardAdminPanel.setOnClickListener(v -> {
+                if (ClickGuard.canClick()) {
+                    startActivity(new Intent(getContext(), com.example.agendaacademica.activities.AdminActivity.class));
+                }
+            });
+        }
+
         View btnRetry = view.findViewById(R.id.btnRetryBanner);
         if (btnRetry != null) btnRetry.setOnClickListener(v -> cargarDatos());
 
@@ -175,9 +183,14 @@ public class AgendaFragment extends Fragment implements CalendarioAdapter.OnItem
      * Actualiza el saludo y la foto de perfil en la cabecera.
      */
     private void actualizarDatosPerfil() {
-        tvSaludoAgenda.setText(String.format("Hola, %s", session.obtenerNombreUsuario()));
+        tvSaludoAgenda.setText(getString(R.string.hola_usuario, session.obtenerNombreUsuario()));
         if (ivPerfilAgenda != null) {
             GlideUtils.cargarFotoPerfil(requireContext(), session.obtenerFotoUsuario(), ivPerfilAgenda);
+        }
+        
+        // Mostrar panel de admin si el usuario tiene rol ADMIN
+        if (cardAdminPanel != null) {
+            cardAdminPanel.setVisibility(session.esAdmin() ? View.VISIBLE : View.GONE);
         }
     }
 

@@ -33,7 +33,7 @@
 
     <!-- BOTTOM NAVIGATION -->
     <color name="nav_bg">#FFFFFF</color>
-    <color name="nav_item_unselected">#8E8E93</color>
+    <color name="nav_item_unselected">#6B7280</color>
     <color name="nav_item_selected">#4F46E5</color>
 
     <!-- OTROS COLORES ESPECÍFICOS -->
@@ -62,13 +62,13 @@
     <color name="text_primary">@color/text_main</color>
     <color name="text_secondary">@color/text_sub</color>
     <color name="bg_cat_seleccionada">@color/primary</color>
-    <!-- COLORES LOGIN ACTUALIZADOS -->
-    <color name="login_bg">#0A0A0A</color>
-    <color name="login_surface">#161618</color>
-    <color name="login_surface_high">#2a2a2a</color>
+    <!-- COLORES LOGIN DINÁMICOS (POR DEFECTO: MODO CLARO) -->
+    <color name="login_bg">#F5F5F7</color>
+    <color name="login_surface">#FFFFFF</color>
+    <color name="login_surface_high">#F2F2F7</color>
     <color name="login_primary">#4F46E5</color>
-    <color name="login_on_surface">#E5E2E1</color>
-    <color name="login_on_surface_variant">#ffffff</color>
-    <color name="login_outline_variant">#353534</color>
-    <color name="login_outline">#ffffff</color>
+    <color name="login_on_surface">#1C1C1E</color>
+    <color name="login_on_surface_variant">#575757</color>
+    <color name="login_outline_variant">#E5E5EA</color>
+    <color name="login_outline">#757575</color>
 </resources>

@@ -119,13 +119,13 @@ public class GrupoAdapter extends RecyclerView.Adapter<GrupoAdapter.ViewHolder> 
             }
 
             String info = (grupo.getCodigo() != null && !grupo.getCodigo().isEmpty()) 
-                ? "Código: " + grupo.getCodigo() 
+                ? itemView.getContext().getString(R.string.codigo_formato, grupo.getCodigo()) 
                 : "";
             tvInfoSecundaria.setText(info);
             tvInfoSecundaria.setVisibility(info.isEmpty() ? View.GONE : View.VISIBLE);
 
             int numMiembros = grupo.getAlumnos() != null ? grupo.getAlumnos().size() : 0;
-            tvCountParticipantes.setText(String.format(Locale.getDefault(), "%d miembros", numMiembros));
+            tvCountParticipantes.setText(itemView.getContext().getString(R.string.miembros_formato, numMiembros));
 
             // Gestión de la etiqueta ADMIN
             com.example.agendaacademica.SessionManager session = new com.example.agendaacademica.SessionManager(itemView.getContext());

@@ -61,7 +61,7 @@ public class GrupoFragment extends Fragment {
     private Grupo grupoEncontrado;
     private SessionManager session;
     private ApiService apiService;
-    private String colorSeleccionado = "#3B36DF";
+    private String colorSeleccionado = "#4F46E5"; // Color primario por defecto
     private List<String> asignaturasNuevas = new ArrayList<>();
 
     private Uri imageUri;
@@ -206,7 +206,7 @@ public class GrupoFragment extends Fragment {
             }
         });
 
-        configurarSelectorColores(dialogView);
+        // configurarSelectorColores removido por petición del usuario
 
         btnGuardar.setOnClickListener(v -> {
             String nombre = etNombre.getText().toString().trim();
@@ -221,39 +221,7 @@ public class GrupoFragment extends Fragment {
         dialog.show();
     }
 
-    private void configurarSelectorColores(View v) {
-        MaterialCardView cBlue = v.findViewById(R.id.colorBlue);
-        MaterialCardView cRed = v.findViewById(R.id.colorRed);
-        MaterialCardView cGreen = v.findViewById(R.id.colorGreen);
-        MaterialCardView cPurple = v.findViewById(R.id.colorPurple);
-        MaterialCardView cOrange = v.findViewById(R.id.colorOrange);
-
-        colorSeleccionado = "#3B36DF";
-
-        View.OnClickListener listener = view -> {
-            cBlue.setStrokeWidth(0); 
-            cRed.setStrokeWidth(0); 
-            cGreen.setStrokeWidth(0); 
-            cPurple.setStrokeWidth(0); 
-            cOrange.setStrokeWidth(0);
-            
-            ((MaterialCardView)view).setStrokeWidth(6);
-            ((MaterialCardView)view).setStrokeColor(ContextCompat.getColor(requireContext(), R.color.text_main));
-            
-            int id = view.getId();
-            if (id == R.id.colorBlue) colorSeleccionado = "#3B36DF";
-            else if (id == R.id.colorRed) colorSeleccionado = "#EF4444";
-            else if (id == R.id.colorGreen) colorSeleccionado = "#22C55E";
-            else if (id == R.id.colorPurple) colorSeleccionado = "#A855F7";
-            else if (id == R.id.colorOrange) colorSeleccionado = "#F59E0B";
-        };
-
-        cBlue.setOnClickListener(listener);
-        cRed.setOnClickListener(listener);
-        cGreen.setOnClickListener(listener);
-        cPurple.setOnClickListener(listener);
-        cOrange.setOnClickListener(listener);
-    }
+    // configurarSelectorColores removido por petición del usuario
 
     private void mostrarOpcionesImagen() {
         String[] options = {"Cámara", "Galería"};
