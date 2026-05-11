@@ -37,6 +37,32 @@ android {
         resources.excludes.add("META-INF/LICENSE*")
         resources.excludes.add("META-INF/NOTICE*")
     }
+
+    project.tasks.register<Javadoc>("generateJavadoc") {
+        description = "Genera Javadoc para el proyecto"
+        group = "documentation"
+        
+        source = fileTree("src/main/java")
+        
+        doFirst {
+            val debugVariant = applicationVariants.find { it.name == "debug" }
+            if (debugVariant != null) {
+                classpath = debugVariant.javaCompileProvider.get().classpath + 
+                            files(bootClasspath.joinToString(File.pathSeparator))
+            }
+        }
+
+        options {
+            encoding = "UTF-8"
+            (this as StandardJavadocDocletOptions).apply {
+                charSet("UTF-8")
+                locale = "es_ES"
+                addStringOption("Xdoclint:none", "-quiet")
+            }
+        }
+
+        setDestinationDir(file("${project.layout.buildDirectory.get()}/outputs/javadoc"))
+    }
 }
 
 dependencies {
