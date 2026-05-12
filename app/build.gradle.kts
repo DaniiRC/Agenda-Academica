@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.example.agendaacademica"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.agendaacademica"
