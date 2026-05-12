@@ -57,6 +57,7 @@ import retrofit2.Response;
 public class GrupoFragment extends Fragment {
 
     private EditText etClassCode;
+    private com.google.android.material.textfield.TextInputLayout tilClassCode;
     private MaterialCardView cardGrupo;
     private TextView tvNombre, tvMiembrosGrupo;
     private ProgressBar progressBar;
@@ -115,6 +116,16 @@ public class GrupoFragment extends Fragment {
 
     private void initViews(View view) {
         etClassCode = view.findViewById(R.id.etClassCode);
+        tilClassCode = view.findViewById(R.id.tilClassCode);
+
+        // Limpiar error al escribir
+        etClassCode.addTextChangedListener(new android.text.TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tilClassCode.setError(null);
+            }
+            @Override public void afterTextChanged(android.text.Editable s) {}
+        });
         cardGrupo = view.findViewById(R.id.cardGroupFound);
         tvNombre = view.findViewById(R.id.tvNombreGrupo);
         tvMiembrosGrupo = view.findViewById(R.id.tvMiembrosGrupo);
@@ -158,7 +169,7 @@ public class GrupoFragment extends Fragment {
                     tvMiembrosGrupo.setText(String.format(Locale.getDefault(), "Miembros: %d", miembros));
                     cardGrupo.setVisibility(View.VISIBLE);
                 } else {
-                    Toast.makeText(getContext(), "Grupo no encontrado", Toast.LENGTH_SHORT).show();
+                    tilClassCode.setError("El código no corresponde a ninguna clase");
                     cardGrupo.setVisibility(View.GONE);
                 }
             }
