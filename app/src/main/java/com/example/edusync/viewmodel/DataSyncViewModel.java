@@ -1,4 +1,4 @@
-﻿package com.example.edusync.viewmodel;
+package com.example.edusync.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

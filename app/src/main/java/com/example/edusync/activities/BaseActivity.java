@@ -1,4 +1,4 @@
-﻿package com.example.edusync.activities;
+package com.example.edusync.activities;
 
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;

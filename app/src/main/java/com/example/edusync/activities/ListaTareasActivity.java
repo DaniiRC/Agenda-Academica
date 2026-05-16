@@ -1,4 +1,4 @@
-﻿package com.example.edusync.activities;
+package com.example.edusync.activities;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

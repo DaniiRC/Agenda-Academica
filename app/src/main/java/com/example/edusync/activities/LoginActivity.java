@@ -1,4 +1,4 @@
-﻿package com.example.edusync.activities;
+package com.example.edusync.activities;
 
 import android.animation.LayoutTransition;
 import android.content.Intent;

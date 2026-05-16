@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Agenda Academica</string>
+    <string name="app_name">EduSync</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="open_nav">Abrir menú</string>
@@ -83,7 +83,7 @@
     <string name="borrar_todo">Borrar Todo</string>
     <string name="eliminar_tarea">Eliminar tarea</string>
     <string name="confirmar_eliminar_tarea">¿Estás seguro de que quieres eliminar esta tarea? Esta acción no se puede deshacer.</string>
-    <string name="tu_agenda_subtitulo">Tu agenda académica inteligente</string>
+    <string name="tu_agenda_subtitulo">Tu compañero académico inteligente</string>
     <string name="tarea_completada">Tarea completada: %1$s</string>
     <string name="tarea_eliminada">Tarea eliminada</string>
     <string name="deshacer">DESHACER</string>

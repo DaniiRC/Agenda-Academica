@@ -1,4 +1,4 @@
-﻿package com.example.edusync.services;
+package com.example.edusync.services;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -13,8 +13,8 @@ import com.example.edusync.R;
 
 /**
  * Servicio en primer plano que gestiona el temporizador Pomodoro.
- * Permite mantener el contador activo aunque la aplicación esté en segundo plano,
- * mostrando una notificación persistente mientras el temporizador está en ejecución.
+ * Permite mantener el contador activo aunque la aplicaciÃ³n estÃ© en segundo plano,
+ * mostrando una notificaciÃ³n persistente mientras el temporizador estÃ¡ en ejecuciÃ³n.
  */
 public class PomodoroService extends Service {
     private final IBinder binder = new PomodoroBinder();
@@ -42,10 +42,10 @@ public class PomodoroService extends Service {
     }
 
     /**
-     * Inicia el temporizador con la duración indicada.
+     * Inicia el temporizador con la duraciÃ³n indicada.
      * Si ya existe un temporizador activo, se cancela antes de iniciar el nuevo.
      *
-     * @param durationInMillis Duración del temporizador en milisegundos.
+     * @param durationInMillis DuraciÃ³n del temporizador en milisegundos.
      */
     public void startTimer(long durationInMillis) {
         if (timer != null) timer.cancel();

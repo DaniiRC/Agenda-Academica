@@ -1,4 +1,4 @@
-﻿package com.example.edusync.utils;
+package com.example.edusync.utils;
 
 import android.content.Context;
 import android.widget.ImageView;

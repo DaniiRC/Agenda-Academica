@@ -1,4 +1,4 @@
-﻿package com.example.edusync;
+package com.example.edusync;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,24 +12,24 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 /**
- * Receptor de radiodifusión (BroadcastReceiver) encargado de gestionar las alarmas del sistema.
- * Cuando se activa una alarma programada, este receptor crea y muestra una notificación local
- * en la barra de estado, permitiendo la redirección directa al detalle del evento.
+ * Receptor de radiodifusiÃ³n (BroadcastReceiver) encargado de gestionar las alarmas del sistema.
+ * Cuando se activa una alarma programada, este receptor crea y muestra una notificaciÃ³n local
+ * en la barra de estado, permitiendo la redirecciÃ³n directa al detalle del evento.
  */
 public class NotificacionReceiver extends BroadcastReceiver {
 
     private static final String CHANNEL_ID = "CanalEduSync";
 
     /**
-     * Método ejecutado cuando se recibe el broadcast de la alarma.
-     * Recupera los parámetros del evento y construye la notificación visual.
+     * MÃ©todo ejecutado cuando se recibe el broadcast de la alarma.
+     * Recupera los parÃ¡metros del evento y construye la notificaciÃ³n visual.
      * 
      * @param context El contexto en el que se ejecuta el receptor.
-     * @param intent  El intent que contiene los datos del recordatorio (título, contenido, ID).
+     * @param intent  El intent que contiene los datos del recordatorio (tÃ­tulo, contenido, ID).
      */
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("NotificacionReceiver", "¡ALARMA RECIBIDA! Procesando notificación...");
+        Log.d("NotificacionReceiver", "Â¡ALARMA RECIBIDA! Procesando notificaciÃ³n...");
 
         String titulo = intent.getStringExtra("TITULO");
         String contenido = intent.getStringExtra("CONTENIDO");
@@ -61,7 +61,7 @@ public class NotificacionReceiver extends BroadcastReceiver {
 
         if (notificationManager != null) {
             notificationManager.notify((int) idEvento, builder.build());
-            Log.d("NotificacionReceiver", "Notificación enviada para evento ID: " + idEvento);
+            Log.d("NotificacionReceiver", "NotificaciÃ³n enviada para evento ID: " + idEvento);
         }
     }
 

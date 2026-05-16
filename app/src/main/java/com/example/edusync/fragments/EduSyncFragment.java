@@ -1,4 +1,4 @@
-﻿package com.example.edusync.fragments;
+package com.example.edusync.fragments;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -57,8 +57,8 @@ import retrofit2.Response;
 /**
  * Fragmento principal que representa la EduSync.
  * Integra un calendario interactivo con una lista de tareas diaria.
- * Soporta gestos de deslizamiento (swipe) para completar o eliminar tareas de forma rápida,
- * sincronización en tiempo real con el servidor y gestión de caché offline.
+ * Soporta gestos de deslizamiento (swipe) para completar o eliminar tareas de forma rÃ¡pida,
+ * sincronizaciÃ³n en tiempo real con el servidor y gestiÃ³n de cachÃ© offline.
  */
 public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnItemListener, TareaAdapter.OnTareaLongClickListener {
 
@@ -78,7 +78,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     private final List<EventoLocal> listaFiltradaTareas = new ArrayList<>();
 
     /**
-     * Inicializa el fragmento y configura los ViewModels necesarios para la sincronización.
+     * Inicializa el fragmento y configura los ViewModels necesarios para la sincronizaciÃ³n.
      * 
      * @param savedInstanceState Estado previo del fragmento.
      */
@@ -188,7 +188,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
             GlideUtils.cargarFotoPerfil(requireContext(), session.obtenerFotoUsuario(), ivPerfilEduSync);
         }
         
-        // El panel de administración solo es visible para usuarios con rol ADMIN.
+        // El panel de administraciÃ³n solo es visible para usuarios con rol ADMIN.
         if (cardAdminPanel != null) {
             cardAdminPanel.setVisibility(session.esAdmin() ? View.VISIBLE : View.GONE);
         }
@@ -224,7 +224,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Carga los datos de la caché si no hay conexión a internet.
+     * Carga los datos de la cachÃ© si no hay conexiÃ³n a internet.
      */
     private void cargarCacheYMostrarError(boolean porFalloRed) {
         if (porFalloRed) mostrarError();
@@ -251,7 +251,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Procesa la lista de eventos recibida y la convierte al formato local para visualización.
+     * Procesa la lista de eventos recibida y la convierte al formato local para visualizaciÃ³n.
      */
     private void procesarEventos(List<Evento> eventos) {
         listaEventos.clear();
@@ -279,7 +279,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Configura el adaptador del calendario y marca los días que contienen tareas.
+     * Configura el adaptador del calendario y marca los dÃ­as que contienen tareas.
      */
     private void configurarCalendario() {
         ArrayList<String> dias = diasEnMesArray(fechaSeleccionada);
@@ -331,7 +331,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Filtra la lista de tareas para mostrar únicamente las correspondientes al día seleccionado.
+     * Filtra la lista de tareas para mostrar Ãºnicamente las correspondientes al dÃ­a seleccionado.
      */
     private void actualizarListaTareas() {
         if (rvTareas == null) return;
@@ -444,7 +444,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Envía la solicitud al servidor para marcar una tarea como completada.
+     * EnvÃ­a la solicitud al servidor para marcar una tarea como completada.
      */
     private void marcarComoCompletado(EventoLocal evento, int position) {
         RetrofitClient.getApiService().marcarEventoCompletado(evento.id, session.getUserId()).enqueue(new Callback<Void>() {
@@ -461,7 +461,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Elimina visualmente la tarea y muestra un Snackbar con la opción de deshacer la acción.
+     * Elimina visualmente la tarea y muestra un Snackbar con la opciÃ³n de deshacer la acciÃ³n.
      */
     private void prepararBorradoConDeshacer(EventoLocal evento, int position) {
         listaFiltradaTareas.remove(evento);
@@ -512,7 +512,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Clase de datos que representa un evento simplificado para la lógica interna del fragmento.
+     * Clase de datos que representa un evento simplificado para la lÃ³gica interna del fragmento.
      */
     public static class EventoLocal {
         public Long id; public LocalDate fecha; public String titulo; public String hora;

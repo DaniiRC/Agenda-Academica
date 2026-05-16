@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Agenda Academica"
+rootProject.name = "EduSync"
 include(":app")
  

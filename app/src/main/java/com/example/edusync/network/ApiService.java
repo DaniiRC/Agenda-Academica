@@ -1,4 +1,4 @@
-﻿package com.example.edusync.network;
+package com.example.edusync.network;
 
 import com.example.edusync.model.Asignatura;
 import com.example.edusync.model.Evento;

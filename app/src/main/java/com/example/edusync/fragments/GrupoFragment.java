@@ -1,4 +1,4 @@
-﻿package com.example.edusync.fragments;
+package com.example.edusync.fragments;
 
 import android.content.Intent;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-﻿package com.example.edusync.model;
+package com.example.edusync.model;
 
 public class Usuario {
     private Long id;

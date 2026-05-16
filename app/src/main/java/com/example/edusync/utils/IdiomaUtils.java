@@ -1,4 +1,4 @@
-﻿package com.example.edusync.utils;
+package com.example.edusync.utils;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -15,6 +15,7 @@ import java.util.Locale;
  *
  * @deprecated Para nuevos desarrollos, prefer AppCompatDelegate.setApplicationLocales().
  */
+@Deprecated
 public class IdiomaUtils {
 
     /**

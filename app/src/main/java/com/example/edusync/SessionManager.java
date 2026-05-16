@@ -1,4 +1,4 @@
-﻿package com.example.edusync;
+package com.example.edusync;
 
 import android.content.Context;
 import android.content.SharedPreferences;

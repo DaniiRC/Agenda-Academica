@@ -1,4 +1,4 @@
-﻿package com.example.edusync.network;
+package com.example.edusync.network;
 
 import android.content.Context;
 import com.example.edusync.SessionManager;

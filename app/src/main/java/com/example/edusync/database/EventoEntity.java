@@ -1,4 +1,4 @@
-﻿package com.example.edusync.database;
+package com.example.edusync.database;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

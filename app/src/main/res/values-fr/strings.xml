@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Agenda Académique</string>
+    <string name="app_name">EduSync</string>
     <string name="open_nav">Ouvrir navigation</string>
     <string name="close_nav">Fermer navigation</string>
     <string name="unirse_clase">Rejoindre la classe</string>

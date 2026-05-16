@@ -1,4 +1,4 @@
-﻿package com.example.edusync.database;
+package com.example.edusync.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

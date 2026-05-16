@@ -1,4 +1,4 @@
-﻿package com.example.edusync.model;
+package com.example.edusync.model;
 
 /**
  * Modelo de Subtarea sincronizado con el Backend (Spring Boot)
