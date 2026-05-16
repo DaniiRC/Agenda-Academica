@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.agendaacademica"
+    namespace = "com.example.edusync"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.agendaacademica"
+        applicationId = "com.example.edusync"
         minSdk = 26
         targetSdk = 35
         versionCode = 1

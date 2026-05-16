@@ -1,4 +1,4 @@
-package com.example.edusync;
+﻿package com.example.edusync;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -52,7 +52,7 @@ public class NotificacionReceiver extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_school)
-                .setContentTitle(titulo != null ? titulo : "Agenda Académica")
+                .setContentTitle(titulo != null ? titulo : "EduSync")
                 .setContentText(contenido != null ? contenido : "Tienes una tarea pendiente ahora")
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
@@ -77,7 +77,7 @@ public class NotificacionReceiver extends BroadcastReceiver {
                     "Avisos de Eventos",
                     NotificationManager.IMPORTANCE_HIGH
             );
-            channel.setDescription("Notificaciones para recordatorios de la Agenda Académica");
+            channel.setDescription("Notificaciones para recordatorios de la EduSync");
             channel.enableVibration(true);
             manager.createNotificationChannel(channel);
         }

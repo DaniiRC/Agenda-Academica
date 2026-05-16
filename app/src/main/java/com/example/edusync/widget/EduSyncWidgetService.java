@@ -1,4 +1,4 @@
-package com.example.edusync.widget;
+﻿package com.example.edusync.widget;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,15 +16,15 @@ import java.util.List;
 public class EduSyncWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new AgendaDataProvider(this.getApplicationContext(), intent);
+        return new EduSyncDataProvider(this.getApplicationContext(), intent);
     }
 }
 
-class AgendaDataProvider implements RemoteViewsService.RemoteViewsFactory {
+class EduSyncDataProvider implements RemoteViewsService.RemoteViewsFactory {
     private List<EventoEntity> listaTareas = new ArrayList<>();
     private Context context;
 
-    public AgendaDataProvider(Context context, Intent intent) {
+    public EduSyncDataProvider(Context context, Intent intent) {
         this.context = context;
     }
 

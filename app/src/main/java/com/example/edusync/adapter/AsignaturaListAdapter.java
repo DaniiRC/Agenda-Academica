@@ -1,4 +1,4 @@
-package com.example.edusync.adapter;
+﻿package com.example.edusync.adapter;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;

@@ -1,4 +1,4 @@
-package com.example.edusync.fragments;
+﻿package com.example.edusync.fragments;
 
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -55,15 +55,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Fragmento principal que representa la Agenda Académica.
+ * Fragmento principal que representa la EduSync.
  * Integra un calendario interactivo con una lista de tareas diaria.
  * Soporta gestos de deslizamiento (swipe) para completar o eliminar tareas de forma rápida,
  * sincronización en tiempo real con el servidor y gestión de caché offline.
  */
 public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnItemListener, TareaAdapter.OnTareaLongClickListener {
 
-    private TextView tvMesAnioCalendario, tvTituloPagina, tvSaludoAgenda;
-    private ImageView ivPerfilAgenda;
+    private TextView tvMesAnioCalendario, tvTituloPagina, tvSaludoEduSync;
+    private ImageView ivPerfilEduSync;
     private RecyclerView recyclerViewCalendario, rvTareas;
     private TareaAdapter tareaAdapter;
     private LocalDate fechaSeleccionada;
@@ -102,7 +102,7 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
         initViews(view);
         configurarCalendario();
 
-        dataSyncViewModel.getRefreshAgenda().observe(getViewLifecycleOwner(), refresh -> {
+        dataSyncViewModel.getRefreshEduSync().observe(getViewLifecycleOwner(), refresh -> {
             if (refresh != null && refresh) cargarDatos();
         });
 
@@ -125,10 +125,10 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
      * Vincula las vistas y configura los listeners de los botones.
      */
     private void initViews(View v) {
-        tvSaludoAgenda = v.findViewById(R.id.tvSaludoAgenda);
+        tvSaludoEduSync = v.findViewById(R.id.tvSaludoEduSync);
         tvMesAnioCalendario = v.findViewById(R.id.tvMesAnioCalendario);
         tvTituloPagina = v.findViewById(R.id.tvTituloPagina);
-        ivPerfilAgenda = v.findViewById(R.id.ivPerfilAgenda);
+        ivPerfilEduSync = v.findViewById(R.id.ivPerfilEduSync);
         
         recyclerViewCalendario = v.findViewById(R.id.recyclerViewCalendario);
         rvTareas = v.findViewById(R.id.rvTareas);
@@ -183,9 +183,9 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
      * Actualiza el saludo y la foto de perfil en la cabecera.
      */
     private void actualizarDatosPerfil() {
-        tvSaludoAgenda.setText(getString(R.string.hola_usuario, session.obtenerNombreUsuario()));
-        if (ivPerfilAgenda != null) {
-            GlideUtils.cargarFotoPerfil(requireContext(), session.obtenerFotoUsuario(), ivPerfilAgenda);
+        tvSaludoEduSync.setText(getString(R.string.hola_usuario, session.obtenerNombreUsuario()));
+        if (ivPerfilEduSync != null) {
+            GlideUtils.cargarFotoPerfil(requireContext(), session.obtenerFotoUsuario(), ivPerfilEduSync);
         }
         
         // El panel de administración solo es visible para usuarios con rol ADMIN.

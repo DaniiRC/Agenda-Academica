@@ -1,4 +1,4 @@
-package com.example.edusync.utils;
+﻿package com.example.edusync.utils;
 
 import android.os.SystemClock;
 

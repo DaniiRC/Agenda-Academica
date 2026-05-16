@@ -1,4 +1,4 @@
-package com.example.edusync.activities;
+﻿package com.example.edusync.activities;
 
 import android.content.Intent;
 import android.os.Bundle;

@@ -1,4 +1,4 @@
-package com.example.edusync.database;
+﻿package com.example.edusync.database;
 
 import android.content.Context;
 

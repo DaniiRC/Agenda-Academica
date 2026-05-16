@@ -1,4 +1,4 @@
-package com.example.edusync.database;
+﻿package com.example.edusync.database;
 
 import android.app.Application;
 import android.util.Log;

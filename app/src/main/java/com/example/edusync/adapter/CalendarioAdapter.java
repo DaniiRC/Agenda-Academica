@@ -1,4 +1,4 @@
-package com.example.edusync.adapter;
+﻿package com.example.edusync.adapter;
 
 import android.util.TypedValue;
 import android.view.LayoutInflater;

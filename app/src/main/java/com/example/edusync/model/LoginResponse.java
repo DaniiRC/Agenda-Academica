@@ -1,4 +1,4 @@
-package com.example.edusync.model;
+﻿package com.example.edusync.model;
 
 /**
  * DTO que representa la respuesta del backend al hacer login o registro.

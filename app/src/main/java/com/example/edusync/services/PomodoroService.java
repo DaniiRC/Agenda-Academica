@@ -1,4 +1,4 @@
-package com.example.edusync.services;
+﻿package com.example.edusync.services;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -69,7 +69,7 @@ public class PomodoroService extends Service {
 
     private Notification getNotification(String content) {
         return new NotificationCompat.Builder(this, "pomodoro_channel")
-                .setContentTitle("Agenda Académica")
+                .setContentTitle("EduSync")
                 .setContentText(content)
                 .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
                 .build();

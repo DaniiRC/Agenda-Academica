@@ -1,4 +1,4 @@
-package com.example.edusync.model;
+﻿package com.example.edusync.model;
 
 import java.io.Serializable;
 import java.util.List;

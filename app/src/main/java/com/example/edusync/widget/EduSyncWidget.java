@@ -1,4 +1,4 @@
-package com.example.edusync.widget;
+﻿package com.example.edusync.widget;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;

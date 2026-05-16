@@ -1,4 +1,4 @@
-package com.example.edusync.adapter;
+﻿package com.example.edusync.adapter;
 
 import android.content.Context;
 import android.content.Intent;
