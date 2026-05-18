@@ -107,7 +107,7 @@
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tareas" />
+            android:text="Deberes" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipTypeProject"
@@ -117,11 +117,11 @@
             android:text="Proyecto" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipTypeStudy"
+            android:id="@+id/chipTypeExam"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Estudio" />
+            android:text="Examen" />
 
     </com.google.android.material.chip.ChipGroup>
 

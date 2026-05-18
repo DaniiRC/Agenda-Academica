@@ -77,7 +77,7 @@ public class DetalleEventoActivity extends BaseActivity {
         session = new SessionManager(this);
         eventoId = getIntent().getLongExtra("EVENTO_ID", -1);
         boolean esPasada = getIntent().getBooleanExtra("ES_PASADA", false);
-        this.isAdmin = getIntent().getBooleanExtra("IS_ADMIN", true);
+        this.isAdmin = getIntent().getBooleanExtra("IS_ADMIN", false);
 
         initViews();
         configurarBotones(esPasada, isAdmin);
@@ -154,12 +154,16 @@ public class DetalleEventoActivity extends BaseActivity {
         btnBack.setOnClickListener(v -> finish());
         
         boolean isCompletada = (eventoActual != null && eventoActual.isCompletado());
+        // Un alumno no puede completar un evento de grupo: solo el admin lo hace para todos
+        boolean esEventoDeGrupo = (eventoActual != null && eventoActual.getGrupo() != null);
+        boolean alumnoEnGrupo = esEventoDeGrupo && !isAdmin;
 
         if (esPasada || !isAdmin || isCompletada) {
             btnDelete.setVisibility(View.GONE);
             btnEdit.setVisibility(View.GONE);
             
-            if (esPasada || isCompletada) {
+            if (esPasada || isCompletada || alumnoEnGrupo) {
+                // Ocultar completar: pasada, ya completada, o alumno en tarea de grupo
                 btnCompletarEvento.setVisibility(View.GONE);
             } else {
                 btnCompletarEvento.setOnClickListener(v -> completarEvento());
@@ -207,10 +211,25 @@ public class DetalleEventoActivity extends BaseActivity {
         RetrofitClient.getApiService().obtenerEventoPorId(eventoId).enqueue(new Callback<Evento>() {
             @Override
             public void onResponse(Call<Evento> call, Response<Evento> response) {
-                if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
                 if (response.isSuccessful() && response.body() != null) {
                     eventoActual = response.body();
-                    poblarInterfaz(eventoActual);
+                    
+                    // Recalcular los permisos dinámicamente según el creador
+                    if (eventoActual.getCreador() != null) {
+                        isAdmin = eventoActual.getCreador().getId().equals(session.getUserId());
+                    }
+                    
+                    // Actualizar botones de la barra superior (Editar / Borrar)
+                    configurarBotones(getIntent().getBooleanExtra("ES_PASADA", false), isAdmin);
+
+                    if (eventoActual.getGrupo() != null && !isAdmin) {
+                        cargarNotaIndividual();
+                    } else {
+                        if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
+                        poblarInterfaz(eventoActual);
+                    }
+                } else {
+                    if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
                 }
             }
             @Override public void onFailure(Call<Evento> call, Throwable t) {
@@ -264,18 +283,29 @@ public class DetalleEventoActivity extends BaseActivity {
 
         if (evento.getAsignatura() != null) {
             llNotaSection.setVisibility(View.VISIBLE);
-            if (evento.getNotaObtenida() != null) {
-                tvNotaValor.setText(String.format(Locale.getDefault(), "%.2f", evento.getNotaObtenida()));
-                btnEditarNota.setText(R.string.cambiar_nota);
-            } else {
-                tvNotaValor.setText(R.string.sin_calificar);
-                btnEditarNota.setText(R.string.poner_nota);
-            }
-            if (this.isAdmin) {
+            
+            if (this.isAdmin && evento.getGrupo() != null) {
+                // Modo Admin para grupo: ver lista de alumnos
+                tvNotaValor.setText(R.string.calificar_actividad);
                 btnEditarNota.setVisibility(View.VISIBLE);
-                btnEditarNota.setOnClickListener(v -> mostrarDialogoNota());
+                btnEditarNota.setText("Ver calificaciones");
+                btnEditarNota.setOnClickListener(v -> irACalificarAlumnos());
             } else {
-                btnEditarNota.setVisibility(View.GONE);
+                // Modo Alumno o Tarea Personal
+                if (evento.getNotaObtenida() != null) {
+                    tvNotaValor.setText(String.format(Locale.getDefault(), "%.2f", evento.getNotaObtenida()));
+                    btnEditarNota.setText(R.string.cambiar_nota);
+                } else {
+                    tvNotaValor.setText(R.string.sin_calificar);
+                    btnEditarNota.setText(R.string.poner_nota);
+                }
+                
+                if (this.isAdmin) { // Tarea personal (no grupo)
+                    btnEditarNota.setVisibility(View.VISIBLE);
+                    btnEditarNota.setOnClickListener(v -> mostrarDialogoNota());
+                } else {
+                    btnEditarNota.setVisibility(View.GONE);
+                }
             }
         } else {
             llNotaSection.setVisibility(View.GONE);
@@ -313,9 +343,9 @@ public class DetalleEventoActivity extends BaseActivity {
 
         construirSubtareas(evento.getSubtareas());
 
+        // Usar el isAdmin dinámico (ya calculado en cargarDatos), no el del Intent
         boolean esPasada = getIntent().getBooleanExtra("ES_PASADA", false);
-        boolean isAdmin = getIntent().getBooleanExtra("IS_ADMIN", true);
-        configurarBotones(esPasada, isAdmin);
+        configurarBotones(esPasada, this.isAdmin);
     }
 
     /**
@@ -533,6 +563,34 @@ public class DetalleEventoActivity extends BaseActivity {
             })
             .setNegativeButton(R.string.cancelar, null)
             .show();
+    }
+
+    private void irACalificarAlumnos() {
+        Intent intent = new Intent(this, CalificarAlumnosActivity.class);
+        intent.putExtra("EVENTO_ID", eventoId);
+        intent.putExtra("GRUPO_ID", eventoActual.getGrupo().getId());
+        startActivity(intent);
+    }
+
+    private void cargarNotaIndividual() {
+        RetrofitClient.getApiService().obtenerCalificacionDeUsuarioEnEvento(eventoId, session.getUserId()).enqueue(new Callback<com.example.edusync.model.Calificacion>() {
+            @Override
+            public void onResponse(Call<com.example.edusync.model.Calificacion> call, Response<com.example.edusync.model.Calificacion> response) {
+                if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
+                if (response.isSuccessful() && response.body() != null) {
+                    eventoActual.setNotaObtenida(response.body().getNota());
+                } else {
+                    eventoActual.setNotaObtenida(null); // Sin nota
+                }
+                poblarInterfaz(eventoActual);
+            }
+
+            @Override
+            public void onFailure(Call<com.example.edusync.model.Calificacion> call, Throwable t) {
+                if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
+                poblarInterfaz(eventoActual);
+            }
+        });
     }
 
     private void mostrarDialogoNota() {

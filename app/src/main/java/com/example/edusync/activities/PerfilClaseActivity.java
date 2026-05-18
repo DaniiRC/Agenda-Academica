@@ -339,8 +339,34 @@ public class PerfilClaseActivity extends AppCompatActivity {
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     listaEventosCache = response.body();
-                    tvCountTareas.setText(String.valueOf(listaEventosCache.size()));
-                    eventoAdapter.updateData(listaEventosCache);
+                    
+                    boolean isAdmin = profesorId != null && profesorId.equals(session.getUserId());
+                    if (!isAdmin) {
+                        // Si es alumno, obtener sus calificaciones reales y pegarlas en los eventos
+                        apiService.obtenerCalificacionesDeUsuarioEnGrupo(claseId, session.getUserId()).enqueue(new Callback<List<com.example.edusync.model.Calificacion>>() {
+                            @Override
+                            public void onResponse(Call<List<com.example.edusync.model.Calificacion>> c, Response<List<com.example.edusync.model.Calificacion>> res) {
+                                if (res.isSuccessful() && res.body() != null) {
+                                    for (com.example.edusync.model.Calificacion cal : res.body()) {
+                                        for (Evento e : listaEventosCache) {
+                                            if (e.getId().equals(cal.getEventoId())) {
+                                                e.setNotaObtenida(cal.getNota());
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                finalizarCargaEventos();
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<com.example.edusync.model.Calificacion>> c, Throwable t) {
+                                finalizarCargaEventos();
+                            }
+                        });
+                    } else {
+                        finalizarCargaEventos();
+                    }
                 }
             }
             @Override
@@ -363,6 +389,11 @@ public class PerfilClaseActivity extends AppCompatActivity {
             public void onFailure(Call<List<Asignatura>> call, Throwable t) {
             }
         });
+    }
+
+    private void finalizarCargaEventos() {
+        tvCountTareas.setText(String.valueOf(listaEventosCache.size()));
+        eventoAdapter.updateData(listaEventosCache);
     }
 
     private void actualizarListaAsignaturas() {

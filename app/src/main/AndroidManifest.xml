@@ -50,6 +50,10 @@
             android:exported="false"
             android:theme="@style/Theme.EduSync" />
         <activity
+            android:name=".activities.CalificarAlumnosActivity"
+            android:exported="false"
+            android:theme="@style/Theme.EduSync" />
+        <activity
             android:name=".activities.EditarPerfilActivity"
             android:exported="false"
             android:theme="@style/Theme.EduSync" />

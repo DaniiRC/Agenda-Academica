@@ -57,7 +57,6 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
     private String tipoFiltro = "Todo"; // Mantenemos "Todo" como valor interno de lógica
     private MaterialCardView cardFilterSummary;
     private TextView tvFilterText;
-    private ImageView btnDeleteAll;
     private String queryFiltro = "";
     private View cardErrorBanner;
     private com.google.android.material.button.MaterialButton btnRetryBanner;
@@ -93,15 +92,13 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
         progressBar = findViewById(R.id.progressBar);
         cardFilterSummary = findViewById(R.id.cardFilterSummary);
         tvFilterText = findViewById(R.id.tvFilterText);
-        btnDeleteAll = findViewById(R.id.btnDeleteAll);
 
         rvTodasTareas.setLayoutManager(new LinearLayoutManager(this));
         adapter = new TareaAdapter(this, new ArrayList<>(), this);
         rvTodasTareas.setAdapter(adapter);
 
         swipeRefresh.setOnRefreshListener(this::cargarTareas);
-        btnDeleteAll.setOnClickListener(v -> mostrarConfirmacionBorradoMasivo());
-
+        
         configurarBusqueda();
         
         cardErrorBanner = findViewById(R.id.cardErrorBanner);
@@ -214,9 +211,9 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
 
         view.findViewById(R.id.btnApplyFilters).setOnClickListener(v -> {
             int checkedId = cgType.getCheckedChipId();
-            if (checkedId == R.id.chipTypeTask) tipoFiltro = "Tareas";
+            if (checkedId == R.id.chipTypeTask) tipoFiltro = "Deberes";
             else if (checkedId == R.id.chipTypeProject) tipoFiltro = "Proyecto";
-            else if (checkedId == R.id.chipTypeStudy) tipoFiltro = "Estudio";
+            else if (checkedId == R.id.chipTypeExam) tipoFiltro = "Examen";
             else tipoFiltro = "Todo";
             
             aplicarFiltros();
@@ -228,9 +225,9 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
     }
 
     private void configurarChipsFiltro(ChipGroup cgType) {
-        if ("Tareas".equals(tipoFiltro)) cgType.check(R.id.chipTypeTask);
+        if ("Deberes".equals(tipoFiltro)) cgType.check(R.id.chipTypeTask);
         else if ("Proyecto".equals(tipoFiltro)) cgType.check(R.id.chipTypeProject);
-        else if ("Estudio".equals(tipoFiltro)) cgType.check(R.id.chipTypeStudy);
+        else if ("Examen".equals(tipoFiltro)) cgType.check(R.id.chipTypeExam);
         else cgType.check(R.id.chipTypeAll);
     }
 
@@ -373,48 +370,19 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
     }
 
     /**
-     * Muestra una confirmación antes de proceder con el borrado de múltiples tareas.
-     */
-    private void mostrarConfirmacionBorradoMasivo() {
-        if (listaFiltrada.isEmpty()) return;
-        
-        new AlertDialog.Builder(this)
-            .setTitle(R.string.borrado_masivo)
-            .setMessage(getString(R.string.borrar_todas_filtros, listaFiltrada.size()))
-            .setPositiveButton(R.string.eliminar_todas, (dialog, which) -> borrarTareasMasivo())
-            .setNegativeButton(R.string.cancelar, null)
-            .show();
-    }
-
-    /**
-     * Ejecuta el borrado secuencial de todas las tareas presentes en el filtro actual.
-     */
-    private void borrarTareasMasivo() {
-        progressBar.setVisibility(View.VISIBLE);
-        for (Evento e : listaFiltrada) {
-            apiService.eliminarEvento(e.getId()).enqueue(new Callback<Void>() {
-                @Override public void onResponse(Call<Void> call, Response<Void> response) {}
-                @Override public void onFailure(Call<Void> call, Throwable t) {}
-            });
-        }
-        rvTodasTareas.postDelayed(this::cargarTareas, 1000);
-    }
-
-    /**
      * Actualiza la visibilidad y el contenido del resumen de filtros activos.
      */
     private void actualizarCardFiltros() {
         if (grupoFiltro == null && asignaturaFiltro == null && "Todo".equals(tipoFiltro)) {
             cardFilterSummary.setVisibility(View.GONE);
-            btnDeleteAll.setVisibility(View.GONE);
         } else {
             cardFilterSummary.setVisibility(View.VISIBLE);
-            btnDeleteAll.setVisibility(View.VISIBLE);
-            StringBuilder sb = new StringBuilder(getString(R.string.filtros_con_dos_puntos));
-            if (grupoFiltro != null) sb.append(grupoFiltro.getNombre()).append(" ");
-            if (asignaturaFiltro != null) sb.append("| ").append(asignaturaFiltro.getNombre()).append(" ");
-            if (!"Todo".equals(tipoFiltro)) sb.append("| ").append(tipoFiltro);
-            tvFilterText.setText(sb.toString());
+            List<String> activeFilters = new ArrayList<>();
+            if (grupoFiltro != null) activeFilters.add(grupoFiltro.getNombre());
+            if (asignaturaFiltro != null) activeFilters.add(asignaturaFiltro.getNombre());
+            if (!"Todo".equals(tipoFiltro)) activeFilters.add(tipoFiltro);
+            
+            tvFilterText.setText("Filtros: " + String.join(", ", activeFilters));
         }
     }
 

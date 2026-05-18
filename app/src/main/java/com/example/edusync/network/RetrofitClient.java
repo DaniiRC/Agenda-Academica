@@ -19,7 +19,8 @@ public class RetrofitClient {
     // URL de producción desplegada en Render. Comentar y usar IP local para pruebas en red local.
     // private static final String IP_SERVIDOR = "192.168.100.189";
     // public static final String BASE_URL = "http://" + IP_SERVIDOR + ":8080/";
-    public static final String BASE_URL = "https://proyecto-final-api-1.onrender.com/";
+    //public static final String BASE_URL = "https://proyecto-final-api-1.onrender.com/";
+    public static final String BASE_URL = "http://192.168.100.189:8080/";
 
     private static Retrofit retrofit = null;
 

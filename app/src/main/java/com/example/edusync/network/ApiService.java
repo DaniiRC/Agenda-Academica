@@ -97,6 +97,9 @@ public interface ApiService {
     @GET("/api/grupos/{codigo}/participantes")
     Call<List<Usuario>> obtenerParticipantes(@Path("codigo") String codigo);
 
+    @GET("/api/grupos/{id}/participantes")
+    Call<List<Usuario>> obtenerParticipantesPorGrupoId(@Path("id") Long id);
+
     // ==========================================
     // 3. ASIGNATURAS
     // ==========================================
@@ -152,5 +155,20 @@ public interface ApiService {
 
     @PUT("/api/subtareas/{id}")
     Call<Void> actualizarSubtarea(@Path("id") Long id, @Query("completada") boolean completada);
+
+    // ==========================================
+    // 5. CALIFICACIONES
+    // ==========================================
+    @GET("/api/calificaciones/evento/{eventoId}")
+    Call<List<com.example.edusync.model.Calificacion>> obtenerCalificacionesPorEvento(@Path("eventoId") Long eventoId);
+
+    @GET("/api/calificaciones/evento/{eventoId}/usuario/{usuarioId}")
+    Call<com.example.edusync.model.Calificacion> obtenerCalificacionDeUsuarioEnEvento(@Path("eventoId") Long eventoId, @Path("usuarioId") Long usuarioId);
+
+    @GET("/api/calificaciones/grupo/{grupoId}/usuario/{usuarioId}")
+    Call<List<com.example.edusync.model.Calificacion>> obtenerCalificacionesDeUsuarioEnGrupo(@Path("grupoId") Long grupoId, @Path("usuarioId") Long usuarioId);
+
+    @POST("/api/calificaciones/evento/{eventoId}/usuario/{usuarioId}")
+    Call<com.example.edusync.model.Calificacion> guardarCalificacion(@Path("eventoId") Long eventoId, @Path("usuarioId") Long usuarioId, @Query("nota") Double nota);
 
 }
