@@ -35,6 +35,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Actividad que permite a los docentes calificar a los alumnos participantes
+ * en un evento grupal específico. Obtiene la lista de alumnos inscritos en
+ * el grupo y recupera las calificaciones previamente registradas para mostrarlas
+ * en tiempo real, permitiendo su modificación mediante diálogos interactivos.
+ */
 public class CalificarAlumnosActivity extends BaseActivity {
 
     private RecyclerView rvCalificarAlumnos;
@@ -47,6 +53,12 @@ public class CalificarAlumnosActivity extends BaseActivity {
     private List<Usuario> participantesList = new ArrayList<>();
     private Map<Long, Double> calificacionesMap = new HashMap<>(); // usuarioId -> nota
 
+    /**
+     * Inicializa la actividad, recupera los identificadores del evento y grupo,
+     * configura la barra de herramientas superior y prepara las vistas para la carga.
+     *
+     * @param savedInstanceState Estado previo de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +80,10 @@ public class CalificarAlumnosActivity extends BaseActivity {
         cargarDatos();
     }
 
+    /**
+     * Recupera de forma asíncrona la lista de alumnos participantes del grupo desde el servidor.
+     * Una vez obtenidos con éxito, desencadena la carga de sus calificaciones previas.
+     */
     private void cargarDatos() {
         pbCalificar.setVisibility(View.VISIBLE);
         // Primero, obtener participantes del grupo
@@ -91,6 +107,10 @@ public class CalificarAlumnosActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Obtiene de forma asíncrona todas las calificaciones asignadas previamente al evento.
+     * Rellena un mapa asociativo y finalmente configura el adaptador del RecyclerView.
+     */
     private void cargarCalificaciones() {
         apiService.obtenerCalificacionesPorEvento(eventoId).enqueue(new Callback<List<Calificacion>>() {
             @Override
@@ -114,11 +134,22 @@ public class CalificarAlumnosActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Instancia y vincula el adaptador con el RecyclerView de la interfaz
+     * para mostrar los datos de los alumnos y sus notas correspondientes.
+     */
     private void configurarAdapter() {
         adapter = new CalificarAdapter(participantesList, calificacionesMap, this::mostrarDialogoNota);
         rvCalificarAlumnos.setAdapter(adapter);
     }
 
+    /**
+     * Muestra un cuadro de diálogo interactivo para introducir o modificar la calificación del alumno.
+     * Valida que el rango de la nota introducida esté comprendido estrictamente entre 0 y 10.
+     *
+     * @param usuario     El alumno seleccionado a calificar.
+     * @param notaActual  La nota actual asignada al alumno, o nula si no tiene.
+     */
     private void mostrarDialogoNota(Usuario usuario, Double notaActual) {
         EditText etNota = new EditText(this);
         etNota.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -151,6 +182,13 @@ public class CalificarAlumnosActivity extends BaseActivity {
                 .show();
     }
 
+    /**
+     * Envía la nueva calificación del alumno al servidor API para persistirla y
+     * actualiza la caché local y la visualización de la lista al recibir respuesta exitosa.
+     *
+     * @param usuarioId Identificador del alumno.
+     * @param nota      Nota numérica asignada (de 0.0 a 10.0).
+     */
     private void guardarNota(Long usuarioId, Double nota) {
         pbCalificar.setVisibility(View.VISIBLE);
         apiService.guardarCalificacion(eventoId, usuarioId, nota).enqueue(new Callback<Calificacion>() {
@@ -174,15 +212,35 @@ public class CalificarAlumnosActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Adaptador para el RecyclerView que gestiona e infla la interfaz gráfica
+     * de los participantes y maneja las interacciones de selección para calificar.
+     */
     private static class CalificarAdapter extends RecyclerView.Adapter<CalificarAdapter.ViewHolder> {
         private final List<Usuario> usuarios;
         private final Map<Long, Double> calificaciones;
         private final OnCalificarClickListener listener;
 
+        /**
+         * Interfaz de callback para escuchar eventos de clic sobre los alumnos.
+         */
         interface OnCalificarClickListener {
+            /**
+             * Se invoca cuando se selecciona un participante para asignarle o cambiarle la nota.
+             *
+             * @param usuario    Alumno seleccionado.
+             * @param notaActual Nota actual en memoria o nula.
+             */
             void onClick(Usuario usuario, Double notaActual);
         }
 
+        /**
+         * Constructor del adaptador.
+         *
+         * @param usuarios       Lista de alumnos a mostrar.
+         * @param calificaciones Mapa de calificaciones del evento.
+         * @param listener       Escuchador de clics.
+         */
         public CalificarAdapter(List<Usuario> usuarios, Map<Long, Double> calificaciones, OnCalificarClickListener listener) {
             this.usuarios = usuarios;
             this.calificaciones = calificaciones;
@@ -231,6 +289,9 @@ public class CalificarAlumnosActivity extends BaseActivity {
             return usuarios.size();
         }
 
+        /**
+         * Contenedor de vistas de los elementos individuales de la lista de calificación.
+         */
         static class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvNombre, tvEmail, tvNota;
             ImageView ivFoto;

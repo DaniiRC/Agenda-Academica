@@ -28,6 +28,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * Actividad que lista todos los participantes integrados en un grupo académico específico.
+ * Distingue visualmente entre el administrador/profesor del grupo y los alumnos asociados,
+ * recuperando la información correspondiente de forma asíncrona a través del servicio API.
+ */
 public class ListaParticipantesActivity extends BaseActivity {
 
     private RecyclerView rvParticipantes;
@@ -36,6 +41,12 @@ public class ListaParticipantesActivity extends BaseActivity {
     private Long profesorId;
     private ApiService apiService;
 
+    /**
+     * Inicializa la actividad, recupera los datos pasados por el Intent,
+     * configura la barra de herramientas y prepara la lista.
+     *
+     * @param savedInstanceState Estado previo de la actividad.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +68,11 @@ public class ListaParticipantesActivity extends BaseActivity {
         recuperarInfoGrupoYParticipantes();
     }
 
+    /**
+     * Realiza una consulta asíncrona a la API para obtener la información detallada del grupo,
+     * especialmente para asegurar el identificador correcto del profesor administrador
+     * antes de proceder con la carga de la lista completa de participantes.
+     */
     private void recuperarInfoGrupoYParticipantes() {
         apiService.buscarGrupoPorCodigo(codigoGrupo).enqueue(new Callback<Grupo>() {
             @Override
@@ -78,6 +94,10 @@ public class ListaParticipantesActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Recupera asíncronamente de la API la lista de participantes inscritos en el grupo
+     * y los vincula al adaptador del RecyclerView para su visualización.
+     */
     private void cargarParticipantes() {
         apiService.obtenerParticipantes(codigoGrupo).enqueue(new Callback<List<Usuario>>() {
             @Override
@@ -95,10 +115,20 @@ public class ListaParticipantesActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Adaptador para el RecyclerView que renderiza la lista de participantes.
+     * Gestiona las etiquetas visuales diferenciando roles de administrador (ADMIN) y alumnos (ALUMNO).
+     */
     private static class ParticipantesAdapter extends RecyclerView.Adapter<ParticipantesAdapter.ViewHolder> {
         private List<Usuario> usuarios;
         private Long adminId;
 
+        /**
+         * Constructor del adaptador de participantes.
+         *
+         * @param usuarios Lista de usuarios del grupo.
+         * @param adminId  Identificador del profesor/administrador del grupo.
+         */
         public ParticipantesAdapter(List<Usuario> usuarios, Long adminId) {
             this.usuarios = usuarios;
             this.adminId = adminId;
@@ -132,7 +162,7 @@ public class ListaParticipantesActivity extends BaseActivity {
 
             holder.tvRol.setVisibility(View.VISIBLE);
             
-            // Comparación robusta
+            // Comparación robusta para discernir el rol del participante en el grupo
             if (adminId != null && adminId != -1 && u.getId() != null && u.getId().equals(adminId)) {
                 holder.tvRol.setText("ADMIN");
                 holder.tvRol.setBackgroundTintList(ColorStateList.valueOf(0xFFF0F9FF));
@@ -149,6 +179,9 @@ public class ListaParticipantesActivity extends BaseActivity {
             return usuarios.size();
         }
 
+        /**
+         * Contenedor de vistas de los elementos individuales de la lista de participantes.
+         */
         static class ViewHolder extends RecyclerView.ViewHolder {
             TextView tvNombre, tvEmail, tvRol;
             ImageView ivFoto;
