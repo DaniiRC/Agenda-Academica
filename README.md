@@ -9,10 +9,10 @@
 <br/>
 <br/>
 
-# 📅 Agenda Académica
+# 📅 EduSync
 
-**La app de gestión de tareas pensada para estudiantes.**  
-Organiza tus exámenes, deberes y proyectos, colabora con tu clase y mantén el foco con el temporizador Pomodoro integrado — todo funciona aunque no tengas conexión.
+**La aplicación de gestión de tareas y colaboración académica pensada para estudiantes y profesores.**  
+Organiza tus exámenes, deberes y proyectos, colabora con tu clase, gestiona calificaciones individualizadas y mantén el foco con el temporizador Pomodoro integrado — todo funciona con sincronización remota y caché local sin conexión.
 
 <br/>
 
@@ -29,68 +29,66 @@ Organiza tus exámenes, deberes y proyectos, colabora con tu clase y mantén el 
 
 | Función | Descripción |
 |---|---|
-| 📅 **Calendario + Tareas** | Crea y gestiona tareas por tipo: Examen, Deberes, Proyecto, Estudio. Vista de calendario mensual y lista diaria. |
-| 👥 **Grupos Académicos** | Únete a la clase de tu profesor con un código único. Comparte tareas y entregas con todo el grupo. |
-| ⏱ **Temporizador Pomodoro** | Sesiones de 25 minutos de foco puro. Servicio en primer plano, funciona con la app en segundo plano. |
-| 🔔 **Notificaciones** | Alarmas exactas para recordarte cada tarea en el momento exacto que elijas. |
-| 📴 **Modo Offline** | Room Database cachea todos tus datos localmente. La app funciona sin internet. |
-| 🏠 **Widget** | Consulta las tareas del día directamente desde la pantalla de inicio sin abrir la app. |
-| 📊 **Notas y estadísticas** | Registra tu nota obtenida y el peso de cada examen. Calcula tu media automáticamente. |
-| 🔗 **Recursos URL** | Adjunta enlaces a materiales de estudio directamente en cada tarea. |
+| 📅 **Calendario + Tareas** | Crea y gestiona tareas clasificadas por tipo: *Examen, Deberes, Proyecto, Estudio*. Vista de calendario mensual y lista de tareas diarias. |
+| 👥 **Grupos Académicos** | Los profesores pueden crear grupos y los alumnos unirse mediante un código único. Permite compartir tareas y entregas colaborativas. |
+| ⏱ **Temporizador Pomodoro** | Sesiones de 25 minutos de foco inmersivo (*Focus Mode*). Implementado mediante un servicio en primer plano para funcionar en segundo plano. |
+| 🔔 **Notificaciones Locales** | Alarmas y recordatorios exactos para cada una de tus tareas en la fecha y hora seleccionada. |
+| 📴 **Modo Offline Integrado** | Persistencia local y caché mediante `Room Database`. La app funciona fluidamente sin conexión a internet y se sincroniza al recuperar la red. |
+| 📊 **Notas y Estadísticas** | Registra calificaciones individualizadas de exámenes o tareas. La app calcula automáticamente la media ponderada del alumno y muestra métricas visuales. |
 
 ---
 
-## 🏗 Arquitectura
+## 🏗 Arquitectura del Proyecto
+
+El código fuente de la aplicación móvil Android se organiza bajo el namespace principal `com.example.edusync`:
 
 ```
-com.example.agendaacademica/
-├── activities/          # Pantallas principales
-│   ├── LoginActivity
-│   ├── MainActivity     # BottomNavigation host
-│   ├── FormularioActivity
-│   ├── DetalleEventoActivity
-│   ├── PerfilClaseActivity
-│   ├── ListaTareasActivity
-│   ├── EditarPerfilActivity
-│   └── AjustesActivity
+com.example.edusync/
+├── activities/                # Pantallas y flujos principales
+│   ├── LoginActivity          # Pantalla de inicio de sesión JWT
+│   ├── MainActivity           # Host del BottomNavigationView y vistas
+│   ├── FormularioActivity     # Formulario de creación/edición de tareas
+│   ├── DetalleEventoActivity  # Vista de detalles y checklist de tareas
+│   ├── PerfilClaseActivity    # Panel de asignaturas asociadas
+│   ├── ListaTareasActivity    # Historial de tareas pendientes y completadas
+│   ├── EditarPerfilActivity   # Modificación de datos personales y foto
+│   ├── AjustesActivity        # Gestión de idioma y preferencias
+│   ├── CalificarAlumnosActivity # Calificación de alumnos individualizada por el profesor
+│   └── ListaParticipantesActivity # Visualización y gestión de miembros del grupo
 │
-├── fragments/           # Tabs del BottomNav
-│   ├── AgendaFragment   # Calendario + lista diaria
-│   ├── GrupoFragment    # Mis grupos
-│   ├── MisClasesFragment# Asignaturas
-│   └── PerfilFragment   # Cuenta del usuario
+├── fragments/                 # Tabs principales de la interfaz
+│   ├── AgendaFragment         # Vista calendario y tareas del día
+│   ├── GrupoFragment          # Gestión y visualización de grupos
+│   ├── MisClasesFragment      # Asignaturas del alumno/profesor
+│   └── PerfilFragment         # Datos del usuario, foto y estadísticas de rendimiento
 │
-├── viewmodels/          # Capa MVVM
+├── viewmodels/                # Capa de lógica y comunicación MVVM
 │   ├── EventoViewModel
 │   └── DataSyncViewModel
 │
-├── database/            # Room (caché offline)
+├── database/                  # Persistencia local (Room Database)
 │   ├── AppDatabase
 │   ├── EventoDao
 │   ├── EventoEntity
-│   └── EventoRepository
+│   └── EventoRepository       # Patrón repositorio con fallback local/remoto
 │
-├── network/             # Retrofit + API
-│   ├── RetrofitClient
-│   ├── ApiService
-│   ├── AuthInterceptor
-│   └── ErrorInterceptor
+├── network/                   # Cliente de red y servicios web
+│   ├── RetrofitClient         # Configuración de URLs y serialización Gson
+│   ├── ApiService             # Declaración de endpoints REST del backend
+│   ├── AuthInterceptor        # Inyección automática del Token JWT en cabeceras
+│   └── ErrorInterceptor       # Tratamiento centralizado de errores HTTP
 │
-├── services/            # Servicios Android
-│   ├── PomodoroService  # Foreground service
-│   └── NotificacionReceiver
+├── services/                  # Servicios en segundo plano
+│   ├── PomodoroService        # Foreground Service del temporizador de foco
+│   └── NotificacionReceiver   # Receptor Broadcast para alarmas de tareas
 │
-├── widget/              # Widget pantalla inicio
-│   ├── AgendaWidget
-│   └── AgendaWidgetService
-│
-└── utils/
-    ├── SessionManager   # JWT + SharedPreferences
-    ├── IdiomaUtils      # i18n runtime
-    └── GlideUtils       # Carga de imágenes
+└── utils/                     # Utilidades generales y helpers
+    ├── SessionManager         # Persistencia de credenciales y roles con SharedPreferences
+    ├── IdiomaUtils            # Internacionalización y cambio de idioma en runtime
+    └── GlideUtils             # Carga optimizada de imágenes de perfil
 ```
 
-El proyecto sigue el patrón **MVVM** (Model–View–ViewModel):
+La app implementa estrictamente el patrón de arquitectura **MVVM (Model-View-ViewModel)** de Google Jetpack para lograr un código desacoplado y mantenible:
 
 ```
 View (Activity/Fragment)
@@ -99,101 +97,101 @@ View (Activity/Fragment)
 ViewModel
     │  solicita datos
     ▼
-Repository ──── API REST (Retrofit) ──▶ Servidor
-             └── Room DB (caché local)
+Repository ──── API REST (Retrofit) ──▶ Servidor Web (Render)
+             └── Room DB (Caché local offline)
 ```
 
 ---
 
-## 📋 Requisitos previos
+## 📋 Requisitos del Entorno
 
-| Requisito | Versión mínima |
+| Requisito | Versión Mínima / Recomendada |
 |---|---|
-| Android | 8.0 (API 26) |
-| Espacio en disco | ~30 MB |
-| Conexión a internet | Opcional (posibilidad de ver tareas offline) |
+| Sistema Operativo | Android 8.0 (API 26) o superior |
+| Espacio en Disco | ~35 MB libres |
+| Conectividad | Wi-Fi o Datos Móviles (Opcional - soporte offline completo) |
 
-Para **compilar el proyecto**:
+Para **compilar y depurar** el código fuente en tu entorno de desarrollo local:
 
-| Herramienta | Versión |
+| Herramienta | Versión Recomendada |
 |---|---|
-| Android Studio | Hedgehog 2023.1+ |
-| JDK | 21 |
-| Gradle | 8.x |
-| compileSdk | 36 |
+| Entorno de Desarrollo | Android Studio Hedgehog 2023.1 o superior |
+| Java Development Kit | JDK 21 |
+| Gradle Wrapper | Versión 8.x |
+| Parámetros Gradle | `compileSdk: 36`, `minSdk: 26`, `targetSdk: 34` |
 
 ---
 
-## 🚀 Instalación rápida (APK)
+## 🚀 Instalación Rápida (APK)
 
-La forma más rápida de probar la app:
-
-1. Ve a la [página de descarga](https://danirc.github.io/agenda-academica-web)
-2. Pulsa **Descargar APK**
-3. En tu Android: _Ajustes → Seguridad → Orígenes desconocidos_ → activar
-4. Abre el APK descargado e instala
-5. ¡Listo! Crea una cuenta y empieza a organizar tu semana
+1. Accede a la [Página Oficial de Descarga](https://danirc.github.io/agenda-academica-web) del proyecto.
+2. Escoge la variante deseada:
+   * **APK en la Nube:** Conectada al servidor remoto (Render y Clever Cloud).
+   * **APK en Local:** Conectada a tu instancia local de Spring Tools Suite en red Wi-Fi.
+3. Activa en tu terminal Android: **Ajustes > Seguridad > Orígenes desconocidos** (o autoriza la instalación desde el navegador).
+4. Abre el archivo descargado e instálalo en el dispositivo.
 
 ---
 
-## 🔧 Compilar desde código fuente
+## 🔧 Guía de Configuración en Local
+
+Si prefieres compilar la aplicación tú mismo desde el código fuente:
 
 ```bash
-# 1. Clonar el repositorio
+# 1. Clonar el repositorio del proyecto
 git clone https://github.com/DaniiRC/Agenda-Academica.git
 cd Agenda-Academica
 
-# 2. Abrir en Android Studio
-# File → Open → selecciona la carpeta
+# 2. Abrir en tu Android Studio
+# File -> Open -> selecciona este directorio
 
-# 3. Configurar la URL del servidor
-# Edita app/src/main/java/.../network/RetrofitClient.java
-# BASE_URL = "https://tu-servidor.com/"   (o IP local para debug)
+# 3. Configurar la dirección del backend
+# Edita el archivo: app/src/main/java/com/example/edusync/network/RetrofitClient.java
+# Ajusta la variable BASE_URL con la IP de tu PC de desarrollo:
+# public static final String BASE_URL = "http://192.168.1.XX:8080/";
 
-# 4. Compilar y ejecutar
-# Run → Run 'app'  (o Shift+F10)
+# 4. Ejecutar el proyecto
+# Conecta un emulador o un dispositivo físico y presiona Run (Shift + F10)
 ```
-
-> **Nota:** La app apunta por defecto al servidor de producción en Clever Cloud. No necesitas levantar el backend para probarlo.
 
 ---
 
-## 📦 Dependencias principales
+## 📦 Dependencias Tecnológicas Clave
 
 ```gradle
-// Networking
+// Networking y REST API
 implementation 'com.squareup.retrofit2:retrofit:2.9.0'
 implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
-// Base de datos local
+// Base de Datos Local (Room)
 implementation 'androidx.room:room-runtime:2.6.1'
+annotationProcessor 'androidx.room:room-compiler:2.6.1'
 
-// Arquitectura MVVM
+// Arquitectura MVVM y Ciclo de Vida
 implementation 'androidx.lifecycle:lifecycle-viewmodel:2.8.7'
 implementation 'androidx.lifecycle:lifecycle-livedata:2.8.7'
 
-// Imágenes
+// Procesamiento Gráfico de Imágenes
 implementation 'com.github.bumptech.glide:glide:4.16.0'
 
-// Animaciones
+// Animaciones Vectoriales Fluidas
 implementation 'com.airbnb.android:lottie:6.1.0'
 
-// Google Sign-In
+// Google Services y Firebase Auth (Opcional)
 implementation 'com.google.firebase:firebase-auth:21.2.0'
 ```
 
 ---
 
-## 🔐 Autenticación
+## 🔐 Mecanismos de Autenticación y Seguridad
 
-La app soporta tres métodos de acceso:
-
-- **Email + contraseña** — con recuperación por código de 6 dígitos
-- **JWT** — token almacenado en `SessionManager` (SharedPreferences), válido 24 horas
+* **Acceso Tradicional:** Registro e Inicio de sesión protegido con credenciales de Email y Contraseña robustas (validadas bajo patrones de longitud, mayúsculas y números).
+* **Filtros JWT:** Las credenciales validadas devuelven un token **JWT (JSON Web Token)** seguro generado por el servidor, que se almacena en el cliente de forma cifrada en `SharedPreferences` y es renovado de forma automática.
+* **Control de Accesos (RBAC):** Restricción estricta de vistas y acciones según el rol del usuario (`ADMIN` para administración central, `PROFESOR` para gestionar grupos, calificar y editar, y `ALUMNO` para visualización y autogestión de su propia agenda).
 
 ---
 
 <div align="center">
   Desarrollado por <strong>Daniel Ruiz Cocera</strong> · IES Las Fuentezuelas · 2ºDAM · 2026<br/>
-  <a href="https://github.com/DaniiRC/Proyecto-Final-API">🔗 Repositorio del Backend (API REST)</a>
+  <a href="https://github.com/DaniiRC/Proyecto-Final-API">🔗 Repositorio del Backend REST (Spring Boot API)</a>
 </div>
