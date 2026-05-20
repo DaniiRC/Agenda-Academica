@@ -16,8 +16,7 @@ Organiza tus exámenes, deberes y proyectos, colabora con tu clase, gestiona cal
 
 <br/>
 
-[![Download APK](https://img.shields.io/badge/⬇_Descargar_APK-4F46E5?style=for-the-badge&logoColor=white)](https://danirc.github.io/agenda-academica-web)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+[![Download APK](https://img.shields.io/badge/⬇_Descargar_APK-4F46E5?style=for-the-badge&logoColor=white)](https://landing-agenda-woad.vercel.app)
 [![API](https://img.shields.io/badge/API-26%2B-brightgreen?style=for-the-badge)](https://android-arsenal.com/api?level=26)
 [![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=for-the-badge)](releases)
 
@@ -108,8 +107,8 @@ Repository ──── API REST (Retrofit) ──▶ Servidor Web (Render)
 | Requisito | Versión Mínima / Recomendada |
 |---|---|
 | Sistema Operativo | Android 8.0 (API 26) o superior |
-| Espacio en Disco | ~35 MB libres |
-| Conectividad | Wi-Fi o Datos Móviles (Opcional - soporte offline completo) |
+| Espacio en Disco | ~16 MB libres |
+| Conectividad | Wi-Fi o Datos Móviles (Soporte offline incompleto) |
 
 Para **compilar y depurar** el código fuente en tu entorno de desarrollo local:
 
@@ -124,7 +123,7 @@ Para **compilar y depurar** el código fuente en tu entorno de desarrollo local:
 
 ## 🚀 Instalación Rápida (APK)
 
-1. Accede a la [Página Oficial de Descarga](https://danirc.github.io/agenda-academica-web) del proyecto.
+1. Accede a la [Página Oficial de Descarga](https://landing-agenda-woad.vercel.app) del proyecto.
 2. Escoge la variante deseada:
    * **APK en la Nube:** Conectada al servidor remoto (Render y Clever Cloud).
    * **APK en Local:** Conectada a tu instancia local de Spring Tools Suite en red Wi-Fi.
