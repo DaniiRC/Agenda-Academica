@@ -43,4 +43,11 @@ public class EventoViewModel extends AndroidViewModel {
     public void refresh(Long usuarioId) {
         repository.refreshEventos(usuarioId);
     }
+
+    /**
+     * Guarda eventos directamente en la base de datos local delegando en el repositorio.
+     */
+    public void guardarEventosEnLocal(List<com.example.edusync.model.Evento> eventos) {
+        repository.guardarEventosEnLocal(eventos);
+    }
 }

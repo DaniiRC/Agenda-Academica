@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import androidx.lifecycle.ViewModelProvider;
+import com.example.edusync.viewmodel.EventoViewModel;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,7 +62,7 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
     private String queryFiltro = "";
     private View cardErrorBanner;
     private com.google.android.material.button.MaterialButton btnRetryBanner;
-    private com.google.gson.Gson gson = new com.google.gson.Gson();
+    private EventoViewModel eventoViewModel;
 
     /**
      * Inicializa la actividad y comienza la carga de tareas.
@@ -76,6 +78,8 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
         session = new SessionManager(this);
 
         initViews();
+        eventoViewModel = new ViewModelProvider(this).get(EventoViewModel.class);
+        eventoViewModel.getTodosLosEventos().observe(this, this::procesarEventosEntity);
         cargarTareas();
     }
 
@@ -132,7 +136,7 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
 
     /**
      * Solicita la lista completa de eventos del usuario al servidor.
-     * Implementa un sistema de caché para permitir la visualización en caso de fallo de red.
+     * Guarda la respuesta directamente en Room para simplificar la caché offline.
      */
     private void cargarTareas() {
         if (swipeRefresh != null) swipeRefresh.setRefreshing(true);
@@ -144,42 +148,59 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
             public void onResponse(@NonNull Call<List<Evento>> call, @NonNull Response<List<Evento>> response) {
                 if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
                 if (response.isSuccessful() && response.body() != null) {
-                    listaOriginal = response.body();
-                    session.guardarEventosCache(gson.toJson(listaOriginal));
-                    aplicarFiltros();
+                    ocultarError();
+                    if (eventoViewModel != null) {
+                        eventoViewModel.guardarEventosEnLocal(response.body());
+                    }
                 } else {
-                    cargarCacheYMostrarError(false);
+                    mostrarError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Evento>> call, @NonNull Throwable t) {
                 if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
-                cargarCacheYMostrarError(true);
+                mostrarError();
             }
         });
     }
 
     /**
-     * Intenta recuperar los datos desde la caché local cuando la red no está disponible.
-     * 
-     * @param porFalloRed Verdadero si la llamada fue provocada por una excepción de red.
+     * Procesa la lista de EventoEntity procedentes de Room y actualiza listaOriginal para los filtros.
      */
-    private void cargarCacheYMostrarError(boolean porFalloRed) {
-        if (porFalloRed) mostrarError();
-
-        String cache = session.obtenerEventosCache();
-        if (cache != null) {
-            try {
-                java.lang.reflect.Type listType = new com.google.gson.reflect.TypeToken<List<Evento>>(){}.getType();
-                listaOriginal = gson.fromJson(cache, listType);
-                aplicarFiltros();
-            } catch (Exception e) {
-                if (!porFalloRed) mostrarError();
+    private void procesarEventosEntity(List<com.example.edusync.database.EventoEntity> entities) {
+        listaOriginal.clear();
+        if (entities != null) {
+            for (com.example.edusync.database.EventoEntity entity : entities) {
+                try {
+                    Evento e = new Evento();
+                    e.setId(entity.getId());
+                    e.setTitulo(entity.getTitulo());
+                    e.setDescripcion(entity.getDescripcion());
+                    
+                    String rawFecha = entity.getFecha();
+                    String fechaLimpia = "2000-01-01";
+                    if (rawFecha != null) {
+                        java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}-\\d{2}-\\d{2})").matcher(rawFecha);
+                        if (m.find()) fechaLimpia = m.group(1);
+                        else fechaLimpia = rawFecha;
+                    }
+                    e.setFecha(fechaLimpia);
+                    
+                    e.setHora(entity.getHora());
+                    e.setTipo(entity.getTipo());
+                    e.setCompletado(entity.isCompletado());
+                    
+                    if (entity.getNombreGrupo() != null) {
+                        Grupo g = new Grupo();
+                        g.setNombre(entity.getNombreGrupo());
+                        e.setGrupo(g);
+                    }
+                    listaOriginal.add(e);
+                } catch (Exception ignored) {}
             }
-        } else if (!porFalloRed) {
-            mostrarError();
         }
+        aplicarFiltros();
     }
 
     private void mostrarError() {
@@ -285,7 +306,9 @@ public class ListaTareasActivity extends BaseActivity implements TareaAdapter.On
      */
     private void aplicarFiltros() {
         listaFiltrada = listaOriginal.stream().filter(e -> {
-            boolean passGrupo = (grupoFiltro == null) || (e.getGrupo() != null && e.getGrupo().getId().equals(grupoFiltro.getId()));
+            boolean passGrupo = (grupoFiltro == null) || (e.getGrupo() != null && 
+                ((e.getGrupo().getId() != null && e.getGrupo().getId().equals(grupoFiltro.getId())) || 
+                 (e.getGrupo().getNombre() != null && e.getGrupo().getNombre().equals(grupoFiltro.getNombre()))));
             boolean passAsig = (asignaturaFiltro == null) || (e.getAsignatura() != null && e.getAsignatura().getId().equals(asignaturaFiltro.getId()));
             boolean passTipo = "Todo".equals(tipoFiltro) || tipoFiltro.equals(e.getTipo());
             

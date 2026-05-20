@@ -44,6 +44,41 @@ public class EventoRepository {
     }
 
     /**
+     * Guarda la lista de eventos recibida en la base de datos local (Room).
+     * Primero borra todos los registros existentes para evitar duplicaciones.
+     */
+    public void guardarEventosEnLocal(List<Evento> eventos) {
+        if (eventos == null) return;
+        List<EventoEntity> entities = new ArrayList<>();
+        for (Evento e : eventos) {
+            String rawFecha = e.getFecha();
+            String fechaLimpia = "2000-01-01";
+            if (rawFecha != null) {
+                java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}-\\d{2}-\\d{2})").matcher(rawFecha);
+                if (m.find()) fechaLimpia = m.group(1);
+                else fechaLimpia = rawFecha;
+            }
+
+            entities.add(new EventoEntity(
+                    e.getId(),
+                    e.getTitulo(),
+                    e.getDescripcion(),
+                    fechaLimpia,
+                    e.getHora(),
+                    e.getTipo(),
+                    e.getGrupo() != null ? e.getGrupo().getNombre() : "General",
+                    e.isCompletado()
+            ));
+        }
+
+        // Operación en segundo plano usando ExecutorService
+        executorService.execute(() -> {
+            eventoDao.resetearEventos(entities);
+            Log.d("REPOSITORY", "Datos sincronizados en Room");
+        });
+    }
+
+    /**
      * Sincroniza los datos de la API con la base de datos local.
      */
     public void refreshEventos(Long usuarioId) {
@@ -51,40 +86,7 @@ public class EventoRepository {
             @Override
             public void onResponse(Call<List<Evento>> call, Response<List<Evento>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    // Mapear de Evento (API) a EventoEntity (Room)
-                    List<EventoEntity> entities = new ArrayList<>();
-                    for (Evento e : response.body()) {
-                        String rawFecha = e.getFecha();
-                        String fechaLimpia = "2000-01-01";
-                        if (rawFecha != null) {
-                            java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}-\\d{2}-\\d{2})").matcher(rawFecha);
-                            if (m.find()) fechaLimpia = m.group(1);
-                            else fechaLimpia = rawFecha;
-                        }
-
-                        entities.add(new EventoEntity(
-                                e.getId(),
-                                e.getTitulo(),
-                                e.getDescripcion(),
-                                fechaLimpia,
-                                e.getHora(),
-                                e.getTipo(),
-                                e.getGrupo() != null ? e.getGrupo().getNombre() : "General",
-                                e.isCompletado()
-                        ));
-                    }
-
-                    // Operación en segundo plano usando ExecutorService
-                    executorService.execute(() -> {
-                        eventoDao.borrarTodosLosEventos();
-                        eventoDao.insertarEventos(entities);
-                        Log.d("REPOSITORY", "Datos sincronizados en Room");
-
-                        // Notificar al Widget que los datos han cambiado
-                        android.content.Intent intent = new android.content.Intent(android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-                        intent.setComponent(new android.content.ComponentName(application, com.example.edusync.widget.EduSyncWidget.class));
-                        application.sendBroadcast(intent);
-                    });
+                    guardarEventosEnLocal(response.body());
                 }
             }
 

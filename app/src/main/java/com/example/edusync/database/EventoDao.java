@@ -6,6 +6,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import androidx.room.Transaction;
+
 import java.util.List;
 
 @Dao
@@ -24,4 +26,10 @@ public interface EventoDao {
 
     @Query("DELETE FROM eventos")
     void borrarTodosLosEventos();
+
+    @Transaction
+    default void resetearEventos(List<EventoEntity> eventos) {
+        borrarTodosLosEventos();
+        insertarEventos(eventos);
+    }
 }

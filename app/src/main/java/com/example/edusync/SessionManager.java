@@ -21,7 +21,6 @@ public class SessionManager {
     private static final String KEY_MODO_OSCURO = "MODO_OSCURO";
     private static final String KEY_RECORDATORIOS = "RECORDATORIOS_ACTIVOS";
     private static final String KEY_IDIOMA = "IDIOMA_APP";
-    private static final String KEY_EVENTOS_CACHE = "EVENTOS_CACHE";
     private static final String KEY_HAPTIC = "HAPTIC_FEEDBACK";
     private static final String KEY_ANIMATIONS = "ANIMATIONS_ENABLED";
     private static final String KEY_HIGH_CONTRAST = "HIGH_CONTRAST";
@@ -228,21 +227,6 @@ public class SessionManager {
         return prefs.getString(KEY_IDIOMA, null);
     }
 
-    /**
-     * Serializa y almacena la lista de eventos en formato JSON para su uso en modo sin conexión.
-     *
-     * @param json Representación JSON de la lista de {@link com.example.edusync.model.Evento}.
-     */
-    public void guardarEventosCache(String json) {
-        editor.putString(KEY_EVENTOS_CACHE, json).apply();
-    }
-
-    /**
-     * @return JSON con la última lista de eventos descargada, o {@code null} si no hay caché.
-     */
-    public String obtenerEventosCache() {
-        return prefs.getString(KEY_EVENTOS_CACHE, null);
-    }
 
     /**
      * @param activo {@code true} para habilitar la vibración táctil en interacciones.

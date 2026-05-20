@@ -106,6 +106,12 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
             if (refresh != null && refresh) cargarDatos();
         });
 
+        if (eventoViewModel != null) {
+            eventoViewModel.getTodosLosEventos().observe(getViewLifecycleOwner(), eventos -> {
+                procesarEventosEntity(eventos);
+            });
+        }
+
         cardAdminPanel = view.findViewById(R.id.cardAdminPanel);
         if (cardAdminPanel != null) {
             cardAdminPanel.setOnClickListener(v -> {
@@ -195,11 +201,12 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Recupera la lista de eventos del usuario desde el servidor.
+     * Recupera la lista de eventos del usuario desde el servidor y la guarda en Room.
      */
     private void cargarDatos() {
         if (swipeRefresh != null) swipeRefresh.setRefreshing(true);
         Long usuarioId = session.getUserId();
+        ocultarError();
 
         RetrofitClient.getApiService().obtenerEventosUsuario(usuarioId).enqueue(new Callback<List<Evento>>() {
             @Override
@@ -207,39 +214,20 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
                 if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
                 if (response.isSuccessful() && response.body() != null) {
                     ocultarError();
-                    procesarEventos(response.body());
-                    session.guardarEventosCache(gson.toJson(response.body()));
-                    if (eventoViewModel != null) eventoViewModel.refresh(usuarioId);
+                    if (eventoViewModel != null) {
+                        eventoViewModel.guardarEventosEnLocal(response.body());
+                    }
                 } else {
-                    cargarCacheYMostrarError(false);
+                    mostrarError();
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Evento>> call, @NonNull Throwable t) {
                 if (swipeRefresh != null) swipeRefresh.setRefreshing(false);
-                cargarCacheYMostrarError(true);
+                mostrarError();
             }
         });
-    }
-
-    /**
-     * Carga los datos de la cachÃ© si no hay conexiÃ³n a internet.
-     */
-    private void cargarCacheYMostrarError(boolean porFalloRed) {
-        if (porFalloRed) mostrarError();
-        String cache = session.obtenerEventosCache();
-        if (cache != null) {
-            try {
-                java.lang.reflect.Type listType = new com.google.gson.reflect.TypeToken<List<Evento>>(){}.getType();
-                List<Evento> eventos = gson.fromJson(cache, listType);
-                procesarEventos(eventos);
-            } catch (Exception e) {
-                if (!porFalloRed) mostrarError();
-            }
-        } else if (!porFalloRed) {
-            mostrarError();
-        }
     }
 
     private void mostrarError() {
@@ -251,26 +239,27 @@ public class EduSyncFragment extends Fragment implements CalendarioAdapter.OnIte
     }
 
     /**
-     * Procesa la lista de eventos recibida y la convierte al formato local para visualizaciÃ³n.
+     * Procesa la lista de EventoEntity procedentes de Room y actualiza el calendario y las tareas.
      */
-    private void procesarEventos(List<Evento> eventos) {
+    private void procesarEventosEntity(List<com.example.edusync.database.EventoEntity> entities) {
         listaEventos.clear();
-        if (eventos == null) return;
+        if (entities == null) return;
 
-        for (Evento e : eventos) {
+        for (com.example.edusync.database.EventoEntity e : entities) {
             try {
                 String rawFecha = e.getFecha();
                 String fechaLimpia = "2000-01-01"; 
                 if (rawFecha != null && rawFecha.length() >= 10) {
                     java.util.regex.Matcher m = java.util.regex.Pattern.compile("(\\d{4}-\\d{2}-\\d{2})").matcher(rawFecha);
                     if (m.find()) fechaLimpia = m.group(1);
+                } else if (rawFecha != null) {
+                    fechaLimpia = rawFecha;
                 }
 
                 LocalDate fecha = LocalDate.parse(fechaLimpia);
                 EventoLocal el = new EventoLocal(e.getId(), fecha, e.getTitulo(), e.getHora(), e.getDescripcion(), e.getTipo());
                 el.completado = e.isCompletado();
-                el.setSubtareas(e.getSubtareas());
-                el.setNombreGrupo(e.getGrupo() != null ? e.getGrupo().getNombre() : "SOLO_PARA_MI");
+                el.setNombreGrupo(e.getNombreGrupo() != null ? e.getNombreGrupo() : "SOLO_PARA_MI");
                 
                 listaEventos.add(el);
             } catch (Exception ignored) {}
